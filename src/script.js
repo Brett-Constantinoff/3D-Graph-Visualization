@@ -144,20 +144,20 @@ class App
 }
 
 /*
-Main Render Loop
+Main Animation Loop
 */
 const app = new App();
 app.onStart();
 
 const clock = new THREE.Clock();
-function render()
+function animate()
 {
     const dt = clock.getDelta();
     app.onUpdate(dt);
 
 
     app.onRender();
-    requestAnimationFrame(render);
+    requestAnimationFrame(animate);
 }
 
-render();
+animate();
