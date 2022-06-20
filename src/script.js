@@ -7,6 +7,7 @@ A basic Three.js app reuires 4 main things:
 */
 import './style.css'
 import * as THREE from 'three';
+import { OrbitContols, OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'dat.gui';
 import Stats from 'stats.js';
 
@@ -39,14 +40,14 @@ const sizes = {
     height: 600
 };
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height);
-camera.translateZ(5.0);
 scene.add(camera);
 
 //get our canvas for the renderer
 const canvas = document.querySelector('.webgl');
 const renderer = new THREE.WebGLRenderer(
     {
-        canvas: canvas
+        canvas: canvas,
+        antialias: true
     }
 );
 renderer.setSize(sizes.width, sizes.height);
@@ -108,6 +109,10 @@ gui.add(addSecondCube, 'add').name("Add Cube")
         }
     );
 
+const controls = new OrbitControls(camera, renderer.domElement);
+camera.translateZ(5.0);
+controls.update();
+
 /*
 Main Render Loop
 */
@@ -118,6 +123,7 @@ function render()
 
     const dt = clock.getDelta();
 
+    /*
     mesh.rotation.y += dt * 0.5;
     mesh.rotation.x += dt * -0.5;
     mesh.rotation.z += dt * 0.5;
@@ -128,6 +134,7 @@ function render()
         mesh2.rotation.x += dt * -0.5;
         mesh2.rotation.z += dt * 0.5;
     }
+    */
 
     renderer.render(scene, camera);
 
