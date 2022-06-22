@@ -5,7 +5,6 @@ Main Animation Loop
 */
 const app = new App();
 app.onStart();
-const clock = new THREE.Clock();
 function animate()
 
 {
