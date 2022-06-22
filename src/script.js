@@ -1,14 +1,16 @@
 import App from "./App";
 
 /*
-Main Render Loop
+Main Animation Loop
 */
 const app = new App();
 app.onStart();
-function render()
+const clock = new THREE.Clock();
+function animate()
+
 {
     app.onUpdate();
     app.onRender();
-    requestAnimationFrame(render);
+    requestAnimationFrame(animate);
 }
-render();
+animate();
