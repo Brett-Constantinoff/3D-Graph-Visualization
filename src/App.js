@@ -7,6 +7,7 @@ A basic Three.js app reuires 4 main things:
 */
 import './style.css'
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'dat.gui';
 import Stats from 'stats.js';
 
@@ -15,11 +16,20 @@ export default class App
     constructor()
     {
         this.stats = new Stats();
+
         this.gui = new dat.GUI();
 
         this.canvas = document.querySelector('.webgl');
+        this.sizes = {
+            width: window.innerWidth,
+            height: window.innerHeight,
+        };
+
         this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.controls = new OrbitControls(this.camera, this.canvas);
+
         this.scene = new THREE.Scene();
+
         this.renderer = new THREE.WebGLRenderer(
             {
                 canvas: this.canvas,
@@ -30,24 +40,36 @@ export default class App
 
     onStart()
     {
+        /*
+        event listeners
+        */
+        window.addEventListener('resize', () => 
+        {
+            this.sizes.width = window.innerWidth;
+            this.sizes.height = window.innerHeight;
+
+            this.camera.updateProjectionMatrix();
+
+            this.renderer.setSize(this.sizes.width, this.sizes.height);
+            this.renderer.setPixelRatio(window.devicePixelRatio);
+        });
+
+        /*
+        initial setup
+        */
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
         
         this.scene.add(this.camera);
 
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor('grey');
-
-        //this needs to come at the end of onStart
-        this.clock = new THREE.Clock();
+        this.renderer.setSize(this.sizes.width, this.sizes.height);
     }
 
-    onUpdate()
+    onUpdate(dt)
     {   
         //needs to come at the beginning of onUpdate
         this.stats.begin();
-        this.dt = this.clock.getDelta();
     }
 
     onRender()

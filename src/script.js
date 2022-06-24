@@ -5,10 +5,15 @@ Main Animation Loop
 */
 const app = new App();
 app.onStart();
-function animate()
 
+let time = (new Date() * 0.001);
+function animate()
 {
-    app.onUpdate();
+    const currentTime = (new Date()) * 0.001;
+    const deltaTime = currentTime - time;
+    time = currentTime;
+
+    app.onUpdate(deltaTime);
     app.onRender();
     requestAnimationFrame(animate);
 }
