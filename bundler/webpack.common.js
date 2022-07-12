@@ -82,6 +82,16 @@ module.exports = {
                 {
                     filename: 'assets/fonts/[hash][ext]'
                 }
+            },
+            
+            // OBJ
+            {
+                test: /\.(obj|mtl)$/,
+                type: 'asset/resource',
+                generator:
+                {
+                    filename: 'assets/models/[hash][ext]'
+                }
             }
         ]
     }
