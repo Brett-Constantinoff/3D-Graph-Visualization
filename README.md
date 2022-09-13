@@ -1,7 +1,4 @@
-# Three.js template
-
-Contains all the popular dependencies used with Three.js.
-Also used webpack as its bundler.
+# 3D Graph Visualization
 
 ## Usage
 run (only once)
