@@ -10,6 +10,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'dat.gui';
 import Stats from 'stats.js';
+import Vertex from './Graph/Vertex';
+import Edge from './Graph/Edge';
+
 
 export default class App
 {
@@ -60,10 +63,27 @@ export default class App
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
         
+        this.camera.position.z = 10;
         this.scene.add(this.camera);
 
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.sizes.width, this.sizes.height);
+        this.renderer.setClearColor("Grey", 1.0);
+
+        // white light
+        this.sceneLight = new THREE.DirectionalLight(0xFFFFFF);
+        this.sceneLight.position.x = 0;
+        this.sceneLight.position.y = 1;
+        this.sceneLight.position.z = 1;
+        this.scene.add(this.sceneLight);
+
+        const a = new Vertex(0.5, new THREE.Vector3(-5.0, 0.0, 0.0));
+        const b = new Vertex(0.5, new THREE.Vector3(5.0, 0.0, 0.0));
+        const edge = new Edge(a, b);
+        this.scene.add(a.getMesh());
+        this.scene.add(b.getMesh());
+        this.scene.add(edge.getMesh());
+
     }
 
     onUpdate(dt)
