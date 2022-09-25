@@ -18,6 +18,7 @@ export default class Node
     init()
     {
         this.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
+        let adjustment = this.size / 2;
         this.material = new THREE.MeshPhongMaterial(
             {
                 color: this.color,
@@ -30,8 +31,16 @@ export default class Node
             }
         )
         this.mesh = new THREE.Mesh(this.geometry, this.material);
-        let adjustment = this.size / 2;
         this.mesh.position.set(this.position.x + adjustment, this.position.y + adjustment, this.position.z + adjustment);
+        
+        let edges = new THREE.EdgesGeometry(this.geometry);
+        let wireFrame = new THREE.LineSegments(edges, new THREE.LineBasicMaterial(
+            {
+                color:0x000000
+            }
+        ));
+        wireFrame.scale.set(0.99, 0.99, 0.99);
+        this.mesh.add(wireFrame);
     }
 
     /**
