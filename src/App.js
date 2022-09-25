@@ -46,6 +46,33 @@ export default class App
 
     onStart()
     {
+        this.setupListeners();
+        this.setupScene();
+        this.setupGui();
+
+        // initially update camera controlls
+        this.controls.update()
+    }
+
+    onUpdate(dt)
+    {   
+        //needs to come at the beginning of onUpdate
+        this.stats.begin();
+        // update controlls every frame
+        this.controls.update();
+    }
+
+    onRender()
+    {
+        // render scene
+        this.renderer.render(this.scene, this.camera);
+
+        //needs to come at the end of onRender
+        this.stats.end();
+    }
+
+    setupListeners()
+    {
         // add window resize event
         window.addEventListener('resize', () => 
         {
@@ -57,7 +84,10 @@ export default class App
             this.renderer.setSize(this.sizes.width, this.sizes.height);
             this.renderer.setPixelRatio(window.devicePixelRatio);
         });
+    }
 
+    setupScene()
+    {
         // setup stats
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
@@ -88,24 +118,47 @@ export default class App
         });
         secondLight.position.set(1, -1, -2);
         this.scene.add(secondLight)
-        
+
+        //create maze
+        this.initialSize = 11;
+        this.maxSize = 25;
+        this.maze = new Maze(0xFFFFFF, this.initialSize);
+        this.scene.add(this.maze.getMesh())
+
+        // add nodes to scene
+        this.scene.add(this.maze.getNodes())
+    }
+
+    setupGui()
+    {
         // create maze folder
         let mazeFolder = this.gui.addFolder("Maze");
 
-        //create maze
-        let initialSize = 11;
-        let maxSize = 25;
-        this.maze = new Maze(0xFFFFFF, initialSize);
-        this.scene.add(this.maze.getMesh())
-
+        // create folder for maze size
+        let mazeSizeFolder = mazeFolder.addFolder("Size");
         // create maze size controller
-        let frameSize = {
-            Size: initialSize
+        let mazeSize = {
+            x: this.initialSize,
+            y: this.initialSize,
+            z: this.initialSize
         };
-        mazeFolder.add(frameSize, 'Size', initialSize, maxSize, 1).onChange((value) => {
+        // x slider
+        mazeSizeFolder.add(mazeSize, 'x', this.initialSize, this.maxSize, 1).onChange((value) => {
             // map a value in the range 10 - 50 to 1 - 2
-            let scale = 1 + ((2 - 1) / (maxSize - initialSize)) * (value - initialSize);
-            this.maze.scale(scale);
+            let scale = 1 + ((2 - 1) / (this.maxSize - this.initialSize)) * (value - this.initialSize);
+            this.maze.scale(scale, 'x');
+        });
+        // y slider
+        mazeSizeFolder.add(mazeSize, 'y', this.initialSize, this.maxSize, 1).onChange((value) => {
+            // map a value in the range 10 - 50 to 1 - 2
+            let scale = 1 + ((2 - 1) / (this.maxSize - this.initialSize)) * (value - this.initialSize);
+            this.maze.scale(scale, 'y');
+        });
+        // z slider
+        mazeSizeFolder.add(mazeSize, 'z', this.initialSize, this.maxSize, 1).onChange((value) => {
+            // map a value in the range 10 - 50 to 1 - 2
+            let scale = 1 + ((2 - 1) / (this.maxSize - this.initialSize)) * (value - this.initialSize);
+            this.maze.scale(scale, 'z');
         });
 
         // create maze generation checkbox
@@ -122,29 +175,5 @@ export default class App
                 this.maze.clear();
             }
         });
-
-        // add nodes to scene
-        this.scene.add(this.maze.getNodes())
-
-        // initially update camera controlls
-        this.controls.update()
-
-    }
-
-    onUpdate(dt)
-    {   
-        //needs to come at the beginning of onUpdate
-        this.stats.begin();
-        // update controlls every frame
-        this.controls.update();
-    }
-
-    onRender()
-    {
-        // render scene
-        this.renderer.render(this.scene, this.camera);
-
-        //needs to come at the end of onRender
-        this.stats.end();
     }
 }
