@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Node from './Node';
 
 export default class Maze{
     constructor(color, initialSize)
@@ -14,53 +15,58 @@ export default class Maze{
         // not sure what to call this yet
         this.adjacencyList = [];
 
+        // nodes for cube
+        this.nodes = new THREE.Group()
+
         this.init();
     }
 
      /**
      * Creates the points neccessary to create the 
      * cube outline, dont need the top and bottom faces
+     * 
+     * Also will create all the nodes for the maze
      */
     init()
     {   
         // makes the (0, 0, 0) at the center of the cube
-        let adjustment = this.size / 2;
+        this.adjustment = this.size / 2;
 
         // front face
-        this.points.push(new THREE.Vector3(0 - adjustment, 0 - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment, 0 - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment, 0 - adjustment, 0 - adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment, 0 - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment, 0 - this.adjustment));
 
         // right face
-        this.points.push(new THREE.Vector3(this.size - adjustment, 0 - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment, 0 - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment, 0 - adjustment, 0 - adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment, 0 - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment, 0 - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment, 0 - this.adjustment, 0 - this.adjustment));
 
         // back face 
-        this.points.push(new THREE.Vector3(this.size - adjustment, 0 - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment, 0 - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(this.size - adjustment, 0 - adjustment,this.size - adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment, 0 - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(this.size - this.adjustment, 0 - this.adjustment,this.size - this.adjustment));
 
         // left face 
-        this.points.push(new THREE.Vector3(0 - adjustment, 0 - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment,this.size - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment,this.size - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment, 0 - adjustment, 0 - adjustment));
-        this.points.push(new THREE.Vector3(0 - adjustment, 0 - adjustment,this.size - adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment,this.size - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment,this.size - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment, 0 - this.adjustment));
+        this.points.push(new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment,this.size - this.adjustment));
 
         // create material
         this.material = new THREE.LineBasicMaterial( 
@@ -72,6 +78,57 @@ export default class Maze{
         this.geometry = new THREE.BufferGeometry().setFromPoints(this.points);
         // create mesh out of lines
         this.mesh = new THREE.Line(this.geometry, this.material);
+    }
+
+    /**
+     * Currently fills out entire maze, this is terrible for performance
+     * 
+     * TODO: Actually use DFS to generate maze
+     */
+    generate()
+    {
+        // fill maze with nodes
+        // start at bottom corner
+        let start = new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment, 0 - this.adjustment);
+        for (let i = 0; i < Math.pow(this.size, 3); i++)
+        {
+            // skip 0
+            if (i != 0)
+            {
+                // filled column along y
+                if (i % this.size == 0)
+                {
+                    // if face is filled, fill next face
+                    if (i % Math.pow(this.size, 2) == 0)
+                    {
+                        start.y = 0 - this.adjustment;
+                        start.z = 0 - this.adjustment;
+                        start.x += 1;
+                    }
+                    // fill next column
+                    else
+                    {
+                        start.y = 0 - this.adjustment;
+                        start.z += 1;
+                    }
+                }
+            }
+            // nodes start invisible
+            this.nodeOpacity = 0.15;
+            let node = new Node(start, 0xFFD580, 1, this.nodeOpacity);
+            this.nodes.add(node.getMesh());
+            start.y += 1;
+        }
+    }
+
+    /**
+     * Currently clears the group of nodes of all the nodes
+     */
+    clear()
+    {
+        this.nodes.clear()
+
+        // TODO: Reset other attributes of the graph
     }
 
     /**
@@ -91,6 +148,7 @@ export default class Maze{
          this.currentScale = this.scale;
 
          //TODO: Scale all the nodes within the graph
+         this.nodes.scale.set(value, value, value);
      }
  
      /**
@@ -102,6 +160,15 @@ export default class Maze{
          return this.mesh;
      }
 
+      /**
+      * Returns nodes that make up the maze
+      * @return {group} all of the nodes in the maze
+      */
+     getNodes()
+     {
+        return this.nodes;
+     }
+
     /**
      * Returns the current frame size
      * @return {size} size of the frame
@@ -109,6 +176,16 @@ export default class Maze{
     getSize()
     {
         return this.size;
+    }
+
+
+    /**
+     * Sets the size of the maze, size as in length
+     * @param {value} number new size
+     */
+    setSize(value)
+    {
+        this.size = value;
     }
 
     /**
