@@ -121,7 +121,7 @@ export default class Maze{
             let condition = (i % 2 == 0 && j % 2 == 0 && k % 2 == 0);
             if (condition)
             {
-                let node = new Node(start, 0xFFD580, 1, this.nodeOpacity);
+                let node = new Node(start, 0xFFD580, 0.5, this.nodeOpacity);
                 this.nodes.add(node.getMesh());
             }
             start.y += 1;
@@ -139,23 +139,43 @@ export default class Maze{
     }
 
     /**
-     * Scales the frame by a positive number, 
-     * the scale will always be uniform so no need to use
-     * a vector. Will also scale all nodes within graph
-     * @param {value} number to scale the frame by
-     * @return {mesh} mesh of the frame
+     * Scale the maze along a given axis by a positive number
+     * @param {value} number to scale the maze axis by
+     * @param {axis} char axis to scale by
      */
-     scale(value)
+     scale(value, axis)
      {
-         if (this.value < this.currentScale)
-         {
-             value /= this.currentScale;
-         }
-         this.mesh.scale.set(value, value, value);
-         this.currentScale = this.scale;
+        if (axis.toLowerCase() === 'x')
+        {
+            if (value < this.currentScale.x)
+            {
+                value /= this.currentScale.x;
+            }
+            this.mesh.scale.set(value, this.mesh.scale.y, this.mesh.scale.z);
+            this.currentScale = this.scale;
+        }
+        else if (axis.toLowerCase() === 'y')
+        {
+            if (value < this.currentScale.y)
+            {
+                value /= this.currentScale.y;
+            }
+            this.mesh.scale.set(this.mesh.scale.x, value, this.mesh.scale.z);
+            this.currentScale = this.scale;
+        }
+        else
+        {
+            if (value < this.currentScale.z)
+            {
+                value /= this.currentScale.z;
+            }
+            this.mesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, value);
+            this.currentScale = this.scale;
+        }
+    
 
          //TODO: Scale all the nodes within the graph
-         this.nodes.scale.set(value, value, value);
+         //this.nodes.scale.set(value, value, value);
      }
  
      /**
