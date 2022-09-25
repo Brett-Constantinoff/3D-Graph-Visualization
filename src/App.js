@@ -128,6 +128,7 @@ export default class App
 
         // initially update camera controlls
         this.controls.update()
+
     }
 
     onUpdate(dt)
