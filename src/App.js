@@ -93,7 +93,7 @@ export default class App
         let mazeFolder = this.gui.addFolder("Maze");
 
         //create maze
-        let initialSize = 10;
+        let initialSize = 11;
         let maxSize = 25;
         this.maze = new Maze(0xFFFFFF, initialSize);
         this.scene.add(this.maze.getMesh())
