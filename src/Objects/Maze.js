@@ -81,7 +81,7 @@ export default class Maze{
     }
 
     /**
-     * Currently fills out entire maze, this is terrible for performance
+     * Currently fills out some of the maze
      * 
      * TODO: Actually use DFS to generate maze
      */
@@ -90,7 +90,7 @@ export default class Maze{
         // fill maze with nodes
         // start at bottom corner
         let start = new THREE.Vector3(0 - this.adjustment, 0 - this.adjustment, 0 - this.adjustment);
-        for (let i = 0; i < Math.pow(this.size, 3); i++)
+        for (let i = 0, j = 0, k = 0; i < Math.pow(this.size, 3); i++)
         {
             // skip 0
             if (i != 0)
@@ -101,6 +101,7 @@ export default class Maze{
                     // if face is filled, fill next face
                     if (i % Math.pow(this.size, 2) == 0)
                     {
+                        k++;
                         start.y = 0 - this.adjustment;
                         start.z = 0 - this.adjustment;
                         start.x += 1;
@@ -108,15 +109,21 @@ export default class Maze{
                     // fill next column
                     else
                     {
+                        j++;
                         start.y = 0 - this.adjustment;
                         start.z += 1;
                     }
                 }
             }
-            // nodes start invisible
-            this.nodeOpacity = 0.15;
-            let node = new Node(start, 0xFFD580, 1, this.nodeOpacity);
-            this.nodes.add(node.getMesh());
+            // starting opacity
+            this.nodeOpacity = 0.45;
+            // only add every second node
+            let condition = (i % 2 == 0 && j % 2 == 0 && k % 2 == 0);
+            if (condition)
+            {
+                let node = new Node(start, 0xFFD580, 1, this.nodeOpacity);
+                this.nodes.add(node.getMesh());
+            }
             start.y += 1;
         }
     }
