@@ -46,7 +46,7 @@ export default class App
 
     onStart()
     {
-        // add some listensers for window resize
+        // add window resize event
         window.addEventListener('resize', () => 
         {
             this.sizes.width = window.innerWidth;
@@ -58,47 +58,75 @@ export default class App
             this.renderer.setPixelRatio(window.devicePixelRatio);
         });
 
-        // setup scene
+        // setup stats
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
         
         // initial camera position
-        this.camera.position.z = 18.97;
-        this.camera.position.y = 11.55;
-        this.camera.position.x = 19.64;
+        this.camera.position.set(19.64, 11.55, 18.97);
         this.scene.add(this.camera);
 
-        // disable camera panning
+        // disable camera panning and enable damping
         this.controls.enablePan = false;
+        this.controls.enableDamping = true;
 
+        // initial render settings
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.sizes.width, this.sizes.height);
         this.renderer.setClearColor(0x525393);
+
+        // add a couple scene lights
+        let firstLight = new THREE.DirectionalLight({
+            color: 0xffffff,
+            intensity: 1
+        });
+        firstLight.position.set(-1, 2, 4);
+        this.scene.add(firstLight);
+        let secondLight = new THREE.DirectionalLight({
+            color: 0xffffff,
+            intensity: 1
+        });
+        secondLight.position.set(1, -1, -2);
+        this.scene.add(secondLight)
         
-        // gui and cube frame
-        let frameFolder = this.gui.addFolder("Maze");
+        // create maze folder
+        let mazeFolder = this.gui.addFolder("Maze");
+
+        //create maze
         let initialSize = 10;
-        let maxSize = 50;
-        this.Maze = new Maze(0xFFFFFF, initialSize);
-        this.scene.add(this.Maze.getMesh())
+        let maxSize = 25;
+        this.maze = new Maze(0xFFFFFF, initialSize);
+        this.scene.add(this.maze.getMesh())
+
+        // create maze size controller
         let frameSize = {
-            size: initialSize
+            Size: initialSize
         };
-        // controller for maze size
-        frameFolder.add(frameSize, 'size', initialSize, maxSize).onChange((value) => {
+        mazeFolder.add(frameSize, 'Size', initialSize, maxSize, 1).onChange((value) => {
             // map a value in the range 10 - 50 to 1 - 2
             let scale = 1 + ((2 - 1) / (maxSize - initialSize)) * (value - initialSize);
-            this.Maze.scale(scale);
+            this.maze.scale(scale);
         });
-        // button for generating maze
+
+        // create maze generation checkbox
         let generateMaze = {
-            generate:function()
+            Generate: false
+        }
+        mazeFolder.add(generateMaze, 'Generate').onChange((value) => {
+            if(value)
             {
-                // TODO: Geneate maze using DFS
-                console.log("Generating maze");
+                this.maze.generate();
             }
-        };
-        frameFolder.add(generateMaze, 'generate');
+            else
+            {
+                this.maze.clear();
+            }
+        });
+
+        // add nodes to scene
+        this.scene.add(this.maze.getNodes())
+
+        // initially update camera controlls
         this.controls.update()
     }
 
@@ -106,10 +134,13 @@ export default class App
     {   
         //needs to come at the beginning of onUpdate
         this.stats.begin();
+        // update controlls every frame
+        this.controls.update();
     }
 
     onRender()
     {
+        // render scene
         this.renderer.render(this.scene, this.camera);
 
         //needs to come at the end of onRender
