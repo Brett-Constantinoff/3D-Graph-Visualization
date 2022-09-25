@@ -39,7 +39,9 @@ export default class Node
                 color:0x000000
             }
         ));
+        // make the nodes slightly smaller so the lines with the maze dont intersect
         wireFrame.scale.set(0.99, 0.99, 0.99);
+        this.mesh.scale.set(0.99, 0.99, 0.99);
         this.mesh.add(wireFrame);
     }
 
