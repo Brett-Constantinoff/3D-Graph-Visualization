@@ -1,10 +1,3 @@
-/*
-A basic Three.js app reuires 4 main things:
-    * Scene - holds all objects, lights, camera etc
-    * Objects - geometry
-    * Camera - how we see the scene
-    * Renderer - how everything is rendered
-*/
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -14,6 +7,9 @@ import Maze from './Objects/Maze';
 
 export default class App
 {
+    /**
+     * Creates main application objects
+     */
     constructor()
     {
         this.stats = new Stats();
@@ -44,6 +40,9 @@ export default class App
         this.scene = new THREE.Scene();
     }
 
+    /**
+     * Runs once on startup, sets up initial scene
+     */
     onStart()
     {
         this.setupListeners();
@@ -54,14 +53,23 @@ export default class App
         this.controls.update()
     }
 
+    /**
+     * Runs once every frame to updat scene
+     *
+     * @param {float} dt tick speed
+     */
     onUpdate(dt)
     {   
         //needs to come at the beginning of onUpdate
         this.stats.begin();
+
         // update controlls every frame
         this.controls.update();
     }
 
+    /**
+     * Renders the scene after updating
+     */
     onRender()
     {
         // render scene
@@ -71,6 +79,9 @@ export default class App
         this.stats.end();
     }
 
+    /**
+     * Sets up any listeners for the scene
+     */
     setupListeners()
     {
         // add window resize event
@@ -86,6 +97,10 @@ export default class App
         });
     }
 
+    /**
+     * Sets up scene settings and adds initial objects
+     * to scene
+     */
     setupScene()
     {
         // setup stats
@@ -104,6 +119,8 @@ export default class App
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.sizes.width, this.sizes.height);
         this.renderer.setClearColor(0x525393);
+        // allows transparent objects to be rendered inside one another
+        this.renderer.sortObjects = false;
 
         // add a couple scene lights
         let firstLight = new THREE.DirectionalLight({
@@ -120,15 +137,20 @@ export default class App
         this.scene.add(secondLight)
 
         //create maze
-        this.initialSize = 11;
-        this.maxSize = 25;
-        this.maze = new Maze(0xFFFFFF, this.initialSize);
-        this.scene.add(this.maze.getMesh())
+        this.initialSize = 5;
+        this.maze = new Maze(0xFFFFFF, 0xFFFFFF, this.initialSize, 0.0, new THREE.Vector3(0, 0, 0));
+        // all nodes / path / objects need to be added to scene before maze
+        this.scene.add(this.maze.getNodes());
+        this.scene.add(this.maze.getMesh());
 
-        // add nodes to scene
-        this.scene.add(this.maze.getNodes())
+        // debug
+        this.scene.add(new THREE.AxesHelper(10));
     }
 
+    /**
+     * Creates the scene GUI, also determines what happens 
+     * when GUI is interacted with
+     */
     setupGui()
     {
         // create maze folder
@@ -142,23 +164,18 @@ export default class App
             y: this.initialSize,
             z: this.initialSize
         };
+        this.maxSize = 10;
         // x slider
         mazeSizeFolder.add(mazeSize, 'x', this.initialSize, this.maxSize, 1).onChange((value) => {
-            // map a value in the range 10 - 50 to 1 - 2
-            let scale = 1 + ((2 - 1) / (this.maxSize - this.initialSize)) * (value - this.initialSize);
-            this.maze.scale(scale, 'x');
+           this.maze.scale(value, 'x');
         });
         // y slider
         mazeSizeFolder.add(mazeSize, 'y', this.initialSize, this.maxSize, 1).onChange((value) => {
-            // map a value in the range 10 - 50 to 1 - 2
-            let scale = 1 + ((2 - 1) / (this.maxSize - this.initialSize)) * (value - this.initialSize);
-            this.maze.scale(scale, 'y');
+            this.maze.scale(value, 'y');
         });
         // z slider
         mazeSizeFolder.add(mazeSize, 'z', this.initialSize, this.maxSize, 1).onChange((value) => {
-            // map a value in the range 10 - 50 to 1 - 2
-            let scale = 1 + ((2 - 1) / (this.maxSize - this.initialSize)) * (value - this.initialSize);
-            this.maze.scale(scale, 'z');
+            this.maze.scale(value, 'z');
         });
 
         // create maze generation checkbox
@@ -166,14 +183,14 @@ export default class App
             Generate: false
         }
         mazeFolder.add(generateMaze, 'Generate').onChange((value) => {
-            if(value)
-            {
-                this.maze.generate();
-            }
-            else
-            {
+           if (value)
+           {
+                this.maze.generate()
+           }
+           else
+           {
                 this.maze.clear();
-            }
+           }
         });
     }
 }
