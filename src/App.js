@@ -160,22 +160,22 @@ export default class App
         let mazeSizeFolder = mazeFolder.addFolder("Size");
         // create maze size controller
         let mazeSize = {
-            x: this.initialSize,
-            y: this.initialSize,
-            z: this.initialSize
+            x: this.initialSize * 2,
+            y: this.initialSize * 2,
+            z: this.initialSize * 2
         };
         this.maxSize = 10;
         // x slider
-        mazeSizeFolder.add(mazeSize, 'x', this.initialSize, this.maxSize, 1).onChange((value) => {
-           this.maze.scale(value, 'x');
+        mazeSizeFolder.add(mazeSize, 'x', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
+           this.maze.scale(value / 2, 'x');
         });
         // y slider
-        mazeSizeFolder.add(mazeSize, 'y', this.initialSize, this.maxSize, 1).onChange((value) => {
-            this.maze.scale(value, 'y');
+        mazeSizeFolder.add(mazeSize, 'y', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
+            this.maze.scale(value / 2, 'y');
         });
         // z slider
-        mazeSizeFolder.add(mazeSize, 'z', this.initialSize, this.maxSize, 1).onChange((value) => {
-            this.maze.scale(value, 'z');
+        mazeSizeFolder.add(mazeSize, 'z', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
+            this.maze.scale(value / 2, 'z');
         });
 
         // create maze generation checkbox
