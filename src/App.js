@@ -144,6 +144,7 @@ export default class App
         this.scene.add(this.maze.getNodes());
 
         // debug
+        // z is blue,  y is green, x is red
         this.scene.add(new THREE.AxesHelper(10));
     }
 

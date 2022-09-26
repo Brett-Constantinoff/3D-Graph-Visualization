@@ -47,7 +47,7 @@ export default class Maze extends Cube{
      }
 
     /**
-     * Currently just fills in entire maze, doesnt work all the time yet
+     * Currently just fills in entire maze
      */
     generate()
     {
@@ -70,7 +70,7 @@ export default class Maze extends Cube{
                 position.y = adjustmentY;
                 position.z += this.nodeSize;
             }
-            if (i % (Math.pow(mazeSize.y, 2)) === 0 && i != 0)
+            if (i % (mazeSize.y * mazeSize.z) === 0 && i != 0)
             {
                 position.x += this.nodeSize;
                 position.y = adjustmentY;
