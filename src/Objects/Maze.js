@@ -26,7 +26,7 @@ export default class Maze extends Cube{
      */
     addNode(position)
     {
-        let node = new Node(0xFF0000, 0x000000, this.nodeSize, 0.10, position);
+        let node = new Node(0xFF0000, 0xFF0000, this.nodeSize, 0.30, position);
         this.nodes.add(node.getMesh());
     }
 

@@ -14,6 +14,6 @@ export default class Node extends Cube
     constructor(color, border, initialSize, transparency, position)
     {
         super(color, border, initialSize, transparency, position);
-        this.wireFrame.scale.set(0.99, 0.99, 0.99);
+        this.wireFrame.scale.set(0.98, 0.98, 0.98);
     }
 }
