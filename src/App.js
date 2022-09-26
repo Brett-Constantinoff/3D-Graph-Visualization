@@ -30,7 +30,7 @@ export default class App
         this.renderer = new THREE.WebGLRenderer(
             {
                 canvas: this.canvas,
-                antialias: true
+                antialias: true,
             }
         );
 
@@ -119,8 +119,6 @@ export default class App
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.sizes.width, this.sizes.height);
         this.renderer.setClearColor(0x525393);
-        // allows transparent objects to be rendered inside one another
-        this.renderer.sortObjects = false;
 
         // add a couple scene lights
         let firstLight = new THREE.DirectionalLight({
@@ -136,12 +134,14 @@ export default class App
         secondLight.position.set(1, -1, -2);
         this.scene.add(secondLight)
 
-        //create maze
+        // create maze with a border
         this.initialSize = 5;
-        this.maze = new Maze(0xFFFFFF, 0xFFFFFF, this.initialSize, 0.0, new THREE.Vector3(0, 0, 0));
-        // all nodes / path / objects need to be added to scene before maze
+        this.maze = new Maze(0xFFFFFF, true, this.initialSize, 0.0, new THREE.Vector3(0, 0, 0));
+
+        // only add maze wireframe
+        this.scene.add(this.maze.getWireFrame());
+        // add all maze nodes
         this.scene.add(this.maze.getNodes());
-        this.scene.add(this.maze.getMesh());
 
         // debug
         this.scene.add(new THREE.AxesHelper(10));

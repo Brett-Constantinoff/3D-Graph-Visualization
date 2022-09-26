@@ -7,7 +7,7 @@ export default class Maze extends Cube{
      * Constructor of Maze
      *
      * @param {hex} color color of the cube in hex
-     * @param {hex} border color of the cube border in hex
+     * @param {bool} border determines if cube should have a border
      * @param {positive integer} initialSize initial scale of cube
      * @param {float} transparency alpha value of cube
      * @param {Vec3} postiion position of cube in world space
@@ -17,21 +17,37 @@ export default class Maze extends Cube{
        super(color, border, initialSize, transparency, position);
        this.nodes = new THREE.Group();
        this.nodeSize = 0.5;
+       this.wireFrame.scale.set(this.size.x, this.size.y, this.size.z);
     }
 
     /**
-     * Adds new node at a given position to node group
+     * Scales the cube by a certain value 
+     * on a given axis
      *
-     * @param {Vec3} position position of node
+     * @param {positive integer} value value to scale by
+     * @param {string} axis axis of scale
      */
-    addNode(position)
-    {
-        let node = new Node(0xFF0000, 0x000000, this.nodeSize, 0.10, position);
-        this.nodes.add(node.getMesh());
-    }
+     scale(value, axis)
+     {
+         if (axis.toLowerCase() === 'x')
+         {
+             this.wireFrame.scale.x = value;
+             this.size.x = value;
+         }
+         else if (axis.toLowerCase() == 'y')
+         {
+             this.wireFrame.scale.y = value;
+             this.size.y = value;
+         }
+         else
+         {
+             this.wireFrame.scale.z = value;
+             this.size.z = value;
+         }
+     }
 
     /**
-     * Currently just fills in entire maze
+     * Currently just fills in entire maze, doesnt work all the time yet
      */
     generate()
     {
@@ -60,8 +76,17 @@ export default class Maze extends Cube{
                 position.y = adjustmentY;
                 position.z = adjustmentZ;
             }
-
-            this.addNode(position);
+            // make every second node opaque and yellow
+            let node;
+            if (i % 2 === 0)
+            {
+                node = new Node(0xFFFF00, false, this.nodeSize, 1.0, position);
+            }
+            else
+            {
+                node = new Node(0xFF0000, false, this.nodeSize, 0.25, position);
+            }
+            this.nodes.add(node.getMesh());
             position.y += this.nodeSize;
         }
     }

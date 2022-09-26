@@ -6,7 +6,7 @@ export default class Cube
      * Constructor of Cube
      *
      * @param {hex} color color of the cube in hex
-     * @param {hex} border color of the cube border in hex
+     * @param {bool} border determines if cube should have a border
      * @param {positive integer} initialSize initial scale of cube
      * @param {float} transparency alpha value of cube
      * @param {Vec3} postiion position of cube in world space
@@ -29,48 +29,21 @@ export default class Cube
                 color: this.color,
                 transparent: true,
                 opacity: this.transparency,
-                blending: THREE.CustomBlending,
-                blendEquation: THREE.AddEquation,
-                blendSrc: THREE.SrcAlphaFactor, 
-                blendDst: THREE.OneMinusSrcAlphaFactor,
             }
         )
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.position.set(this.position.x, this.position.y, this.position.z);
         
+        // create a border but only add if required
         let edges = new THREE.EdgesGeometry(this.geometry);
         this.wireFrame = new THREE.LineSegments(edges, new THREE.LineBasicMaterial(
             {
-                color:this.border
+                color:this.color
             }
         ));
-        this.mesh.add(this.wireFrame);
-        this.mesh.scale.set(this.size.x, this.size.y, this.size.z);
-    }
-
-    /**
-     * Scales the cube by a certain value 
-     * on a given axis
-     *
-     * @param {positive integer} value value to scale by
-     * @param {string} axis axis of scale
-     */
-    scale(value, axis)
-    {
-        if (axis.toLowerCase() === 'x')
+        if (border)
         {
-            this.mesh.scale.x = value;
-            this.size.x = value;
-        }
-        else if (axis.toLowerCase() == 'y')
-        {
-            this.mesh.scale.y = value;
-            this.size.y = value;
-        }
-        else
-        {
-            this.mesh.scale.z = value;
-            this.size.z = value;
+            this.mesh.add(this.wireFrame);
         }
     }
 
@@ -81,5 +54,14 @@ export default class Cube
     getMesh()
     {
         return this.mesh;
+    }
+
+    /**
+     * Returns cube wireframe
+     * @return {Wireframe} cube wireframe
+     */
+    getWireFrame()
+    {
+        return this.wireFrame;
     }
 }
