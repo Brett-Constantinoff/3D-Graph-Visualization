@@ -7,34 +7,36 @@
 </head>
 <body>
     <div class="parent">
+
+        <!-- webgl canvas -->
         <canvas class="webgl"></canvas>
-        <div class="container"> 
-            <!-- element to hold psudocode-->
+        
+        <!-- element to hold psudocode-->
+        <div class="container">     
             <div id="psudoDFS">
                 <div class="codeHeader">
                     <h2 style="text-align: center; grid-area: header;">Depth First Search</h2>
                     <div id="codeStats">
                         <p>Steps: <span id="steps">0</span></p>
                         <p>Iterations: <span id="iterations">0</span></p>
-
                     </div>
                 </div>
-                
                 <pre><code>
-               <span id="Line1">1    <span id="code">function</span> <span id="function">DFS</span>(<span id="variable">node</span>)</span> 
-               <span id="Line2">2       <span id="if">if</span> <span id="variable">node</span> <span id="code">is <span id="if">not</span> visited</span></span> 
-               <span id="Line3">3           <span id="if">mark</span> <span id="variable">node</span> <span id="if">as</span> <span id="code">visited</span></span> 
-               <span id="Line4">4           <span id="if">for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
-               <span id="Line5">5               <span id="function">DFS</span>(<span id="variable">neighbor</span>)</span> 
-                
+               <span id="Line1" class="lineNums">1    <span id="code">function</span> <span id="function">DFS</span>(<span id="variable">node</span>)</span> 
+               <span id="Line2" class="lineNums">2       <span id="if">if</span> <span id="variable">node</span> <span id="code">is <span id="if">not</span> visited</span></span> 
+               <span id="Line3" class="lineNums">3           <span id="if">mark</span> <span id="variable">node</span> <span id="if">as</span> <span id="code">visited</span></span> 
+               <span id="Line4" class="lineNums">4           <span id="if">for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
+               <span id="Line5" class="lineNums">5               <span id="function">DFS</span>(<span id="variable">neighbor</span>)</span> 
                 </code></pre>
             </div>
+
+            <!-- psudocode controls -->
             <button id="backBtn" class="button--ujarak">back</button>
             <button id="stepBtn" class="button--ujarak">step</button>
             
-            </div>
         </div>
-    </div>
+     </div>
+    
     
 </body>
 </html>

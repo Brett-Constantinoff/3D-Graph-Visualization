@@ -90,30 +90,11 @@ pre.code code:before {
     color: rgb(16, 129, 163);
 }
 
-#Line1
+.lineNums
 {
-    color: rgb(16, 163, 107);
+    color: rgb(129, 129, 129)
 }
 
-#Line2
-{
-    color: rgb(16, 163, 107);
-}
-
-#Line3
-{
-    color: rgb(16, 163, 107);
-}
-
-#Line4
-{
-    color: rgb(16, 163, 107);
-}
-
-#Line5
-{
-    color: rgb(16, 163, 107);
-}
 
 /* Ujarak */
 .button--ujarak {
