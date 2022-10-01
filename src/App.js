@@ -142,7 +142,7 @@ export default class App
         // initial render settings
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.sizes.width, this.sizes.height);
-        this.renderer.setClearColor(0x525393);
+        this.renderer.setClearColor(0x2c2c2c);
 
         // add a couple scene lights
         let firstLight = new THREE.DirectionalLight({
@@ -273,6 +273,9 @@ export default class App
         
     }
 
+    /**
+     * updates the number of steps & iterations taken in the GUI
+     * */
     updateStepsGUI()
     {
         this.stepsGui.innerText = this.numSteps;
