@@ -129,7 +129,7 @@ export default class App
             //show the solve button
             document.getElementById("solveBtn").style.display = "block";
             //disable range sliders
-            document.getElementsByClassName("slider")[0].style.display = "none";
+            document.getElementsByClassName("slider")[0].style.visibility = "hidden";
         });
 
         document.getElementById("solveBtn").addEventListener("click", () =>
@@ -153,7 +153,7 @@ export default class App
             //hide the solve button
             document.getElementById("solveBtn").style.display = "none";
             //enable range sliders
-            document.getElementsByClassName("slider")[0].style.display = "block";
+            document.getElementsByClassName("slider")[0].style.visibility = "visible";
         });
 
         //add slider events

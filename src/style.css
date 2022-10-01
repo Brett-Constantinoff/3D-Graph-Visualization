@@ -74,7 +74,8 @@ output
     grid-template-rows: 1fr;
     grid-template-areas: 
     "sliders values generate .";
-    background: rgb(44, 44, 44)
+    background: rgb(44, 44, 44);
+    
 }
 
 .slider
@@ -87,6 +88,7 @@ output
     align-items: center;
     margin-right: 80%;
     margin-left: 5%;
+    
 }
 label
 {
