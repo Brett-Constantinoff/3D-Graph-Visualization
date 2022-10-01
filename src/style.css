@@ -60,6 +60,9 @@ footer
     margin-top: 50%;
     grid-area: "code";
 }
+output
+{
+}
 .controls
 {
     border: 5px solid rgb(32, 69, 110);
@@ -67,11 +70,10 @@ footer
     margin-top: 55px;
     grid-area: "stats";
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 0fr;
     grid-template-rows: 1fr;
-    grid-column-gap: -60px;
     grid-template-areas: 
-    "sliders generate . .";
+    "sliders values generate .";
     background: rgb(44, 44, 44)
 }
 
@@ -86,6 +88,13 @@ footer
     margin-right: 80%;
     margin-left: 5%;
 }
+label
+{
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+
 #generateBtn
 {
     grid-area: "generate";

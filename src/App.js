@@ -155,6 +155,28 @@ export default class App
             //enable range sliders
             document.getElementsByClassName("slider")[0].style.display = "block";
         });
+
+        //add slider events
+        document.getElementById("mazeSizeX").addEventListener("input", () =>
+        {
+            let value = document.getElementById("mazeSizeX").value;
+            this.maze.scale(value / 2, 'x');
+            document.getElementById("valueX").innerHTML = value;
+        });
+        
+        document.getElementById("mazeSizeY").addEventListener("input", () =>
+        {
+            let value = document.getElementById("mazeSizeY").value;
+            this.maze.scale(value / 2, 'y');
+            document.getElementById("valueY").innerHTML = value;
+        });
+
+        document.getElementById("mazeSizeZ").addEventListener("input", () =>
+        {
+            let value = document.getElementById("mazeSizeZ").value;
+            this.maze.scale(value / 2, 'z');
+            document.getElementById("valueZ").innerHTML = value;
+        });
     }
 
     /**
@@ -253,6 +275,7 @@ export default class App
                 this.maze.clear();
            }
         });
+        
     }
 
     /**
