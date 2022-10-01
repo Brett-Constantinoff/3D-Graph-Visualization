@@ -112,6 +112,58 @@ footer
     background: rgb(255, 0, 0);
     color: rgb(255, 255, 255);
 }
+#solveBtn
+{
+    grid-area: "generate";
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid rgb(32, 69, 110);
+    background: rgb(32, 69, 110);
+    color: rgb(255, 255, 255);
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+#solveBtn:hover
+{
+    background: rgb(0, 0, 0);
+    color: rgb(32, 69, 110);
+}
+#solveBtn:active
+{
+    background: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
+}
+#resetBtn
+{
+    grid-area: "generate";
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid rgb(32, 69, 110);
+    background: rgb(32, 69, 110);
+    color: rgb(255, 255, 255);
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+#resetBtn:hover
+{
+    background: rgb(0, 0, 0);
+    color: rgb(32, 69, 110);
+}
+#resetBtn:active
+{
+    background: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
+}
 .codeHeader
 {
     display: grid; 

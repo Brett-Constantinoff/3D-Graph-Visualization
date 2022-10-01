@@ -119,6 +119,36 @@ export default class App
             this.backstepPsudocode();
             console.log("back");
         });
+
+        document.getElementById("generateBtn").addEventListener("click", () =>
+        {
+            this.maze.generate();
+            console.log("generate");
+            //disable and hide the button
+            document.getElementById("generateBtn").disabled = true;
+            document.getElementById("generateBtn").style.display = "none";
+        });
+
+        document.getElementById("solveBtn").addEventListener("click", () =>
+        {
+            //TODO: this.maze.solve();
+            console.log("solve");
+            //disable and hide the button
+            document.getElementById("solveBtn").disabled = true;
+            document.getElementById("solveBtn").style.display = "none";
+        });
+
+        document.getElementById("resetBtn").addEventListener("click", () =>
+        {
+            this.maze.clear();
+            console.log("reset");
+            //enable and show the button
+            document.getElementById("generateBtn").disabled = false;
+            document.getElementById("generateBtn").style.display = "block";
+            //enable and show the button
+            document.getElementById("solveBtn").disabled = false;
+            document.getElementById("solveBtn").style.display = "block";
+        });
     }
 
     /**
