@@ -14,7 +14,10 @@ export default class App
     {
         
         this.code = []; // psuedocode lines stored here
-        this.currentLine = 0; // current line of code in the array
+        this.numLines = 5; // current line of code in the array
+        this.currentLine = 0; // current line of code being highlighted
+        this.numIterations = 0; // number of iterations of the algorithm
+        this.numSteps = 0; // number of steps in the algorithm
 
         this.stats = new Stats();
 
@@ -52,7 +55,7 @@ export default class App
         this.setupListeners();
         this.setupScene();
         this.setupGui();
-        this.setupPsuedocode(5);
+        this.setupPsuedocode(this.numLines);
 
         // initially update camera controlls
         this.controls.update()
@@ -106,6 +109,13 @@ export default class App
         {
             this.stepPsudocode();
             console.log("step");
+        });
+
+        //add back button event
+        document.getElementById("backBtn").addEventListener("click", () =>
+        {
+            this.backstepPsudocode();
+            console.log("back");
         });
     }
 
@@ -213,21 +223,49 @@ export default class App
      * */
     setupPsuedocode(numLines)
     {
-        for (let i = 1; i < numLines; i++)
+        for (let i = 1; i < numLines+1; i++)
             this.code.push(document.getElementById("Line" + i));
         
         // set first line to be highlighted
         this.code[0].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
-
-        console.log(this.code);
     }
 
-    //unhilight the current line of code and hilight the next line
+    /**
+     * unhilight the current line of code and hilight the previous line 
+     * only if number of steps is greater than 0
+     * */
+    backstepPsudocode()
+    {
+        if(this.numSteps > 0)
+        {
+            this.code[this.currentLine].style.backgroundColor = "transparent";
+            this.currentLine--;
+            if(this.currentLine < 0)
+            {
+                this.currentLine = this.numLines-1;
+                this.numIterations--;
+            }
+            this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
+            this.numSteps--;
+        }
+    }
+
+
+    /**
+     * unhilight the current line of code and hilight the next line then wrap back to the start
+     * */
     stepPsudocode()
     {
-        
         this.code[this.currentLine].style.backgroundColor = "transparent";
         this.currentLine++;
-        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
+        if (this.currentLine >= this.numLines)
+        {
+            this.currentLine = 0;
+            this.numIterations++;
+        }
+            
+        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
+        this.numSteps++;
+        
     }
 }
