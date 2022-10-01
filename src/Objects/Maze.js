@@ -77,15 +77,9 @@ export default class Maze extends Cube{
                 position.z = adjustmentZ;
             }
             // make every second node opaque and yellow
-            let node;
-            if (i % 2 === 0)
-            {
-                node = new Node(0xFFFF00, false, this.nodeSize, 1.0, position);
-            }
-            else
-            {
-                node = new Node(0xFF0000, false, this.nodeSize, 0.25, position);
-            }
+        
+            let node = new Node(0x6577B3, false, this.nodeSize, 0.25, position);
+            
             this.nodes.add(node.getMesh());
             position.y += this.nodeSize;
         }
