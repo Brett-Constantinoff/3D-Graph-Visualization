@@ -12,6 +12,10 @@ export default class App
      */
     constructor()
     {
+        
+        this.code = []; // psuedocode lines stored here
+        this.currentLine = 0; // current line of code in the array
+
         this.stats = new Stats();
 
         this.gui = new dat.GUI(
@@ -48,6 +52,7 @@ export default class App
         this.setupListeners();
         this.setupScene();
         this.setupGui();
+        this.setupPsuedocode(5);
 
         // initially update camera controlls
         this.controls.update()
@@ -94,6 +99,13 @@ export default class App
 
             this.renderer.setSize(this.sizes.width, this.sizes.height);
             this.renderer.setPixelRatio(window.devicePixelRatio);
+        });
+
+        //add step button event
+        document.getElementById("stepBtn").addEventListener("click", () =>
+        {
+            this.stepPsudocode();
+            console.log("step");
         });
     }
 
@@ -193,5 +205,29 @@ export default class App
                 this.maze.clear();
            }
         });
+    }
+
+    /**
+     * Sets up psuedocode for algorithm
+     * 
+     * */
+    setupPsuedocode(numLines)
+    {
+        for (let i = 1; i < numLines; i++)
+            this.code.push(document.getElementById("Line" + i));
+        
+        // set first line to be highlighted
+        this.code[0].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
+
+        console.log(this.code);
+    }
+
+    //unhilight the current line of code and hilight the next line
+    stepPsudocode()
+    {
+        
+        this.code[this.currentLine].style.backgroundColor = "transparent";
+        this.currentLine++;
+        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
     }
 }

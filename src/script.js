@@ -1,5 +1,4 @@
 import App from "./App";
-
 /*
 Main Animation Loop
 */
