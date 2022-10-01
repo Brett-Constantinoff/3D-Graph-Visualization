@@ -11,7 +11,15 @@
         <div class="container"> 
             <!-- element to hold psudocode-->
             <div id="psudoDFS">
-                <h2 style="text-align: center;">Depth First Search</h2>
+                <div class="codeHeader">
+                    <h2 style="text-align: center; grid-area: header;">Depth First Search</h2>
+                    <div id="codeStats">
+                        <p>Steps: <span id="steps">0</span></p>
+                        <p>Iterations: <span id="iterations">0</span></p>
+
+                    </div>
+                </div>
+                
                 <pre><code>
                <span id="Line1">1    <span id="code">function</span> <span id="function">DFS</span>(<span id="variable">node</span>)</span> 
                <span id="Line2">2       <span id="if">if</span> <span id="variable">node</span> <span id="code">is <span id="if">not</span> visited</span></span> 

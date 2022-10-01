@@ -33,6 +33,15 @@ html, body
 {
     margin-top: 50%;
 }
+.codeHeader
+{
+    display: grid; 
+    grid-template-columns: 1fr 20%; 
+    grid-template-rows: 1fr; 
+    gap: px 0%; 
+    grid-template-areas: 
+      "header stats"; 
+}
 /* style for psudocode */
 #psudoDFS
 

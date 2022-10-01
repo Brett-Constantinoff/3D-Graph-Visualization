@@ -18,6 +18,8 @@ export default class App
         this.currentLine = 0; // current line of code being highlighted
         this.numIterations = 0; // number of iterations of the algorithm
         this.numSteps = 0; // number of steps in the algorithm
+        this.stepsGui = document.getElementById("steps"); // gui element for steps
+        this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
 
         this.stats = new Stats();
 
@@ -247,6 +249,7 @@ export default class App
             }
             this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
             this.numSteps--;
+            this.updateStepsGUI();
         }
     }
 
@@ -266,6 +269,13 @@ export default class App
             
         this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
         this.numSteps++;
+        this.updateStepsGUI();
         
+    }
+
+    updateStepsGUI()
+    {
+        this.stepsGui.innerText = this.numSteps;
+        this.iterationsGui.innerText = this.numIterations;
     }
 }
