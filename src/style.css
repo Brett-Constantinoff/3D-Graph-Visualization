@@ -1,12 +1,6 @@
-*
-{
-    margin :0;
-    padding: 0;
-}
-
 body
 {
-    background: black;
+    background: rgb(82,83,147);
 }
 
 html, body
@@ -16,8 +10,100 @@ html, body
 
 .webgl
 {
-    position: fixed;
+    
     top: 0;
     left: 0;
     outline: none;
+    border: 5px solid rgb(32, 69, 110);
+    border-radius: 10px;
+    margin-top: 55px;
+    
 }
+
+.parent 
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 0px;
+}
+
+.container
+{
+    margin-top: 50%;
+}
+/* style for psudocode */
+#psudoDFS
+
+{
+    align-self: center;
+    border: 5px solid rgb(32, 69, 110);
+    border-radius: 10px;
+    color: white;
+    background-color: rgb(44, 44, 44);
+}
+
+pre.code {
+    white-space: pre-wrap;
+}
+pre.code:before {
+    counter-reset: listing;
+}
+pre.code code {
+    counter-increment: listing;
+}
+pre.code code:before {
+    content: counter(listing) ". ";
+    width: 8em;         
+    padding-left: auto; 
+    margin-left: auto;  
+    text-align: right;  
+}
+
+#function
+{
+    color: gold;
+}
+
+#variable
+{
+    color: rgb(16, 163, 107);
+}
+
+#if
+{
+    color: rgb(201, 20, 224);
+}
+
+#code
+{
+    color: rgb(16, 129, 163);
+}
+
+#Line1
+{
+    color: rgb(16, 163, 107);
+}
+
+#Line2
+{
+    color: rgb(16, 163, 107);
+}
+
+#Line3
+{
+    color: rgb(16, 163, 107);
+}
+
+#Line4
+{
+    color: rgb(16, 163, 107);
+}
+
+#Line5
+{
+    color: rgb(16, 163, 107);
+}
+
+

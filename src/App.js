@@ -23,8 +23,8 @@ export default class App
 
         this.canvas = document.querySelector('.webgl');
         this.sizes = {
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: window.innerWidth/1.5,
+            height: window.innerHeight/1.5,
         };
 
         this.renderer = new THREE.WebGLRenderer(
