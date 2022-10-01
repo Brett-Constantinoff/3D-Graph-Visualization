@@ -19,6 +19,7 @@ html, body
     border: 5px solid rgb(32, 69, 110);
     border-radius: 10px;
     margin-top: 55px;
+    grid-area: "canvas";
     
 }
 
@@ -46,16 +47,70 @@ h1
 
 footer
 {
+    
     font-family: 'Kanit', sans-serif;
     font-size: 20px;
     color: rgb(255, 255, 255);
     text-align: center;
-    margin-top: 10px;
+    margin-top: px;
     margin-bottom: 10px;
 }
 .container
 {
     margin-top: 50%;
+    grid-area: "code";
+}
+.controls
+{
+    border: 5px solid rgb(32, 69, 110);
+    border-radius: 10px;
+    margin-top: 55px;
+    grid-area: "stats";
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: -60px;
+    grid-template-areas: 
+    "sliders generate . .";
+    background: rgb(44, 44, 44)
+}
+
+.slider
+{
+    color: white;
+    grid-area: "sliders";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 80%;
+    margin-left: 5%;
+}
+#generateBtn
+{
+    grid-area: "generate";
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid rgb(32, 69, 110);
+    background: rgb(32, 69, 110);
+    color: rgb(255, 255, 255);
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+#generateBtn:hover
+{
+    background: rgb(0, 0, 0);
+    color: rgb(32, 69, 110);
+}
+#generateBtn:active
+{
+    background: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
 }
 .codeHeader
 {
