@@ -127,6 +127,8 @@ export default class App
             //disable and hide the button
             document.getElementById("generateBtn").disabled = true;
             document.getElementById("generateBtn").style.display = "none";
+            //show the solve button
+            document.getElementById("solveBtn").style.display = "block";
         });
 
         document.getElementById("solveBtn").addEventListener("click", () =>
@@ -136,18 +138,20 @@ export default class App
             //disable and hide the button
             document.getElementById("solveBtn").disabled = true;
             document.getElementById("solveBtn").style.display = "none";
+            //show the reset button
+            document.getElementById("resetBtn").style.display = "block";
         });
 
         document.getElementById("resetBtn").addEventListener("click", () =>
         {
             this.maze.clear();
             console.log("reset");
-            //enable and show the button
-            document.getElementById("generateBtn").disabled = false;
+            //show the generate button
             document.getElementById("generateBtn").style.display = "block";
-            //enable and show the button
-            document.getElementById("solveBtn").disabled = false;
-            document.getElementById("solveBtn").style.display = "block";
+            //hide the reset button
+            document.getElementById("resetBtn").style.display = "none";
+            //hide the solve button
+            document.getElementById("solveBtn").style.display = "none";
         });
     }
 

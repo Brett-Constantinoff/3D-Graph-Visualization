@@ -114,6 +114,7 @@ footer
 }
 #solveBtn
 {
+    display: none;
     grid-area: "generate";
     margin-top: 10px;
     margin-bottom: 10px;
@@ -140,6 +141,7 @@ footer
 }
 #resetBtn
 {
+    display: none;
     grid-area: "generate";
     margin-top: 10px;
     margin-bottom: 10px;
