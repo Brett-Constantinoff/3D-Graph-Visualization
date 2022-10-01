@@ -120,6 +120,7 @@ export default class App
             console.log("back");
         });
 
+        //add generate button event
         document.getElementById("generateBtn").addEventListener("click", () =>
         {
             this.maze.generate();
@@ -132,6 +133,7 @@ export default class App
             document.getElementsByClassName("slider")[0].style.visibility = "hidden";
         });
 
+        //add solve button event
         document.getElementById("solveBtn").addEventListener("click", () =>
         {
             //TODO: this.maze.solve();
@@ -142,6 +144,7 @@ export default class App
             document.getElementById("resetBtn").style.display = "block";
         });
 
+        //add reset button event
         document.getElementById("resetBtn").addEventListener("click", () =>
         {
             this.maze.clear();

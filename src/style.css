@@ -10,6 +10,40 @@ html, body
     overflow: hidden;
 }
 
+h1
+{
+    font-family: 'Press Start 2P', cursive;
+    font-size: 30px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+hr
+{
+    border: 5px solid rgb(32, 69, 110);
+}
+
+h2
+{
+    text-align: center; 
+    grid-area: header;
+    margin-top: 8%;
+    color: white;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 400;
+}
+footer
+{
+    
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-top: px;
+    margin-bottom: 10px;
+}
 .webgl
 {
     
@@ -34,33 +68,11 @@ html, body
     "canvas code"
     "stats stats";
 }
-h1
-{
-    font-family: 'Press Start 2P', cursive;
-    font-size: 30px;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
 
-footer
-{
-    
-    font-family: 'Kanit', sans-serif;
-    font-size: 20px;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    margin-top: px;
-    margin-bottom: 10px;
-}
 .container
 {
     margin-top: 50%;
     grid-area: "code";
-}
-output
-{
 }
 .controls
 {
@@ -195,19 +207,7 @@ label
     background-color: rgb(44, 44, 44);
     font-size: large;
 }
-hr
-{
-    border: 5px solid rgb(32, 69, 110);
-}
-h2
-{
-    text-align: center; 
-    grid-area: header;
-    margin-top: 8%;
-    color: white;
-    font-family: 'Kanit', sans-serif;
-    font-weight: 400;
-}
+
 #codeStats
 {
     color: white;
