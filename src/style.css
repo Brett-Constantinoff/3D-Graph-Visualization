@@ -29,8 +29,30 @@ html, body
     grid-template-rows: 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 0px;
+    grid-template-areas:
+    "canvas code"
+    "stats stats";
+}
+h1
+{
+    font-family: 'Press Start 2P', cursive;
+    font-size: 30px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: underline;
 }
 
+footer
+{
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .container
 {
     margin-top: 50%;
