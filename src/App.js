@@ -1,7 +1,6 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import * as dat from 'dat.gui';
 import Stats from 'stats.js';
 import Maze from './Objects/Maze';
 
@@ -22,13 +21,6 @@ export default class App
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
 
         this.stats = new Stats();
-
-        this.gui = new dat.GUI(
-            {
-                name: "Controls",
-                width: 500
-            }
-        );
 
         this.canvas = document.querySelector('.webgl');
         this.sizes = {
@@ -56,7 +48,6 @@ export default class App
     {
         this.setupListeners();
         this.setupScene();
-        this.setupGui();
         this.setupPsuedocode(this.numLines);
 
         // initially update camera controlls
@@ -228,54 +219,6 @@ export default class App
         // debug
         // z is blue,  y is green, x is red
         this.scene.add(new THREE.AxesHelper(10));
-    }
-
-    /**
-     * Creates the scene GUI, also determines what happens 
-     * when GUI is interacted with
-     */
-    setupGui()
-    {
-        // create maze folder
-        let mazeFolder = this.gui.addFolder("Maze");
-
-        // create folder for maze size
-        let mazeSizeFolder = mazeFolder.addFolder("Size");
-        // create maze size controller
-        let mazeSize = {
-            x: this.initialSize * 2,
-            y: this.initialSize * 2,
-            z: this.initialSize * 2
-        };
-        this.maxSize = 10;
-        // x slider
-        mazeSizeFolder.add(mazeSize, 'x', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
-           this.maze.scale(value / 2, 'x');
-        });
-        // y slider
-        mazeSizeFolder.add(mazeSize, 'y', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
-            this.maze.scale(value / 2, 'y');
-        });
-        // z slider
-        mazeSizeFolder.add(mazeSize, 'z', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
-            this.maze.scale(value / 2, 'z');
-        });
-
-        // create maze generation checkbox
-        let generateMaze = {
-            Generate: false
-        }
-        mazeFolder.add(generateMaze, 'Generate').onChange((value) => {
-           if (value)
-           {
-                this.maze.generate()
-           }
-           else
-           {
-                this.maze.clear();
-           }
-        });
-        
     }
 
     /**
