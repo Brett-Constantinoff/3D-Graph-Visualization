@@ -6,15 +6,9 @@ export default class AdjacencyList
         this.adjacencyList = new Map();
     }
 
-    addVertex(vertex)
+    addVertex(vertex, neighbours)
     {
-        this.adjacencyList.set(vertex, []);
-    }
-
-    addEdge(vertex1, vertex2)
-    {
-        this.adjacencyList.get(vertex1).push(vertex2);
-        this.adjacencyList.get(vertex2).push(vertex1);
+        this.adjacencyList.set(vertex, neighbours);
     }
 
     getNeighbors(vertex)
@@ -27,19 +21,6 @@ export default class AdjacencyList
     {
         //returns an array of vertices
         return this.adjacencyList.keys();
-    }
-
-    getEdges()
-    {
-        let edges = [];
-        for (let [vertex, edgeList] of this.adjacencyList)
-        {
-            edgeList.forEach(edgeVertex => {
-                let edge = {source : vertex, target : edgeVertex};
-                edges.push(edge);
-            });
-        }
-        return edges;
     }
 
     getAdjacencyList()
