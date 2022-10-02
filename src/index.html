@@ -3,9 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Maze Visualization</title>
 </head>
 <body>
-    <canvas class="webgl"></canvas>
+    <header>
+        <h1> <span id="text3d">3D</span> Maze Visualization</h1>
+    </header>
+    <div class="parent">
+
+        <!-- webgl canvas -->
+        <canvas class="webgl"></canvas>
+        
+        <!-- element to hold psudocode-->
+        <div class="container">     
+            <div id="psudoDFS">
+                <div class="codeHeader">
+                    <h2>Depth First Search</h2>
+                    <div id="codeStats">
+                        <p>Steps: <span id="steps">0</span></p>
+                        <p>Iterations: <span id="iterations">0</span></p>
+                    </div>
+                </div>
+                <hr>
+                <pre><code>
+               <span id="Line1" class="lineNums">1    <span id="code">function</span> <span id="function">DFS</span>(<span id="variable">node</span>)</span> 
+               <span id="Line2" class="lineNums">2       <span id="if">if</span> <span id="variable">node</span> <span id="code">is <span id="if">not</span> visited</span></span> 
+               <span id="Line3" class="lineNums">3           <span id="if">mark</span> <span id="variable">node</span> <span id="if">as</span> <span id="code">visited</span></span> 
+               <span id="Line4" class="lineNums">4           <span id="if">for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
+               <span id="Line5" class="lineNums">5               <span id="function">DFS</span>(<span id="variable">neighbor</span>)</span> 
+                </code></pre>
+            </div>
+
+            <!-- psudocode controls -->
+            <button id="backBtn" class="button--ujarak">back</button>
+            <button id="stepBtn" class="button--ujarak">step</button>
+            
+        </div>
+     </div>
+
+     <!-- element to hold stats and maze controls -->
+     <div class="controls">
+        <!-- slider control -->
+        <div class="slider">
+            <label for="mazeSizeX">X Size <span id="valueX">10</span></label>
+            <input type="range" id="mazeSizeX" name="mazeSizeX" min="1" max="10" value="10" >
+            <label for="mazeSizeY">Y Size <span id="valueY">10</span></label>
+            <input type="range" id="mazeSizeY" name="mazeSizeY" min="1" max="10" value="10" >
+            <label for="mazeSizeZ">Z Size <span id="valueX">10</span></label>
+            <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="1" max="10" value="10" >
+        </div>
+        
+        
+        <button id="generateBtn">Generate</button>
+        <button id="solveBtn">Solve</button>
+        <button id="resetBtn">Reset</button>
+     </div>
+    
+    <footer>
+        <!-- copywrite -->
+        <p>© 2022 Brett Constantinoff & Max Schafer</p>
+    </footer>
 </body>
 </html>

@@ -1,7 +1,6 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import * as dat from 'dat.gui';
 import Stats from 'stats.js';
 import Maze from './Objects/Maze';
 
@@ -12,19 +11,21 @@ export default class App
      */
     constructor()
     {
-        this.stats = new Stats();
+        
+        this.code = []; // psuedocode lines stored here
+        this.numLines = 5; // current line of code in the array
+        this.currentLine = 0; // current line of code being highlighted
+        this.numIterations = 0; // number of iterations of the algorithm
+        this.numSteps = 0; // number of steps in the algorithm
+        this.stepsGui = document.getElementById("steps"); // gui element for steps
+        this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
 
-        this.gui = new dat.GUI(
-            {
-                name: "Controls",
-                width: 500
-            }
-        );
+        this.stats = new Stats();
 
         this.canvas = document.querySelector('.webgl');
         this.sizes = {
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: window.innerWidth/1.5,
+            height: window.innerHeight/1.5,
         };
 
         this.renderer = new THREE.WebGLRenderer(
@@ -47,7 +48,7 @@ export default class App
     {
         this.setupListeners();
         this.setupScene();
-        this.setupGui();
+        this.setupPsuedocode(this.numLines);
 
         // initially update camera controlls
         this.controls.update()
@@ -95,6 +96,81 @@ export default class App
             this.renderer.setSize(this.sizes.width, this.sizes.height);
             this.renderer.setPixelRatio(window.devicePixelRatio);
         });
+
+        //add step button event
+        document.getElementById("stepBtn").addEventListener("click", () =>
+        {
+            this.stepPsudocode();
+            console.log("step");
+        });
+
+        //add back button event
+        document.getElementById("backBtn").addEventListener("click", () =>
+        {
+            this.backstepPsudocode();
+            console.log("back");
+        });
+
+        //add generate button event
+        document.getElementById("generateBtn").addEventListener("click", () =>
+        {
+            this.maze.generate();
+            console.log("generate");
+            //disable and hide the button
+            document.getElementById("generateBtn").style.display = "none";
+            //show the solve button
+            document.getElementById("solveBtn").style.display = "block";
+            //disable range sliders
+            document.getElementsByClassName("slider")[0].style.visibility = "hidden";
+        });
+
+        //add solve button event
+        document.getElementById("solveBtn").addEventListener("click", () =>
+        {
+            //TODO: this.maze.solve();
+            console.log("solve");
+            //disable and hide the button
+            document.getElementById("solveBtn").style.display = "none";
+            //show the reset button
+            document.getElementById("resetBtn").style.display = "block";
+        });
+
+        //add reset button event
+        document.getElementById("resetBtn").addEventListener("click", () =>
+        {
+            this.maze.clear();
+            console.log("reset");
+            //show the generate button
+            document.getElementById("generateBtn").style.display = "block";
+            //hide the reset button
+            document.getElementById("resetBtn").style.display = "none";
+            //hide the solve button
+            document.getElementById("solveBtn").style.display = "none";
+            //enable range sliders
+            document.getElementsByClassName("slider")[0].style.visibility = "visible";
+        });
+
+        //add slider events
+        document.getElementById("mazeSizeX").addEventListener("input", () =>
+        {
+            let value = document.getElementById("mazeSizeX").value;
+            this.maze.scale(value / 2, 'x');
+            document.getElementById("valueX").innerHTML = value;
+        });
+        
+        document.getElementById("mazeSizeY").addEventListener("input", () =>
+        {
+            let value = document.getElementById("mazeSizeY").value;
+            this.maze.scale(value / 2, 'y');
+            document.getElementById("valueY").innerHTML = value;
+        });
+
+        document.getElementById("mazeSizeZ").addEventListener("input", () =>
+        {
+            let value = document.getElementById("mazeSizeZ").value;
+            this.maze.scale(value / 2, 'z');
+            document.getElementById("valueZ").innerHTML = value;
+        });
     }
 
     /**
@@ -118,7 +194,7 @@ export default class App
         // initial render settings
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.sizes.width, this.sizes.height);
-        this.renderer.setClearColor(0x525393);
+        this.renderer.setClearColor(0x2c2c2c);
 
         // add a couple scene lights
         let firstLight = new THREE.DirectionalLight({
@@ -149,49 +225,65 @@ export default class App
     }
 
     /**
-     * Creates the scene GUI, also determines what happens 
-     * when GUI is interacted with
-     */
-    setupGui()
+     * Sets up psuedocode for algorithm
+     * 
+     * */
+    setupPsuedocode(numLines)
     {
-        // create maze folder
-        let mazeFolder = this.gui.addFolder("Maze");
+        for (let i = 1; i < numLines+1; i++)
+            this.code.push(document.getElementById("Line" + i));
+        
+        // set first line to be highlighted
+        this.code[0].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
+    }
 
-        // create folder for maze size
-        let mazeSizeFolder = mazeFolder.addFolder("Size");
-        // create maze size controller
-        let mazeSize = {
-            x: this.initialSize * 2,
-            y: this.initialSize * 2,
-            z: this.initialSize * 2
-        };
-        this.maxSize = 10;
-        // x slider
-        mazeSizeFolder.add(mazeSize, 'x', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
-           this.maze.scale(value / 2, 'x');
-        });
-        // y slider
-        mazeSizeFolder.add(mazeSize, 'y', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
-            this.maze.scale(value / 2, 'y');
-        });
-        // z slider
-        mazeSizeFolder.add(mazeSize, 'z', this.initialSize * 2, this.maxSize * 2, 1).onChange((value) => {
-            this.maze.scale(value / 2, 'z');
-        });
-
-        // create maze generation checkbox
-        let generateMaze = {
-            Generate: false
+    /**
+     * unhilight the current line of code and hilight the previous line 
+     * only if number of steps is greater than 0
+     * */
+    backstepPsudocode()
+    {
+        if(this.numSteps > 0)
+        {
+            this.code[this.currentLine].style.backgroundColor = "transparent";
+            this.currentLine--;
+            if(this.currentLine < 0)
+            {
+                this.currentLine = this.numLines-1;
+                this.numIterations--;
+            }
+            this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
+            this.numSteps--;
+            this.updateStepsGUI();
         }
-        mazeFolder.add(generateMaze, 'Generate').onChange((value) => {
-           if (value)
-           {
-                this.maze.generate()
-           }
-           else
-           {
-                this.maze.clear();
-           }
-        });
+    }
+
+
+    /**
+     * unhilight the current line of code and hilight the next line then wrap back to the start
+     * */
+    stepPsudocode()
+    {
+        this.code[this.currentLine].style.backgroundColor = "transparent";
+        this.currentLine++;
+        if (this.currentLine >= this.numLines)
+        {
+            this.currentLine = 0;
+            this.numIterations++;
+        }
+            
+        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
+        this.numSteps++;
+        this.updateStepsGUI();
+        
+    }
+
+    /**
+     * updates the number of steps & iterations taken in the GUI
+     * */
+    updateStepsGUI()
+    {
+        this.stepsGui.innerText = this.numSteps;
+        this.iterationsGui.innerText = this.numIterations;
     }
 }
