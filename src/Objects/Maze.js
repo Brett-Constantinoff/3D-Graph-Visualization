@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import Node from './Node';
 import Cube from './Cube'
+import AdjacencyList from './AdjacencyList';
+import { Vector3 } from 'three';
 
 export default class Maze extends Cube{
     /**
@@ -18,6 +20,7 @@ export default class Maze extends Cube{
        this.nodes = new THREE.Group();
        this.nodeSize = 0.5;
        this.wireFrame.scale.set(this.size.x, this.size.y, this.size.z);
+       this.adjList = new AdjacencyList();
     }
 
     /**
@@ -46,15 +49,12 @@ export default class Maze extends Cube{
          }
      }
 
-    /**
-     * Currently just fills in entire maze
-     */
     generate()
     {
-        let adjustmentX = this.mesh.position.x - (this.size.x / 2) + (this.nodeSize / 2);
-        let adjustmentY = this.mesh.position.y - (this.size.y / 2) + (this.nodeSize / 2);
-        let adjustmentZ = this.mesh.position.z - (this.size.z / 2) + (this.nodeSize / 2);
-        let position = new THREE.Vector3(adjustmentX, adjustmentY, adjustmentZ);
+        this.adjustmentX = this.mesh.position.x - (this.size.x / 2) + (this.nodeSize / 2);
+        this.adjustmentY = this.mesh.position.y - (this.size.y / 2) + (this.nodeSize / 2);
+        this.adjustmentZ = this.mesh.position.z - (this.size.z / 2) + (this.nodeSize / 2);
+        let position = new THREE.Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ);
 
         let mazeSize = {
             x: this.size.x * 2,
@@ -67,22 +67,101 @@ export default class Maze extends Cube{
         {  
             if (i % (mazeSize.y) === 0 && i != 0)
             {
-                position.y = adjustmentY;
+                position.y = this.adjustmentY;
                 position.z += this.nodeSize;
             }
             if (i % (mazeSize.y * mazeSize.z) === 0 && i != 0)
             {
                 position.x += this.nodeSize;
-                position.y = adjustmentY;
-                position.z = adjustmentZ;
+                position.y = this.adjustmentY;
+                position.z = this.adjustmentZ;
             }
-            // make every second node opaque and yellow
-        
+            // every node is a wall to begin with
             let node = new Node(0x6577B3, false, this.nodeSize, 0.25, position);
-            
             this.nodes.add(node.getMesh());
+            this.findNeighbours(position);
             position.y += this.nodeSize;
         }
+    }
+
+    /**
+     * fills adj list 
+     */
+    findNeighbours(pos)
+    {
+        // positions will be relative to the -x, -y, -z corner of maze
+        // corner 0 (-x, -y, -z)
+        if (pos.equals(new Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
+        {
+            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
+                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
+            ]);
+        }
+        // corner 1 (+x, -y, -z)
+        else if (pos.equals(new Vector3(-this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
+        {
+            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
+                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
+            ]);
+        }
+        // corner 2 (+x, -y, +z)
+        else if (pos.equals(new Vector3(-this.adjustmentX, this.adjustmentY, -this.adjustmentZ)))
+        {
+            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
+                new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
+            ]);
+        }
+         // corner 3 (-x, -y, +z)
+         else if (pos.equals(new Vector3(this.adjustmentX, this.adjustmentY, -this.adjustmentZ)))
+         {
+             this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                 new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                 new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
+                 new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
+             ]);
+         }
+         // corner 4 (-x, +y, -z)
+        else if (pos.equals(new Vector3(this.adjustmentX, -this.adjustmentY, this.adjustmentZ)))
+        {
+            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
+                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
+            ]);
+        }
+        // corner 5 (+x, +y, -z)
+        else if (pos.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, this.adjustmentZ)))
+        {
+            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
+                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
+            ]);
+        }
+        // corner 6 (+x, +y, +z)
+        else if (pos.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
+        {
+            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
+                new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
+            ]);
+        }
+         // corner 7 (-x, +y, +z)
+         else if (pos.equals(new Vector3(this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
+         {
+             this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
+                 new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
+                 new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
+                 new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
+             ]);
+         }
     }
 
     /**
