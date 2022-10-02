@@ -1,4 +1,4 @@
-//this class is used to represent a graph using an adjacency list
+//this class is used to represent a graph using an adjacency list  Do what you want with it. I was following a fireship.io tutorial.
 export default class AdjacencyList
 {
     constructor()
