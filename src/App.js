@@ -115,6 +115,7 @@ export default class App
         document.getElementById("generateBtn").addEventListener("click", () =>
         {
             this.maze.generate();
+            console.log(this.maze.adjList.getAdjacencyList());
             console.log("generate");
             //disable and hide the button
             document.getElementById("generateBtn").style.display = "none";
