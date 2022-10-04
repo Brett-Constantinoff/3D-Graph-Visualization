@@ -76,12 +76,31 @@ export default class Maze extends Cube{
                 position.y = this.adjustmentY;
                 position.z = this.adjustmentZ;
             }
-            // every node is a wall to begin with
-            let node = new Node(0x6577B3, false, this.nodeSize, 0.25, position);
+            let node;
+            // start
+            if (position.equals(new Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
+            {
+                node = new Node(0x48A14D, false, this.nodeSize, 1.0, position);
+                node.type = "start";
+            }
+            // end
+            else if(position.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
+            {
+                node = new Node(0x781f19 , false, this.nodeSize, 1.0, position);
+                node.type = "end";
+            }
+            // wall
+            else
+            {
+                node = new Node(0x6577B3, false, this.nodeSize, 0.25, position);
+                node.type = "wall";
+            }
             this.nodes.add(node.getMesh());
             this.findNeighbours(position);
             position.y += this.nodeSize;
         }
+        console.log(this.adjList);
+        this.degbugAdj();
     }
 
     /**
@@ -89,79 +108,70 @@ export default class Maze extends Cube{
      */
     findNeighbours(pos)
     {
-        // positions will be relative to the -x, -y, -z corner of maze
-        // corner 0 (-x, -y, -z)
-        if (pos.equals(new Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
+
+        //find all neighbours of a node given its position
+        let neighbours = [];
+
+        let x = pos.x;
+        let y = pos.y;
+        let z = pos.z;
+
+        let xPlus = new THREE.Vector3(x + this.nodeSize, y, z); // right
+        let xMinus = new THREE.Vector3(x - this.nodeSize, y, z); // left
+        let yPlus = new THREE.Vector3(x, y + this.nodeSize, z); // up
+        let yMinus = new THREE.Vector3(x, y - this.nodeSize, z); // down
+        let zPlus = new THREE.Vector3(x, y, z + this.nodeSize); // forward
+        let zMinus = new THREE.Vector3(x, y, z - this.nodeSize); // back
+
+        //check if the neighbour is going to be still in the maze otherwise ignore it it's not a neighbour.
+        if (xPlus.x <= -this.adjustmentX)
         {
-            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
-                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
-            ]);
+            neighbours.push(xPlus);
         }
-        // corner 1 (+x, -y, -z)
-        else if (pos.equals(new Vector3(-this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
+        if (xMinus.x >= this.adjustmentX)
         {
-            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
-                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
-            ]);
+            neighbours.push(xMinus);
         }
-        // corner 2 (+x, -y, +z)
-        else if (pos.equals(new Vector3(-this.adjustmentX, this.adjustmentY, -this.adjustmentZ)))
+        if (yPlus.y <= -this.adjustmentY)
         {
-            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
-                new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
-            ]);
+            neighbours.push(yPlus);
         }
-         // corner 3 (-x, -y, +z)
-         else if (pos.equals(new Vector3(this.adjustmentX, this.adjustmentY, -this.adjustmentZ)))
-         {
-             this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                 new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                 new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
-                 new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
-             ]);
-         }
-         // corner 4 (-x, +y, -z)
-        else if (pos.equals(new Vector3(this.adjustmentX, -this.adjustmentY, this.adjustmentZ)))
+        if (yMinus.y >= this.adjustmentY)
         {
-            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
-                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
-            ]);
+            neighbours.push(yMinus);
         }
-        // corner 5 (+x, +y, -z)
-        else if (pos.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, this.adjustmentZ)))
+        if (zPlus.z <= -this.adjustmentZ)
         {
-            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
-                new Vector3(pos.x, pos.y, pos.z + this.nodeSize)
-            ]);
+            neighbours.push(zPlus);
         }
-        // corner 6 (+x, +y, +z)
-        else if (pos.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
+        if (zMinus.z >= this.adjustmentZ)
         {
-            this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                new Vector3(pos.x - this.nodeSize, pos.y, pos.z),
-                new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
-            ]);
+            neighbours.push(zMinus);
         }
-         // corner 7 (-x, +y, +z)
-         else if (pos.equals(new Vector3(this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
-         {
-             this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), [
-                 new Vector3(pos.x, pos.y + this.nodeSize, pos.z),
-                 new Vector3(pos.x + this.nodeSize, pos.y, pos.z),
-                 new Vector3(pos.x, pos.y, pos.z - this.nodeSize)
-             ]);
-         }
+        this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), neighbours);
+    }
+
+    /**
+     * Debug adj list function, 
+     * if a nodes neighbor is not found it will
+     * remain transparent and blue otherwise
+     * it will be white and opaque
+     */
+    degbugAdj()
+    {
+        this.adjList.getAdjacencyList().forEach((value, key) => {
+            value.forEach((n) => {
+                let nodes = this.nodes.children;
+                for (let i = 0; i < nodes.length; i++) {
+                    let node = nodes[i];
+                    node.scale.set(0.25, 0.25, 0.25);
+                    if (n.equals(node.position)) {
+                        node.material.opacity = 1.0;
+                        node.material.color = 0x000000;
+                    }
+                }
+            })
+        })
     }
 
     /**
