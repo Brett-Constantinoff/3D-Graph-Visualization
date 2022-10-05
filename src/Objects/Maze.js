@@ -77,23 +77,23 @@ export default class Maze extends Cube{
                 position.z = this.adjustmentZ;
             }
             let node;
-            // start
+            // start node 
             if (position.equals(new Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
             {
                 node = new Node(0x48A14D, false, this.nodeSize, 1.0, position);
-                node.type = "start";
+                this.start = position;
+                
             }
-            // end
-            else if(position.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
+            // end node
+            else if (position.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
             {
-                node = new Node(0x781f19 , false, this.nodeSize, 1.0, position);
-                node.type = "end";
+                node = new Node(0x781f19, false, this.nodeSize, 1.0, position);
+                this.end = node;
             }
             // wall
-            else
+            else 
             {
                 node = new Node(0x6577B3, false, this.nodeSize, 0.25, position);
-                node.type = "wall";
             }
             this.nodes.add(node.getMesh());
             this.findNeighbours(position);
