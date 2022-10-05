@@ -217,7 +217,7 @@ export default class App
         // only add maze wireframe
         this.scene.add(this.maze.getWireFrame());
         // add all maze nodes
-        this.scene.add(this.maze.getNodes());
+        this.scene.add(this.maze.getNodeMeshes());
 
         // debug
         // z is blue,  y is green, x is red

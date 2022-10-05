@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import Node from './Node';
 import Cube from './Cube'
-import AdjacencyList from './AdjacencyList';
 import { Vector3 } from 'three';
 
 export default class Maze extends Cube{
@@ -17,10 +16,13 @@ export default class Maze extends Cube{
     constructor(color, border, initialSize, transparency, position)
     {
        super(color, border, initialSize, transparency, position);
-       this.nodes = new THREE.Group();
+       // THREE needs meshes to render
+       this.nodeMeshes = new THREE.Group();
+       // holds our actual node objects
+       this.nodes = [];
        this.nodeSize = 0.5;
        this.wireFrame.scale.set(this.size.x, this.size.y, this.size.z);
-       this.adjList = new AdjacencyList();
+       this.adjList = new Map();
     }
 
     /**
@@ -51,6 +53,26 @@ export default class Maze extends Cube{
 
     generate()
     {
+        // fill our maze with walls and start and end node
+        this.fill();
+        
+        // for some reason, putting this in a function and returning the value doesnt work
+        let n;
+        this.adjList.forEach((value, key) => {
+            if (key.x === this.start.x && key.y === this.start.y && key.z === this.start.z) 
+            {
+                n = value;
+            }
+        })
+        // creates paths for maze
+        this.dfs(this.start, n);
+    }
+
+     /**
+     * creates all nodes in maze
+     */
+    fill()
+    {
         this.adjustmentX = this.mesh.position.x - (this.size.x / 2) + (this.nodeSize / 2);
         this.adjustmentY = this.mesh.position.y - (this.size.y / 2) + (this.nodeSize / 2);
         this.adjustmentZ = this.mesh.position.z - (this.size.z / 2) + (this.nodeSize / 2);
@@ -80,35 +102,34 @@ export default class Maze extends Cube{
             // start node 
             if (position.equals(new Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
             {
-                node = new Node(0x48A14D, false, this.nodeSize, 1.0, position);
-                this.start = position;
-                
+                node = new Node(0x48A14D, false, this.nodeSize, 1.0, position, "start");
+                this.start = new Vector3(position.x, position.y, position.z);
             }
             // end node
             else if (position.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
             {
-                node = new Node(0x781f19, false, this.nodeSize, 1.0, position);
-                this.end = node;
+                node = new Node(0x781f19, false, this.nodeSize, 1.0, position, "end");
             }
             // wall
             else 
             {
-                node = new Node(0x6577B3, false, this.nodeSize, 0.25, position);
+                node = new Node(0x6577B3, false, this.nodeSize, 0.25, position, "wall");
             }
-            this.nodes.add(node.getMesh());
+            this.nodeMeshes.add(node.getMesh());
+            this.nodes.push(node);
             this.findNeighbours(position);
             position.y += this.nodeSize;
         }
-        console.log(this.adjList);
-        this.degbugAdj();
     }
 
     /**
-     * fills adj list 
+     * Finds the neighbours for a given
+     * node position
+     *
+     * @param {Vector3} pos position of node
      */
     findNeighbours(pos)
     {
-
         //find all neighbours of a node given its position
         let neighbours = [];
 
@@ -148,7 +169,7 @@ export default class Maze extends Cube{
         {
             neighbours.push(zMinus);
         }
-        this.adjList.addVertex(new Vector3(pos.x, pos.y, pos.z), neighbours);
+        this.adjList.set(new Vector3(pos.x, pos.y, pos.z), neighbours);
     }
 
     /**
@@ -159,19 +180,86 @@ export default class Maze extends Cube{
      */
     degbugAdj()
     {
-        this.adjList.getAdjacencyList().forEach((value, key) => {
+        this.adjList.forEach((value, key) => {
             value.forEach((n) => {
                 let nodes = this.nodes.children;
-                for (let i = 0; i < nodes.length; i++) {
+                for (let i = 0; i < nodes.length; i++) 
+                {
                     let node = nodes[i];
                     node.scale.set(0.25, 0.25, 0.25);
-                    if (n.equals(node.position)) {
+                    if (n.equals(node.position)) 
+                    {
                         node.material.opacity = 1.0;
                         node.material.color = 0x000000;
                     }
                 }
             })
         })
+    }
+
+    /**
+     * Generates pathways through the maze
+     *
+     * @param {Vector3} nodePos position of a given node
+     * @param {Array of neighbours} neighboursPos nodes neighbours positions
+     */
+    dfs(nodePos, neighboursPos)
+    {
+        // get current node object
+        let node = this.getNode(new Vector3(nodePos.x, nodePos.y, nodePos.z));
+        
+        // if node exists
+        if (node)
+        {
+            // make the node yellow and opaque if its a path
+            if (node.type === "path")
+            {
+                node.material.opacity = 1.0;
+                node.material.color.set(0xEDD94C);
+            }
+            // mark the current node as visited
+            node.visited = true;
+            // get a random neighbour and make it a path
+            let index = Math.floor(Math.random() * neighboursPos.length);
+            let randomPath = this.getNode(neighboursPos[index]);
+            randomPath.type = "path";
+            
+            // perfrom dfs on each neighbour recursivly
+            neighboursPos.forEach((neighbourPos) => {
+                let neighbour = this.getNode(neighbourPos);
+                if (!neighbour.visited)
+                {
+                    // again, this cant be in its own function for some reason
+                    let n;
+                    this.adjList.forEach((value, key) => {
+                        if (key.x === neighbourPos.x && key.y === neighbourPos.y && key.z === neighbourPos.z) 
+                        {
+                            n = value;
+                        }
+                    })
+                    // recurse
+                    this.dfs(neighbourPos, n);
+                }
+            })
+        }
+    }
+ 
+    /**
+     * Returns a node object based on position
+     *
+     * @param {Vector3} pos position of a given node
+     * @param {Node} this.nodes[i] node object
+     */
+    getNode(pos)
+    {
+        for(let i = 0; i < this.nodes.length; i++)
+        {
+            if (this.nodes[i].mesh.position.equals(pos))
+            {
+                return this.nodes[i];
+            }
+        }
+        return null;
     }
 
     /**
@@ -187,8 +275,8 @@ export default class Maze extends Cube{
      *
      * @return {Group} maze nodes
      */
-    getNodes()
+    getNodeMeshes()
     {
-        return this.nodes;
+        return this.nodeMeshes;
     }
 }
