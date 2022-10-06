@@ -50,24 +50,7 @@ export default class Maze extends Cube{
              this.size.z = value;
          }
      }
-
-    generate()
-    {
-        // fill our maze with walls and start and end node
-        this.fill();
-        
-        // for some reason, putting this in a function and returning the value doesnt work
-        let n;
-        this.adjList.forEach((value, key) => {
-            if (key.x === this.start.x && key.y === this.start.y && key.z === this.start.z) 
-            {
-                n = value;
-            }
-        })
-        // creates paths for maze
-        this.dfs(this.start, n);
-    }
-
+     
      /**
      * creates all nodes in maze
      */
@@ -195,53 +178,6 @@ export default class Maze extends Cube{
                 }
             })
         })
-    }
-
-    /**
-     * Generates pathways through the maze
-     *
-     * @param {Vector3} nodePos position of a given node
-     * @param {Array of neighbours} neighboursPos nodes neighbours positions
-     */
-    dfs(nodePos, neighboursPos)
-    {
-        // get current node object
-        let node = this.getNode(new Vector3(nodePos.x, nodePos.y, nodePos.z));
-        
-        // if node exists
-        if (node)
-        {
-            // make the node yellow and opaque if its a path
-            if (node.type === "path")
-            {
-                node.material.opacity = 1.0;
-                node.material.color.set(0xEDD94C);
-            }
-            // mark the current node as visited
-            node.visited = true;
-            // get a random neighbour and make it a path
-            let index = Math.floor(Math.random() * neighboursPos.length);
-            let randomPath = this.getNode(neighboursPos[index]);
-            randomPath.type = "path";
-            
-            // perfrom dfs on each neighbour recursivly
-            neighboursPos.forEach((neighbourPos) => {
-                let neighbour = this.getNode(neighbourPos);
-                if (!neighbour.visited)
-                {
-                    // again, this cant be in its own function for some reason
-                    let n;
-                    this.adjList.forEach((value, key) => {
-                        if (key.x === neighbourPos.x && key.y === neighbourPos.y && key.z === neighbourPos.z) 
-                        {
-                            n = value;
-                        }
-                    })
-                    // recurse
-                    this.dfs(neighbourPos, n);
-                }
-            })
-        }
     }
  
     /**

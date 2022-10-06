@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
 import Maze from './Objects/Maze';
+import { depthFirstSearch } from './Algorithms/depthFirst';
 
 export default class App
 {
@@ -114,7 +115,8 @@ export default class App
         //add generate button event
         document.getElementById("generateBtn").addEventListener("click", () =>
         {
-            this.maze.generate();
+            this.maze.fill();
+            depthFirstSearch(this.maze.start, this.maze);
             console.log("generate");
             //disable and hide the button
             document.getElementById("generateBtn").style.display = "none";
