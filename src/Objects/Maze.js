@@ -203,7 +203,7 @@ export default class Maze extends Cube{
      */
     clear()
     {
-        this.nodes.clear();
+        this.nodeMeshes.clear();
     }
 
     /**
