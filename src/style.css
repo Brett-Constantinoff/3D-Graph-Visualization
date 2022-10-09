@@ -29,7 +29,7 @@ hr
 h2
 {
     text-align: center; 
-    grid-area: header;
+    
     color: white;
     font-family: 'Kanit', sans-serif;
     font-weight: 400;
@@ -166,7 +166,7 @@ label
 
 #codeStats
 {
-    color: white;
+    color: rgb(255, 255, 255);
     font-family: 'Kanit', sans-serif;
     font-weight: 400;
     font-size: 20px;
