@@ -20,7 +20,7 @@
                 <!-- webgl canvas -->
                 <canvas class="webgl"></canvas>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <!-- element to hold psudocode-->
                 <div class="container card bg-secondary pb-3" style="min-width: 22rem">     
                     
@@ -42,9 +42,9 @@
                             <br>
                             <span id="Line3" class="lineNums">3           <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp mark</span> <span id="variable">node</span> <span id="if">as</span> <span id="code">visited</span></span> 
                             <br>
-                            <span id="Line4" class="lineNums">4           <span id="if">&nbsp&nbsp&nbsp&nbsp for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
+                            <span id="Line4" class="lineNums">4           <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
                             <br>
-                            <span id="Line5" class="lineNums">5               <span id="function">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp DFS</span>(<span id="variable">neighbor</span>)</span> 
+                            <span id="Line5" class="lineNums">5               <span id="function">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp DFS</span>(<span id="variable">neighbor</span>)</span> 
                         </code>  
                     </div>
                 
@@ -59,7 +59,7 @@
      </div>
 
      <!-- element to hold stats and maze controls -->
-     <div class="container card bg-secondary mt-3">
+     <div class="card bg-secondary mt-3 pb-3">
         <div class="row">
             <h2>Maze Controls</h2>
         </div>
@@ -71,15 +71,18 @@
                     <input type="range" id="mazeSizeX" name="mazeSizeX" min="1" max="10" value="10" >
                     <label for="mazeSizeY">Y Size <span id="valueY">10</span></label>
                     <input type="range" id="mazeSizeY" name="mazeSizeY" min="1" max="10" value="10" >
-                    <label for="mazeSizeZ">Z Size <span id="valueX">10</span></label>
+                    <label for="mazeSizeZ">Z Size <span id="valueZ">10</span></label>
                     <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="1" max="10" value="10" >
                 </div>
 
             </div>
             <div class="col">
-                <button id="generateBtn">Generate</button>
-                <button id="solveBtn">Solve</button>
-                <button id="resetBtn">Reset</button>
+                <div class="align-self-center">
+                    <button id="generateBtn">Generate</button>
+                    <button id="solveBtn">Solve</button>
+                    <button id="resetBtn">Reset</button>
+                </div>
+                
             </div>
         </div>
         

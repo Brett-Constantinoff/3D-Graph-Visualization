@@ -8,7 +8,7 @@ body
 
 html, body
 {
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 h1
@@ -53,7 +53,7 @@ footer
     border-radius: 10px;   
 }
 
-.container.card.bg-secondary.pb-3
+.card.bg-secondary.pb-3
 {
     border: 5px solid rgb(32, 69, 110);
     border-radius: 10px;
@@ -71,13 +71,12 @@ footer
 .slider
 {
     color: white;
-    grid-area: "sliders";
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 80%;
-    margin-left: 5%;
+    margin-right: auto;
+    margin-left: auto;
     
 }
 label
@@ -89,12 +88,6 @@ label
 
 #generateBtn
 {
-    grid-area: "generate";
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 10px;
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);
@@ -102,6 +95,10 @@ label
     font-family: 'Kanit', sans-serif;
     font-size: 20px;
     cursor: pointer;
+    width: 250px;
+    height: 100px;
+    margin-left: 30%;
+    
 }
 #generateBtn:hover
 {
@@ -116,12 +113,9 @@ label
 #solveBtn
 {
     display: none;
-    grid-area: "generate";
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 10px;
+    width: 250px;
+    height: 100px;
+    margin-left: 30%;
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);
@@ -143,12 +137,9 @@ label
 #resetBtn
 {
     display: none;
-    grid-area: "generate";
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 10px;
+    width: 250px;
+    height: 100px;
+    margin-left: 30%;
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);
