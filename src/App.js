@@ -86,16 +86,16 @@ export default class App
     setupListeners()
     {
         // add window resize event
-        window.addEventListener('resize', () => 
-        {
-            this.sizes.width = window.innerWidth;
-            this.sizes.height = window.innerHeight;
+        // window.addEventListener('resize', () => 
+        // {
+        //     this.sizes.width = window.innerWidth;
+        //     this.sizes.height = window.innerHeight;
 
-            this.camera.updateProjectionMatrix();
+        //     this.camera.updateProjectionMatrix();
 
-            this.renderer.setSize(this.sizes.width, this.sizes.height);
-            this.renderer.setPixelRatio(window.devicePixelRatio);
-        });
+        //     this.renderer.setSize(this.sizes.width, this.sizes.height);
+        //     this.renderer.setPixelRatio(window.devicePixelRatio);
+        // });
 
         //add step button event
         document.getElementById("stepBtn").addEventListener("click", () =>
