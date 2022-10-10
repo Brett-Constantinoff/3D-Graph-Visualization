@@ -50,7 +50,8 @@ footer
 {
     outline: none;
     border: 5px solid rgb(32, 69, 110);
-    border-radius: 10px;   
+    border-radius: 10px; 
+    
 }
 
 .card.bg-secondary.pb-3
