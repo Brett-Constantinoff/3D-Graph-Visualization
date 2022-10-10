@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
 import Maze from './Objects/Maze';
+import { depthFirstSearch } from './Algorithms/depthFirst';
 
 export default class App
 {
@@ -114,7 +115,8 @@ export default class App
         //add generate button event
         document.getElementById("generateBtn").addEventListener("click", () =>
         {
-            this.maze.generate();
+            this.maze.fill();
+            depthFirstSearch(this.maze.start, this.maze);
             console.log("generate");
             //disable and hide the button
             document.getElementById("generateBtn").style.display = "none";
@@ -211,13 +213,13 @@ export default class App
         this.scene.add(secondLight)
 
         // create maze with a border
-        this.initialSize = 5;
+        this.initialSize = 6;
         this.maze = new Maze(0xFFFFFF, true, this.initialSize, 0.0, new THREE.Vector3(0, 0, 0));
 
         // only add maze wireframe
         this.scene.add(this.maze.getWireFrame());
         // add all maze nodes
-        this.scene.add(this.maze.getNodes());
+        this.scene.add(this.maze.getNodeMeshes());
 
         // debug
         // z is blue,  y is green, x is red
