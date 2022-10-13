@@ -29,6 +29,8 @@ export function depthFirstSearch(nodePos, maze)
         node.visited = true;
         // get a random neighbour and make it a path
         let index = Math.floor(Math.random() * n.length);
+        if (index != 0)
+            index--;
         let randomPath = maze.getNode(n[index]);
         if (node.type != "end")
         {
