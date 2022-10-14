@@ -6,51 +6,61 @@
  */
 export function depthFirstSearch(nodePos, maze)
 {
+    let stack = [];
+    let endFound = false;
     // get current node object
     let node = maze.getNode(nodePos);
+    stack.push(node);
+    
 
-    let n;
-    maze.adjList.forEach((value, key) => {
-        if (key.x === nodePos.x && key.y === nodePos.y && key.z === nodePos.z) 
-        {
-            n = value;
-        }
-    })
-
-    // if node exists
-    if (node)
+    while (stack.length > 0)
     {
-        if (node.type === "path")
-        {
-            node.material.color.set(0xD288A2);
-            node.material.opacity = 1.0;
-        }
-        // mark the current node as visited
-        node.visited = true;
-        // get a random neighbour and make it a path
-        let index = Math.floor(Math.random() * n.length);
-        let randomPath = maze.getNode(n[index]);
-        if (node.type != "end")
-        {
-            randomPath.type = "path";
-        }
-  
-        // perfrom dfs on each neighbour recursivly
-        n.forEach((neighbourPos) => {
-            let neighbour = maze.getNode(neighbourPos);
-            if (!neighbour.visited)
+        let currNode = stack.pop();
+        let currPos = currNode.mesh.position;
+        
+        // get neighbors
+        let n = [];
+        maze.adjList.forEach((value, key) => {
+            if ((key.x == currPos.x) && (key.y == currPos.y) && (key.z == currPos.z))
             {
-                // again, this cant be in its own function for some reason
-                let n;
-                maze.adjList.forEach((value, key) => {
-                    if (key.x === neighbourPos.x && key.y === neighbourPos.y && key.z === neighbourPos.z) 
+                // get a list of unvisited neighbors and push them on the stack
+                value.forEach((val) => {
+                    if (!maze.getNode(val).visited)
                     {
-                        n = value;
+                        n.push(val);
+                        stack.push(maze.getNode(val));
                     }
-                })
-                // recurse
-                depthFirstSearch(neighbourPos, maze);
+                       
+                });
             }
-        })
+        });
+
+        if (n.length > 0)
+        {
+            // push cell back to stack
+            stack.push(currNode);
+
+            //choose a random neighbor
+            let index = Math.floor(Math.random() * (n.length - 1));
+            let neighbor = maze.getNode(n[index]);
+            
+            // quit once end is found
+            if (neighbor.type === "end")
+            {
+                return;
+            }
+               
+            neighbor.visited = true;
+            if (neighbor.type != "start")
+            {
+                neighbor.material.color.set(0x66ff00);
+                neighbor.material.opacity = 0.25
+                neighbor.type = "path"; 
+                stack.push(neighbor);
+            }
+       
+        }
+        
     }
+  
 }
