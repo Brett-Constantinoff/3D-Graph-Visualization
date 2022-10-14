@@ -7,12 +7,10 @@
 export function depthFirstSearch(nodePos, maze)
 {
     let stack = [];
-    let endFound = false;
     // get current node object
     let node = maze.getNode(nodePos);
     stack.push(node);
     
-
     while (stack.length > 0)
     {
         let currNode = stack.pop();
@@ -20,17 +18,17 @@ export function depthFirstSearch(nodePos, maze)
         
         // get neighbors
         let n = [];
-        maze.adjList.forEach((value, key) => {
+        maze.adjList.forEach((neighbourInfo, key) => {
             if ((key.x == currPos.x) && (key.y == currPos.y) && (key.z == currPos.z))
             {
                 // get a list of unvisited neighbors and push them on the stack
-                value.forEach((val) => {
-                    if (!maze.getNode(val).visited)
+                neighbourInfo.forEach((info) => {
+                    let neighbourNode = maze.getNode(info.neighbour);
+                    if (!neighbourNode.visited)
                     {
-                        n.push(val);
-                        stack.push(maze.getNode(val));
+                        n.push(info.neighbour);
+                        stack.push(neighbourNode);
                     }
-                       
                 });
             }
         });
@@ -58,9 +56,6 @@ export function depthFirstSearch(nodePos, maze)
                 neighbor.type = "path"; 
                 stack.push(neighbor);
             }
-       
         }
-        
     }
-  
 }

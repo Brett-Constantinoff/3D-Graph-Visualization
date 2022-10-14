@@ -103,6 +103,7 @@ export default class Maze extends Cube{
             this.findNeighbours(position);
             position.y += this.nodeSize;
         }
+        console.log(this.adjList);
     }
 
     /**
@@ -130,27 +131,39 @@ export default class Maze extends Cube{
         //check if the neighbour is going to be still in the maze otherwise ignore it it's not a neighbour.
         if (xPlus.x <= -this.adjustmentX)
         {
-            neighbours.push(xPlus);
+            let weight = Math.floor(Math.random() * 10) + 1;
+            let neighbour = xPlus;
+            neighbours.push( {neighbour, weight} );
         }
         if (xMinus.x >= this.adjustmentX)
         {
-            neighbours.push(xMinus);
+            let weight = Math.floor(Math.random() * 10) + 1;
+            let neighbour = xMinus;
+            neighbours.push( {neighbour, weight} );
         }
         if (yPlus.y <= -this.adjustmentY)
         {
-            neighbours.push(yPlus);
+            let weight = Math.floor(Math.random() * 10) + 1;
+            let neighbour = yPlus;
+            neighbours.push( {neighbour, weight} );
         }
         if (yMinus.y >= this.adjustmentY)
         {
-            neighbours.push(yMinus);
+            let weight = Math.floor(Math.random() * 10) + 1;
+            let neighbour = yMinus;
+            neighbours.push( {neighbour, weight} );
         }
         if (zPlus.z <= -this.adjustmentZ)
         {
-            neighbours.push(zPlus);
+            let weight = Math.floor(Math.random() * 10) + 1;
+            let neighbour = zPlus;
+            neighbours.push( {neighbour, weight} );
         }
         if (zMinus.z >= this.adjustmentZ)
         {
-            neighbours.push(zMinus);
+            let weight = Math.floor(Math.random() * 10) + 1;
+            let neighbour = zMinus;
+            neighbours.push( {neighbour, weight} );
         }
         this.adjList.set(new Vector3(pos.x, pos.y, pos.z), neighbours);
     }
