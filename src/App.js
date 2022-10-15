@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
 import Maze from './Objects/Maze';
 import { depthFirstSearch } from './Algorithms/depthFirst';
+import { breadthFirstSearch } from './Algorithms/breadthFirst';
 
 export default class App
 {
@@ -64,6 +65,29 @@ export default class App
     {   
         //needs to come at the beginning of onUpdate
         this.stats.begin();
+
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {
+            // add to timer
+            this.maze.algVis.timer += dt;
+
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+            }
+
+            // visualize the path each second
+            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            {
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
+                this.maze.algVis.bfs.index++;
+                this.maze.algVis.timer = 0.0;
+            }
+
+        }
 
         // update controlls every frame
         this.controls.update();
@@ -129,7 +153,8 @@ export default class App
         //add solve button event
         document.getElementById("solveBtn").addEventListener("click", () =>
         {
-            //TODO: this.maze.solve();
+            breadthFirstSearch(this.maze);
+            this.maze.algVis.bfs.visualize = true;
             console.log("solve");
             //disable and hide the button
             document.getElementById("solveBtn").style.display = "none";
@@ -223,7 +248,7 @@ export default class App
 
         // debug
         // z is blue,  y is green, x is red
-        this.scene.add(new THREE.AxesHelper(10));
+        //this.scene.add(new THREE.AxesHelper(10));
     }
 
     /**

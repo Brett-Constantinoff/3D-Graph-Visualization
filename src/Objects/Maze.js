@@ -23,6 +23,18 @@ export default class Maze extends Cube{
        this.nodeSize = 0.5;
        this.wireFrame.scale.set(this.size.x, this.size.y, this.size.z);
        this.adjList = new Map();
+       // order of nodes visited for bfs
+       this.algVis = {
+            timer : 0,
+            // maybe hook this up to the front end
+            speed : 0.10,
+            color : 0xEDD94C,
+            bfs : {
+                order: [],
+                visualize: false,
+                index : 0
+            }
+       }
     }
 
     /**
@@ -103,7 +115,6 @@ export default class Maze extends Cube{
             this.findNeighbours(position);
             position.y += this.nodeSize;
         }
-        console.log(this.adjList);
     }
 
     /**
@@ -216,7 +227,12 @@ export default class Maze extends Cube{
      */
     clear()
     {
+        this.nodes = [];
         this.nodeMeshes.clear();
+
+        // reset bfs
+        this.algVis.bfs.order = [];
+        this.algVis.bfs.index = 0;
     }
 
     /**
