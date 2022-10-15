@@ -6,58 +6,98 @@
     
     <title>Maze Visualization</title>
 </head>
-<body>
-    <header>
+<body class="bg-dark">
+    <header style="margin-bottom: 24px; margin-top: 24px;">
         <h1> <span id="text3d">3D</span> Maze Visualization</h1>
     </header>
-    <div class="parent">
+    
+    <div class="">
 
-        <!-- webgl canvas -->
-        <canvas class="webgl"></canvas>
         
-        <!-- element to hold psudocode-->
-        <div class="container">     
-            <div id="psudoDFS">
-                <div class="codeHeader">
-                    <h2>Depth First Search</h2>
-                    <div id="codeStats">
+        <div class="row">
+            
+            <div class="col-auto">
+                <div class="">
+                    <!-- webgl canvas -->
+                    <canvas class="webgl"></canvas>
+                </div>
+                
+            </div>
+            <div class="col-auto">
+                <!-- element to hold psudocode-->
+                <div class="container card bg-secondary pb-3" style="min-width: 22rem">     
+                    
+                    <div class="row card-header mb-3 codeHeader">
+                        <h2>Depth First Search</h2>
+                    </div>
+                    
+                    <div id="codeStats" class="row justify-content-center">
                         <p>Steps: <span id="steps">0</span></p>
                         <p>Iterations: <span id="iterations">0</span></p>
                     </div>
-                </div>
-                <hr>
-                <pre><code>
-               <span id="Line1" class="lineNums">1    <span id="code">function</span> <span id="function">DFS</span>(<span id="variable">node</span>)</span> 
-               <span id="Line2" class="lineNums">2       <span id="if">if</span> <span id="variable">node</span> <span id="code">is <span id="if">not</span> visited</span></span> 
-               <span id="Line3" class="lineNums">3           <span id="if">mark</span> <span id="variable">node</span> <span id="if">as</span> <span id="code">visited</span></span> 
-               <span id="Line4" class="lineNums">4           <span id="if">for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
-               <span id="Line5" class="lineNums">5               <span id="function">DFS</span>(<span id="variable">neighbor</span>)</span> 
-                </code></pre>
-            </div>
 
-            <!-- psudocode controls -->
-            <button id="backBtn" class="button--ujarak">back</button>
-            <button id="stepBtn" class="button--ujarak">step</button>
-            
+                    <div class="row card bg-dark mx-auto" style="width: 20rem; ">
+                        <!-- psudocode here -->
+                        <code>
+                            <span id="Line1" class="lineNums">1    <span id="code">&nbsp&nbsp&nbsp&nbsp function</span> <span id="function">DFS</span>(<span id="variable">node</span>)</span> 
+                            <br>
+                            <span id="Line2" class="lineNums">2       <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp if</span> <span id="variable">node</span> <span id="code">is <span id="if">not</span> visited</span></span> 
+                            <br>
+                            <span id="Line3" class="lineNums">3           <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp mark</span> <span id="variable">node</span> <span id="if">as</span> <span id="code">visited</span></span> 
+                            <br>
+                            <span id="Line4" class="lineNums">4           <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp for each</span> <span id="variable">node</span><span id="if"> in</span> <span id="code">neighbors</span></span> 
+                            <br>
+                            <span id="Line5" class="lineNums">5               <span id="function">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp DFS</span>(<span id="variable">neighbor</span>)</span> 
+                        </code>  
+                    </div>
+                
+                    <!-- psudocode controls -->
+                    
+                    <button id="backBtn" class="button--ujarak">back</button>
+                    <button id="stepBtn" class="button--ujarak">step</button>  
+                    
+                </div>   
+            </div>
         </div>
      </div>
 
      <!-- element to hold stats and maze controls -->
-     <div class="controls">
-        <!-- slider control -->
-        <div class="slider">
-            <label for="mazeSizeX">X Size <span id="valueX">12</span></label>
-            <input type="range" id="mazeSizeX" name="mazeSizeX" min="3" max="12" value="12" >
-            <label for="mazeSizeY">Y Size <span id="valueY">12</span></label>
-            <input type="range" id="mazeSizeY" name="mazeSizeY" min="3" max="12" value="12" >
-            <label for="mazeSizeZ">Z Size <span id="valueZ">12</span></label>
-            <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="3" max="12" value="12" >
+     <div class="container card bg-secondary mt-1 pb-3">
+        
+        <div class="row">
+            <div class="card-header mb-3"><h2>Maze Controls</h2></div>
+        </div>
+
+        <div class="row">
+        
+            <div class="col">
+                <!-- slider control -->
+                <div class="slider">
+                    <label for="mazeSizeX">X Size <span id="valueX">10</span></label>
+                    <input type="range" id="mazeSizeX" name="mazeSizeX" min="1" max="10" value="10" >
+                    <label for="mazeSizeY">Y Size <span id="valueY">10</span></label>
+                    <input type="range" id="mazeSizeY" name="mazeSizeY" min="1" max="10" value="10" >
+                    <label for="mazeSizeZ">Z Size <span id="valueZ">10</span></label>
+                    <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="1" max="10" value="10" >
+                </div>
+
+            </div>
+        
+            <div class="col">
+                <div class="align-self-center">
+                    <button id="generateBtn">Generate</button>
+                    <button id="solveBtn">Solve</button>
+                    <button id="resetBtn">Reset</button>
+                </div>
+            </div>
+        
         </div>
         
         
-        <button id="generateBtn">Generate</button>
-        <button id="solveBtn">Solve</button>
-        <button id="resetBtn">Reset</button>
+        
+        
+        
+        
      </div>
     
     <footer>
