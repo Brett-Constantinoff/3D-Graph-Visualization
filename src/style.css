@@ -160,10 +160,6 @@ label
     color: rgb(255, 255, 255);
 }
 
-.psudocode
-{
-  
-}
 
 #codeStats
 {
@@ -270,4 +266,9 @@ pre.code code:before {
 }
 
 
+#BFS{
+}
 
+#Dyjkstra{
+display: none;
+}

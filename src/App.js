@@ -13,14 +13,39 @@ export default class App
      */
     constructor()
     {
+        this.algorithms = {
+            BFS : ["Breadth First Search",5], // name of algorithm, number of lines in psuedocode
+            Dyjkstra : ["Dyjkstra", 5]
+        };
         
+        this.currentAlgorithm = "BFS";
         this.code = []; // psuedocode lines stored here
-        this.numLines = 5; // current line of code in the array
         this.currentLine = 0; // current line of code being highlighted
         this.numIterations = 0; // number of iterations of the algorithm
         this.numSteps = 0; // number of steps in the algorithm
+        
+        //set up GUI elements
         this.stepsGui = document.getElementById("steps"); // gui element for steps
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
+        
+
+        //set up on change listener for the drop down menu.
+        $("#Algorithm").on("change", (item) => {
+            let oldAlgo = this.currentAlgorithm;
+            //change the algorithm
+            //change psudocode header
+            document.getElementById("codeHeader").innerText = this.algorithms[item.target.value][0];
+            //change the psuedocode
+            document.getElementById(oldAlgo).style = "display: none";
+            document.getElementById(item.target.value).style = "display: block";
+            this.currentAlgorithm = item.target.value;
+            this.setupPsuedocode(this.algorithms[item.target.value][1]);
+            
+
+        }); 
+
+        
+    
 
         this.stats = new Stats();
 
@@ -50,7 +75,7 @@ export default class App
     {
         this.setupListeners();
         this.setupScene();
-        this.setupPsuedocode(this.numLines);
+        this.setupPsuedocode(this.algorithms[this.currentAlgorithm][1]);
 
         // initially update camera controlls
         this.controls.update()
@@ -122,19 +147,20 @@ export default class App
         //     this.renderer.setPixelRatio(window.devicePixelRatio);
         // });
 
-        //add step button event
+        //add step button event for BFS
         document.getElementById("stepBtn").addEventListener("click", () =>
         {
             this.stepPsudocode();
             console.log("step");
         });
 
-        //add back button event
+        //add back button event for BFS
         document.getElementById("backBtn").addEventListener("click", () =>
         {
             this.backstepPsudocode();
             console.log("back");
         });
+
 
         //add generate button event
         document.getElementById("generateBtn").addEventListener("click", () =>
@@ -257,12 +283,25 @@ export default class App
      * */
     setupPsuedocode(numLines)
     {
+        this.currentLine = 0; //reset current line
+        this.numIterations = 0; //reset number of iterations
+        this.numSteps = 0; //reset number of steps
+        this.updateStepsGUI();
+        this.code = []; //reset code array
+
+        //push all the code from the current algorithm into the code array
         for (let i = 1; i < numLines+1; i++)
-            this.code.push(document.getElementById("Line" + i));
+            this.code.push(document.getElementById(`${this.currentAlgorithm}`+"Line" + i));
         
+        //unhighlight all the code in case it was highlighted from a previous algorithm
+        for (let i = 0; i < this.code.length; i++)
+            this.code[i].style.backgroundColor = "transparent";
+            
         // set first line to be highlighted
         this.code[0].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
     }
+
+    
 
     /**
      * unhilight the current line of code and hilight the previous line 
@@ -276,7 +315,7 @@ export default class App
             this.currentLine--;
             if(this.currentLine < 0)
             {
-                this.currentLine = this.numLines-1;
+                this.currentLine = this.algorithms[this.currentAlgorithm][1]-1;
                 this.numIterations--;
             }
             this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
@@ -293,7 +332,7 @@ export default class App
     {
         this.code[this.currentLine].style.backgroundColor = "transparent";
         this.currentLine++;
-        if (this.currentLine >= this.numLines)
+        if (this.currentLine >= this.algorithms[this.currentAlgorithm][1])
         {
             this.currentLine = 0;
             this.numIterations++;
@@ -313,4 +352,13 @@ export default class App
         this.stepsGui.innerText = this.numSteps;
         this.iterationsGui.innerText = this.numIterations;
     }
+
+    /**
+     * switches what algorithm is being visualized
+     * */
+    switchAlgorithm()
+    {
+
+    }
+
 }

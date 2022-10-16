@@ -1,6 +1,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
+const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
@@ -28,7 +29,12 @@ module.exports = {
             template: path.resolve(__dirname, '../src/index.html'),
             minify: true
         }),
-        new MiniCSSExtractPlugin()
+        new MiniCSSExtractPlugin(),
+        
+        new webpack.ProvidePlugin({
+            $: "jQuery",
+            jQuery: "jQuery"
+        })
     ],
     //defines how certain files should be transformed before adding to the bundle
     module:
