@@ -233,6 +233,7 @@ export default class Maze extends Cube{
         // reset bfs
         this.algVis.bfs.order = [];
         this.algVis.bfs.index = 0;
+        this.algVis.bfs.visualize = false;
     }
 
     /**
