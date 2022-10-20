@@ -28,11 +28,16 @@ export default class Maze extends Cube{
             timer : 0,
             // maybe hook this up to the front end
             speed : 0.10,
-            color : 0xEDD94C,
+            color : 0xFFFF00,
+            shortestPathColor: 0xFF007F,
             bfs : {
                 order: [],
+                shortestPath: [],
                 visualize: false,
-                index : 0
+                seeShortestPath: false,
+                pathCleared: true,
+                index : 0,
+                shortestPathIndex: 0,
             }
        }
     }
@@ -98,11 +103,13 @@ export default class Maze extends Cube{
             if (position.equals(new Vector3(this.adjustmentX, this.adjustmentY, this.adjustmentZ)))
             {
                 node = new Node(0x48A14D, false, this.nodeSize, 1.0, position, "start");
+                this.startNode = node;
                 this.start = new Vector3(position.x, position.y, position.z);
             }
             // end node
             else if (position.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
             {
+                this.endNode = node;
                 node = new Node(0x781f19, false, this.nodeSize, 1.0, position, "end");
             }
             // wall
@@ -232,8 +239,12 @@ export default class Maze extends Cube{
 
         // reset bfs
         this.algVis.bfs.order = [];
+        this.algVis.bfs.shortestPath = [];
         this.algVis.bfs.index = 0;
+        this.algVis.bfs.shortestPathIndex = 0;
         this.algVis.bfs.visualize = false;
+        this.algVis.bfs.seeShortestPath = false;
+        this.algVis.bfs.pathCleared = true;
     }
 
     /**

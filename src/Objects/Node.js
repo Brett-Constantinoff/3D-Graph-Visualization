@@ -17,6 +17,7 @@ export default class Node extends Cube
         super(color, border, initialSize, transparency, position);
         this.type = type;
         this.visitied = false;
+        this.parent = null;
         // allow some separation between nodes
         this.mesh.scale.set(this.size.x * 0.95, this.size.y * 0.95, this.size.z * 0.95);
     }
