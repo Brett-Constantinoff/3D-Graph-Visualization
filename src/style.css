@@ -67,15 +67,18 @@ footer
 }
 
 
-
+.sliderText
+{
+    justify-content: center;
+    margin-left: 0%;
+}
 
 .slider
 {
-    color: white;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
     margin-right: auto;
     margin-left: auto;
     
@@ -85,6 +88,7 @@ label
     font-family: 'Kanit', sans-serif;
     font-size: 20px;
     color: rgb(255, 255, 255);
+    
 }
 
 #generateBtn
@@ -96,9 +100,8 @@ label
     font-family: 'Kanit', sans-serif;
     font-size: 20px;
     cursor: pointer;
-    width: 250px;
-    height: 100px;
-    margin-left: 30%;
+    width: 200px;
+    height: 80px;
     
 }
 #generateBtn:hover
@@ -114,9 +117,8 @@ label
 #solveBtn
 {
     display: none;
-    width: 250px;
-    height: 100px;
-    margin-left: 30%;
+    width: 200px;
+    height: 80px;
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);
@@ -138,9 +140,8 @@ label
 #resetBtn
 {
     display: none;
-    width: 250px;
-    height: 100px;
-    margin-left: 30%;
+    width: 200px;
+    height: 80px;
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);

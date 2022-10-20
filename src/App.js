@@ -39,15 +39,15 @@ export default class App
         if(window.innerHeight <= 900)
         {
             this.sizes = {
-                width: window.innerWidth/2,
-                height: window.innerHeight/2,
+                width: window.innerWidth/2.5,
+                height: window.innerHeight/2.5,
             };
         }
         if(window.innerHeight > 900 && window.innerHeight <= 1200)
         {
             this.sizes = {
-                width: window.innerWidth/1.7,
-                height: window.innerHeight/1.7,
+                width: window.innerWidth/2,
+                height: window.innerHeight/2,
             };
         }
         if(window.innerHeight > 1200)
