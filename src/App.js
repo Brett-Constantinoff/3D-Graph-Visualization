@@ -29,31 +29,35 @@ export default class App
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
         
 
-        //set up on change listener for the drop down menu.
-        $("#Algorithm").on("change", (item) => {
-            let oldAlgo = this.currentAlgorithm;
-            //change the algorithm
-            //change psudocode header
-            document.getElementById("codeHeader").innerText = this.algorithms[item.target.value][0];
-            //change the psuedocode
-            document.getElementById(oldAlgo).style = "display: none";
-            document.getElementById(item.target.value).style = "display: block";
-            this.currentAlgorithm = item.target.value;
-            this.setupPsuedocode(this.algorithms[item.target.value][1]);
-            
-
-        }); 
+        
 
         
     
 
         this.stats = new Stats();
-
         this.canvas = document.querySelector('.webgl');
-        this.sizes = {
-            width: window.innerWidth/1.5,
-            height: window.innerHeight/1.5,
-        };
+        if(window.innerHeight <= 900)
+        {
+            this.sizes = {
+                width: window.innerWidth/2,
+                height: window.innerHeight/2,
+            };
+        }
+        if(window.innerHeight > 900 && window.innerHeight <= 1200)
+        {
+            this.sizes = {
+                width: window.innerWidth/1.7,
+                height: window.innerHeight/1.7,
+            };
+        }
+        if(window.innerHeight > 1200)
+        {
+            this.sizes = {
+                width: window.innerWidth/1.45,
+                height: window.innerHeight/1.45,
+            };
+        }
+        
 
         this.renderer = new THREE.WebGLRenderer(
             {
@@ -181,6 +185,7 @@ export default class App
         {
             breadthFirstSearch(this.maze);
             this.maze.algVis.bfs.visualize = true;
+            console.log(this.maze.algVis.bfs.order);
             console.log("solve");
             //disable and hide the button
             document.getElementById("solveBtn").style.display = "none";
@@ -224,6 +229,19 @@ export default class App
             this.maze.scale(value / 2, 'z');
             document.getElementById("valueZ").innerHTML = value;
         });
+
+        //set up on change listener for the drop down menu.
+        $("#Algorithm").on("change", (item) => {
+            let oldAlgo = this.currentAlgorithm;
+            //change the algorithm
+            //change psudocode header
+            document.getElementById("codeHeader").innerText = this.algorithms[item.target.value][0];
+            //change the psuedocode
+            document.getElementById(oldAlgo).style = "display: none";
+            document.getElementById(item.target.value).style = "display: block";
+            this.currentAlgorithm = item.target.value;
+            this.setupPsuedocode(this.algorithms[item.target.value][1]);
+        }); 
     }
 
     /**
