@@ -76,9 +76,10 @@ export default class App
             if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
             {
                 this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
             }
 
-            // visualize the path each second
+            // visualize the path each 1/10 second
             if (this.maze.algVis.timer >= this.maze.algVis.speed)
             {
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
@@ -86,7 +87,37 @@ export default class App
                 this.maze.algVis.bfs.index++;
                 this.maze.algVis.timer = 0.0;
             }
+        }
 
+        // visualize bfs shortest path
+        if (this.maze.algVis.bfs.seeShortestPath)
+        {
+            // add to timer
+            this.maze.algVis.timer += dt;
+
+            // make yellow paths transparent
+            if (this.maze.algVis.bfs.pathCleared)
+            {
+                this.maze.algVis.bfs.order.forEach((path) => {
+                    path.material.opacity = 0.15;
+                });
+                this.maze.algVis.bfs.pathCleared = false;
+            }
+
+            // reach end of visualization
+            if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length)
+            {
+                this.maze.algVis.bfs.seeShortestPath = false;
+            }
+
+            // visualize the path each 1/10 second
+            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            {
+                this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.opacity = 1.0;
+                this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
+                this.maze.algVis.bfs.shortestPathIndex++;
+                this.maze.algVis.timer = 0.0;
+            }
         }
 
         // update controlls every frame

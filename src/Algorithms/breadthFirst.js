@@ -51,8 +51,12 @@ export function breadthFirstSearch(maze)
         {
             maze.algVis.bfs.order.push(currNode.getMesh());
             if (currNode.type === "end")
-                break;
-
+            {
+                // once end is found, create the shortest path and quit
+                endFound = true;
+                bfsShortesPath(currNode, maze);
+                continue;
+            }
             maze.adjList.forEach((neighbourInfo, key) => {
                 if ((key.x == currPos.x) && (key.y == currPos.y) && (key.z == currPos.z))
                 {
@@ -64,30 +68,28 @@ export function breadthFirstSearch(maze)
                         {            
                             if (neighbourNode.type != "end")
                                 neighbourNode.type = "bfs";
-                            else 
-                                break;
+                            neighbourNode.parent = currNode;
                             q.enqueue(neighbourInfo[i].neighbour);
                         }
                     }
-                    
-                    /*
-                    neighbourInfo.forEach((info) => {
-                        let neighbourNode = maze.getNode(info.neighbour);
-                        if (neighbourNode.type === "path" || neighbourNode.type === "end")
-                        {            
-                            if (neighbourNode.type != "end")
-                                neighbourNode.type = "bfs";
-                            else 
-                                break
-                            q.enqueue(info.neighbour)
-                               
-                        }
-                    });
-                    */
                 }
             });
         }
         }
-    
+}
+
+function bfsShortesPath(endNode, maze)
+{
+    // iterate through node parents from end
+    let currNode = endNode;
+    while (currNode.parent.type != "start")
+    {
+        maze.algVis.bfs.shortestPath.push(currNode);
+        currNode = currNode.parent;
+    }
+    maze.algVis.bfs.shortestPath.push(currNode);
+    maze.algVis.bfs.shortestPath.push(maze.startNode);
+    // reverse array after
+    maze.algVis.bfs.shortestPath.reverse();
 }
 
