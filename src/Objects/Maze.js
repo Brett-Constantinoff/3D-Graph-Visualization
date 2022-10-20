@@ -28,8 +28,8 @@ export default class Maze extends Cube{
             timer : 0,
             // maybe hook this up to the front end
             speed : 0.10,
-            color : 0xEDD94C,
-            shortestPathColor: 0x66FF00,
+            color : 0xFFFF00,
+            shortestPathColor: 0xFF007F,
             bfs : {
                 order: [],
                 shortestPath: [],
