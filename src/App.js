@@ -230,6 +230,15 @@ export default class App
             document.getElementById("valueZ").innerHTML = value;
         });
 
+        document.getElementById("speed").addEventListener("input", () =>
+        {
+            let value = document.getElementById("speed").value;
+            this.maze.algVis.speed = value;
+            document.getElementById("valueSpeed").innerHTML = value;
+        });
+
+
+
         //set up on change listener for the drop down menu.
         $("#Algorithm").on("change", (item) => {
             let oldAlgo = this.currentAlgorithm;
