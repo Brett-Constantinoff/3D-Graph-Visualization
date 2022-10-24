@@ -92,29 +92,17 @@
                     <div class="row card bg-dark mx-auto" style="width: 28rem; ">
                         <!--BFS psudocode here -->
                         <code id="BFS">
-                            <span id="BFSLine1" class="lineNums">1    <span id="if">procedure</span> <span id="function">BFS</span>(<span id="variable">G, root</span>)</span> 
+                            <span id="BFSLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
                             <br>
-                            <span id="BFSLine2" class="lineNums">2       <span id="code">&nbsp&nbsp&nbsp&nbsplet</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
+                            <span id="BFSLine2" class="lineNums">2       <span id="code">add <span id="variable">start node</span> to</span> <span id="variable">Q</span></span>
                             <br>
-                            <span id="BFSLine3" class="lineNums">3           <span id="code">&nbsp&nbsp&nbsp&nbsplabel</span> <span id="variable">root</span> <span id="if">as</span> <span id="code">visited</span></span> 
+                            <span id="BFSLine3" class="lineNums">3       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
                             <br>
-                            <span id="BFSLine4" class="lineNums">4           <span id="code">&nbsp&nbsp&nbsp&nbspenqueue</span> <span id="variable">root</span> <span id="code">into Q</span></span>
+                            <span id="BFSLine4" class="lineNums">4           <span id="code">let</span> <span id="variable">current node</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
                             <br>
-                            <span id="BFSLine5" class="lineNums">5          <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp while</span> <span id="variable">Q</span><span id="if"> is not</span> <span id="code">empty</span></span> 
+                            <span id="BFSLine5" class="lineNums">5           <span id="code">if</span> <span id="code">current node has any unvisited neighbors</span> <span id="variable">n</span></span>
                             <br>
-                            <span id="BFSLine6" class="lineNums">6          <span id="code">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp let</span> <span id="variable">V</span><span id="if"> =</span> <span id="variable">Q</span><span>.</span><span id="function">dequeue()</span></span></span> </span> 
-                            <br>
-                            <span id="BFSLine7" class="lineNums">7          <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp if</span>(<span id="variable">V</span><span id="if"> is </span> <span id="variable">goal</span>)</span></span> </span> 
-                            <br>
-                            <span id="BFSLine8" class="lineNums">8          <span id="code">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp return</span> <span id="variable">V</span></span>
-                            <br>
-                            <span id="BFSLine9" class="lineNums">9          <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp for</span> <span id="variable">all</span> <span id="variable">neighbors</span> <span id="variable">W</span> <span id="if">of</span> <span id="variable">V</span><span id="if"> in</span> <span id="variable">G</span><span id="if">:</span></span>
-                            <br>
-                            <span id="BFSLine10" class="lineNums">10          <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp if</span> <span id="variable">W</span><span id="if"> is</span> <span id="code">unvisited</span></span>
-                            <br>
-                            <span id="BFSLine11" class="lineNums">11          <span id="code">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp label</span> <span id="variable">W</span> <span id="if">as</span> <span id="code">visited</span></span>
-                            <br>
-                            <span id="BFSLine12" class="lineNums">12          <span id="variable">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp Q</span>.<span id="function">enque</span>(<span id="variable">W</span>)</span>
+                            <span id="BFSLine6" class="lineNums">6               <span id="code">add <span id="variable">n</span> to <span id="variable">Q</span>  </span>
 
                         </code>  
                         

@@ -14,7 +14,7 @@ export default class App
     constructor()
     {
         this.algorithms = {
-            BFS : ["Breadth First Search",5], // name of algorithm, number of lines in psuedocode
+            BFS : ["Breadth First Search",6], // name of algorithm, number of lines in psuedocode
             Dyjkstra : ["Dyjkstra", 5]
         };
         
@@ -115,6 +115,7 @@ export default class App
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
                 this.maze.algVis.bfs.index++;
                 this.maze.algVis.timer = 0.0;
+                this.stepBFS();
             }
         }
 
@@ -185,14 +186,36 @@ export default class App
         //add step button event for BFS
         document.getElementById("stepBtn").addEventListener("click", () =>
         {
-            this.stepPsudocode();
+            switch (this.currentAlgorithm)
+            {
+                case "BFS":
+                    this.stepBFS();
+                    break;
+                case "Dyjkstra":
+                    this.stepDyjkstra();
+                    break;
+                case "A*":
+                    this.stepAStar();
+                    break;
+            }
             console.log("step");
         });
 
         //add back button event for BFS
         document.getElementById("backBtn").addEventListener("click", () =>
         {
-            this.backstepPsudocode();
+            switch (this.currentAlgorithm)
+            {
+                case "BFS":
+                    this.backBFS();
+                    break;
+                case "Dyjkstra":
+                    this.backDyjkstra();
+                    break;
+                case "A*":
+                    this.backAStar();
+                    break;
+            }
             console.log("back");
         });
 
@@ -215,6 +238,8 @@ export default class App
         document.getElementById("solveBtn").addEventListener("click", () =>
         {
             breadthFirstSearch(this.maze);
+            this.stepBFS();
+            this.stepBFS();
             this.maze.algVis.bfs.visualize = true;
             console.log(this.maze.algVis.bfs.order);
             console.log("solve");
@@ -365,13 +390,13 @@ export default class App
      * unhilight the current line of code and hilight the previous line 
      * only if number of steps is greater than 0
      * */
-    backstepPsudocode()
+    backBFS()
     {
         if(this.numSteps > 0)
         {
             this.code[this.currentLine].style.backgroundColor = "transparent";
             this.currentLine--;
-            if(this.currentLine < 0)
+            if(this.currentLine < 2 && this.numIterations > 0)
             {
                 this.currentLine = this.algorithms[this.currentAlgorithm][1]-1;
                 this.numIterations--;
@@ -386,13 +411,13 @@ export default class App
     /**
      * unhilight the current line of code and hilight the next line then wrap back to the start
      * */
-    stepPsudocode()
+    stepBFS()
     {
         this.code[this.currentLine].style.backgroundColor = "transparent";
         this.currentLine++;
         if (this.currentLine >= this.algorithms[this.currentAlgorithm][1])
         {
-            this.currentLine = 0;
+            this.currentLine = 2;
             this.numIterations++;
         }
             
