@@ -27,7 +27,7 @@ export default class App
         //set up GUI elements
         this.stepsGui = document.getElementById("steps"); // gui element for steps
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
-        
+        this.steps = 0;
 
         
 
@@ -118,18 +118,20 @@ export default class App
             }
 
             //visualize the psudocode
-            if (this.maze.psudoVis.timer >= this.maze.algVis.speed / 3)
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
             {
                 this.stepBFS();
                 this.maze.psudoVis.timer = 0.0;
+                this.steps++;
             }
             // visualize the path 
-            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            if (this.steps == 4)
             {
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
                 this.maze.algVis.bfs.index++;
-                this.maze.algVis.timer = 0.0;
+                //this.maze.algVis.timer = 0.0;
+                this.steps = 0;
             }
         }
 
@@ -266,6 +268,7 @@ export default class App
         //add reset button event
         document.getElementById("resetBtn").addEventListener("click", () =>
         {
+            this.setupPsuedocode(this.algorithms[this.currentAlgorithm][1]);
             this.maze.clear();
             console.log("reset");
             //show the generate button
