@@ -40,6 +40,9 @@ export default class Maze extends Cube{
                 shortestPathIndex: 0,
             }
        }
+       this.psudoVis = {
+              timer: 0,
+       }
     }
 
     /**

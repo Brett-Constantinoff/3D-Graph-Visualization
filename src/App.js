@@ -108,14 +108,21 @@ export default class App
                 this.maze.algVis.bfs.seeShortestPath = true;
             }
 
-            // visualize the path each 1/10 second
+            //visualize the psudocode
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed / 3)
+            {
+                this.stepBFS();
+                this.maze.psudoVis.timer = 0.0;
+            }
+            // visualize the path 
             if (this.maze.algVis.timer >= this.maze.algVis.speed)
             {
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
                 this.maze.algVis.bfs.index++;
                 this.maze.algVis.timer = 0.0;
-                this.stepBFS();
+                
+
             }
         }
 
