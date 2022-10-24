@@ -46,15 +46,22 @@ export default class App
         if(window.innerHeight > 900 && window.innerHeight <= 1200)
         {
             this.sizes = {
-                width: window.innerWidth/2,
-                height: window.innerHeight/2,
+                width: window.innerWidth/2.3,
+                height: window.innerHeight/2.3,
             };
         }
         if(window.innerHeight > 1200)
         {
             this.sizes = {
-                width: window.innerWidth/1.45,
-                height: window.innerHeight/1.45,
+                width: window.innerWidth/2,
+                height: window.innerHeight/2,
+            };
+        }
+        if(window.innerHeight > 1500)
+        {
+            this.sizes = {
+                width: window.innerWidth/1.4,
+                height: window.innerHeight/1.4,
             };
         }
         
@@ -100,6 +107,8 @@ export default class App
         {
             // add to timer
             this.maze.algVis.timer += dt;
+            this.maze.psudoVis.timer += dt;
+            
 
             // reach end of visualization
             if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
@@ -121,8 +130,6 @@ export default class App
                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
                 this.maze.algVis.bfs.index++;
                 this.maze.algVis.timer = 0.0;
-                
-
             }
         }
 
