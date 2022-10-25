@@ -127,7 +127,7 @@ export default class Maze extends Cube{
             // wall
             else 
             {
-                node = new Node(0x6577B3, false, this.nodeSize, 0.15, position, "wall");
+                node = new Node(0x0096FF, false, this.nodeSize, 0.05, position, "wall");
             }
             this.nodeMeshes.add(node.getMesh());
             this.nodes.push(node);
