@@ -18,6 +18,7 @@ export default class Node extends Cube
         this.type = type;
         this.visitied = false;
         this.parent = null;
+        this.distance = Infinity;
         // allow some separation between nodes
         this.mesh.scale.set(this.size.x * 0.95, this.size.y * 0.95, this.size.z * 0.95);
     }

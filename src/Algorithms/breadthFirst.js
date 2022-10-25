@@ -1,41 +1,4 @@
-class Queue
-{
-    constructor()
-    {
-        this.elements = {};
-        this.head = 0;
-        this.tail = 0;
-    }
-
-    enqueue(element)
-    {
-        this.elements[this.tail] = element
-        this.tail++;
-    }
-
-    dequeue()
-    {
-        const item = this.elements[this.head];
-        delete this.elements[this.head];
-        this.head++;
-        return item;
-    }
-
-    peek()
-    {
-        return this.elements[this.head];
-    }
-
-    get length()
-    {
-        return this.tail - this.head;
-    }
-
-    get isEmpty()
-    {
-        return this.length === 0;
-    }
-}
+import Queue from "./Queue";
 
 export function breadthFirstSearch(maze)
 {
@@ -58,7 +21,7 @@ export function breadthFirstSearch(maze)
                 continue;
             }
             maze.adjList.forEach((neighbourInfo, key) => {
-                if ((key.x == currPos.x) && (key.y == currPos.y) && (key.z == currPos.z))
+                if ((key.x === currPos.x) && (key.y === currPos.y) && (key.z === currPos.z))
                 {
                     // get a list of unvisited neighbors and push them on the queue
                     for (let i = 0; i < neighbourInfo.length; i++)

@@ -5,6 +5,7 @@ import Stats from 'stats.js';
 import Maze from './Objects/Maze';
 import { depthFirstSearch } from './Algorithms/depthFirst';
 import { breadthFirstSearch } from './Algorithms/breadthFirst';
+import { dijkstra } from './Algorithms/dijkstra';
 
 export default class App
 {
@@ -15,7 +16,7 @@ export default class App
     {
         this.algorithms = {
             BFS : ["Breadth First Search",6], // name of algorithm, number of lines in psuedocode
-            Dyjkstra : ["Dyjkstra", 5]
+            Dijkstra : ["Dijkstra", 5]
         };
         
         this.currentAlgorithm = "BFS";
@@ -28,11 +29,6 @@ export default class App
         this.stepsGui = document.getElementById("steps"); // gui element for steps
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
         this.steps = 0;
-
-        
-
-        
-    
 
         this.stats = new Stats();
         this.canvas = document.querySelector('.webgl');
@@ -65,7 +61,6 @@ export default class App
             };
         }
         
-
         this.renderer = new THREE.WebGLRenderer(
             {
                 canvas: this.canvas,
@@ -102,70 +97,15 @@ export default class App
         //needs to come at the beginning of onUpdate
         this.stats.begin();
 
-        // visualize bfs
-        if (this.maze.algVis.bfs.visualize)
+        switch (this.currentAlgorithm)
         {
-            // add to timer
-            this.maze.algVis.timer += dt;
-            this.maze.psudoVis.timer += dt;
-            
-
-            // reach end of visualization
-            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
-            {
-                this.maze.algVis.bfs.visualize = false;
-                this.maze.algVis.bfs.seeShortestPath = true;
-            }
-
-            //visualize the psudocode
-            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
-            {
-                this.stepBFS();
-                this.maze.psudoVis.timer = 0.0;
-                this.steps++;
-            }
-            // visualize the path 
-            if (this.steps == 4)
-            {
-                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
-                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
-                this.maze.algVis.bfs.index++;
-                //this.maze.algVis.timer = 0.0;
-                this.steps = 0;
-            }
+            case "BFS":
+                this.visualizeBfs(dt);
+                break;
+            case "Dijkstra":
+                this.visualizeDijkstra(dt);
+                break;
         }
-
-        // visualize bfs shortest path
-        if (this.maze.algVis.bfs.seeShortestPath)
-        {
-            // add to timer
-            this.maze.algVis.timer += dt;
-
-            // make yellow paths transparent
-            if (this.maze.algVis.bfs.pathCleared)
-            {
-                this.maze.algVis.bfs.order.forEach((path) => {
-                    path.material.opacity = 0.15;
-                });
-                this.maze.algVis.bfs.pathCleared = false;
-            }
-
-            // reach end of visualization
-            if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length)
-            {
-                this.maze.algVis.bfs.seeShortestPath = false;
-            }
-
-            // visualize the path each 1/10 second
-            if (this.maze.algVis.timer >= this.maze.algVis.speed)
-            {
-                this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.opacity = 1.0;
-                this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
-                this.maze.algVis.bfs.shortestPathIndex++;
-                this.maze.algVis.timer = 0.0;
-            }
-        }
-
         // update controlls every frame
         this.controls.update();
     }
@@ -187,18 +127,6 @@ export default class App
      */
     setupListeners()
     {
-        // add window resize event
-        // window.addEventListener('resize', () => 
-        // {
-        //     this.sizes.width = window.innerWidth;
-        //     this.sizes.height = window.innerHeight;
-
-        //     this.camera.updateProjectionMatrix();
-
-        //     this.renderer.setSize(this.sizes.width, this.sizes.height);
-        //     this.renderer.setPixelRatio(window.devicePixelRatio);
-        // });
-
         //add step button event for BFS
         document.getElementById("stepBtn").addEventListener("click", () =>
         {
@@ -207,7 +135,7 @@ export default class App
                 case "BFS":
                     this.stepBFS();
                     break;
-                case "Dyjkstra":
+                case "Dijkstra":
                     this.stepDyjkstra();
                     break;
                 case "A*":
@@ -225,7 +153,7 @@ export default class App
                 case "BFS":
                     this.backBFS();
                     break;
-                case "Dyjkstra":
+                case "Dijkstra":
                     this.backDyjkstra();
                     break;
                 case "A*":
@@ -253,12 +181,24 @@ export default class App
         //add solve button event
         document.getElementById("solveBtn").addEventListener("click", () =>
         {
-            breadthFirstSearch(this.maze);
-            this.stepBFS();
-            this.stepBFS();
-            this.maze.algVis.bfs.visualize = true;
-            console.log(this.maze.algVis.bfs.order);
-            console.log("solve");
+            this.currentAlgorithm = document.getElementById("Algorithm").value;
+            console.log(this.currentAlgorithm);
+            switch (this.currentAlgorithm)
+            {
+                case "BFS":
+                    breadthFirstSearch(this.maze);
+                    this.maze.algVis.bfs.visualize = true;
+                    console.log("BFS solve");
+                    break;
+                case "Dijkstra":
+                    dijkstra(this.maze);
+                    this.maze.algVis.dijkstra.visualize = true;
+                    console.log("Dijkstra solve");
+                    break;
+                case "A*":
+                    this.backAStar();
+                    break;
+            }
             //disable and hide the button
             document.getElementById("solveBtn").style.display = "none";
             //show the reset button
@@ -309,8 +249,6 @@ export default class App
             this.maze.algVis.speed = value;
             document.getElementById("valueSpeed").innerHTML = value;
         });
-
-
 
         //set up on change listener for the drop down menu.
         $("#Algorithm").on("change", (item) => {
@@ -401,8 +339,6 @@ export default class App
         this.code[0].style.backgroundColor = "rgba(255, 255, 0, 0.2)";
     }
 
-    
-
     /**
      * unhilight the current line of code and hilight the previous line 
      * only if number of steps is greater than 0
@@ -424,7 +360,6 @@ export default class App
         }
     }
 
-
     /**
      * unhilight the current line of code and hilight the next line then wrap back to the start
      * */
@@ -441,7 +376,6 @@ export default class App
         this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
         this.numSteps++;
         this.updateStepsGUI();
-        
     }
 
     /**
@@ -461,4 +395,124 @@ export default class App
 
     }
 
+    visualizeBfs(dt)
+    {
+         // visualize bfs
+         if (this.maze.algVis.bfs.visualize)
+         {
+             // add to timer
+             this.maze.psudoVis.timer += dt;
+             
+             // reach end of visualization
+             if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+             {
+                 this.maze.algVis.bfs.visualize = false;
+                 this.maze.algVis.bfs.seeShortestPath = true;
+             }
+ 
+              // visualize the path 
+              if (this.steps === 4)
+              {
+                  this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
+                  this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
+                  this.maze.algVis.bfs.index++;
+                  this.steps = 0;
+              }
+ 
+             //visualize the psudocode
+             if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
+             {
+                 this.stepBFS();
+                 this.maze.psudoVis.timer = 0.0;
+                 this.steps++;
+             }
+         }
+ 
+         // visualize bfs shortest path
+         if (this.maze.algVis.bfs.seeShortestPath)
+         {
+             // add to timer
+             this.maze.algVis.timer += dt;
+ 
+             // make yellow paths transparent
+             if (this.maze.algVis.bfs.pathCleared)
+             {
+                 this.maze.algVis.bfs.order.forEach((path) => {
+                     path.material.opacity = 0.15;
+                 });
+                 this.maze.algVis.bfs.pathCleared = false;
+             }
+ 
+             // reach end of visualization
+             if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length)
+             {
+                 this.maze.algVis.bfs.seeShortestPath = false;
+             }
+ 
+             // visualize the path each 1/10 second
+             if (this.maze.algVis.timer >= this.maze.algVis.speed)
+             {
+                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.opacity = 1.0;
+                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
+                 this.maze.algVis.bfs.shortestPathIndex++;
+                 this.maze.algVis.timer = 0.0;
+             }
+         } 
+    }
+
+    visualizeDijkstra(dt)
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.dijkstra.visualize)
+        {
+            // add to timer
+            this.maze.algVis.timer += dt;
+
+            // visualize the path 
+            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            {
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+                this.maze.algVis.dijkstra.index++;
+                this.maze.algVis.timer = 0.0;
+            }
+
+            if (this.maze.algVis.dijkstra.index >= this.maze.algVis.dijkstra.order.length)
+            {
+                this.maze.algVis.dijkstra.visualize = false;
+                this.maze.algVis.dijkstra.seeShortestPath = true;
+            }
+        }
+
+        // visualize dijkstra shortest path
+        if (this.maze.algVis.dijkstra.seeShortestPath)
+        {
+            // add to timer
+            this.maze.algVis.timer += dt;
+
+            // make yellow paths transparent
+            if (this.maze.algVis.dijkstra.pathCleared)
+            {
+                this.maze.algVis.dijkstra.order.forEach((path) => {
+                    path.material.opacity = 0.15;
+                });
+                this.maze.algVis.dijkstra.pathCleared = false;
+            }
+
+            // reach end of visualization
+            if (this.maze.algVis.dijkstra.shortestPathIndex === this.maze.algVis.dijkstra.shortestPath.length)
+            {
+                this.maze.algVis.dijkstra.seeShortestPath = false;
+            }
+
+            // visualize the path each 1/10 second
+            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            {
+                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.opacity = 1.0;
+                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
+                this.maze.algVis.dijkstra.shortestPathIndex++;
+                this.maze.algVis.timer = 0.0;
+            }
+        }
+    }
 }

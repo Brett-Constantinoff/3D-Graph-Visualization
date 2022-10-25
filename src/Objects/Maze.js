@@ -38,6 +38,15 @@ export default class Maze extends Cube{
                 pathCleared: true,
                 index : 0,
                 shortestPathIndex: 0,
+            },
+            dijkstra: {
+                order: [],
+                shortestPath: [],
+                visualize: false,
+                seeShortestPath: false,
+                pathCleared: true,
+                index : 0,
+                shortestPathIndex: 0,
             }
        }
        this.psudoVis = {
@@ -248,6 +257,15 @@ export default class Maze extends Cube{
         this.algVis.bfs.visualize = false;
         this.algVis.bfs.seeShortestPath = false;
         this.algVis.bfs.pathCleared = true;
+
+        // reset dijkstra
+        this.algVis.dijkstra.order = [];
+        this.algVis.dijkstra.shortestPath = [];
+        this.algVis.dijkstra.index = 0;
+        this.algVis.dijkstra.shortestPathIndex = 0;
+        this.algVis.dijkstra.visualize = false;
+        this.algVis.dijkstra.seeShortestPath = false;
+        this.algVis.dijkstra.pathCleared = true;
     }
 
     /**
