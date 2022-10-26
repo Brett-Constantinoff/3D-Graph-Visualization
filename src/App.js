@@ -444,13 +444,12 @@ export default class App
              }
  
              // reach end of visualization
-             if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length - 1)
+             if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length)
              {
                  this.maze.algVis.bfs.seeShortestPath = false;
              }
- 
              // visualize the path each 1/10 second
-             if (this.maze.algVis.timer >= this.maze.algVis.speed)
+             else if (this.maze.algVis.timer >= this.maze.algVis.speed)
              {
                  this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.opacity = 1.0;
                  this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
@@ -500,13 +499,13 @@ export default class App
             }
 
             // reach end of visualization
-            if (this.maze.algVis.dijkstra.shortestPathIndex === this.maze.algVis.dijkstra.shortestPath.length - 1)
+            if (this.maze.algVis.dijkstra.shortestPathIndex === this.maze.algVis.dijkstra.shortestPath.length)
             {
                 this.maze.algVis.dijkstra.seeShortestPath = false;
+                
             }
-
             // visualize the path each 1/10 second
-            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            else if (this.maze.algVis.timer >= this.maze.algVis.speed)
             {
                 this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.opacity = 1.0;
                 this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
