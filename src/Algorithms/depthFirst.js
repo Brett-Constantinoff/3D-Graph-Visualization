@@ -51,7 +51,7 @@ export function depthFirstSearch(nodePos, maze)
             neighbor.visited = true;
             if (neighbor.type != "start")
             {
-                neighbor.material.color.set(0x66ff00);
+                neighbor.material.color.set(0x00FF00);
                 neighbor.material.opacity = 0.25
                 neighbor.type = "path"; 
                 stack.push(neighbor);
