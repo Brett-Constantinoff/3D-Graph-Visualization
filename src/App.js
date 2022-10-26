@@ -444,7 +444,7 @@ export default class App
              }
  
              // reach end of visualization
-             if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length)
+             if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length - 1)
              {
                  this.maze.algVis.bfs.seeShortestPath = false;
              }
@@ -500,7 +500,7 @@ export default class App
             }
 
             // reach end of visualization
-            if (this.maze.algVis.dijkstra.shortestPathIndex === this.maze.algVis.dijkstra.shortestPath.length)
+            if (this.maze.algVis.dijkstra.shortestPathIndex === this.maze.algVis.dijkstra.shortestPath.length - 1)
             {
                 this.maze.algVis.dijkstra.seeShortestPath = false;
             }
