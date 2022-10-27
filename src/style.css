@@ -5,7 +5,13 @@ body
     /* change text color to white */
     color: white;
 }
-
+/* increase checkbox size */
+input[type=checkbox]
+{
+    width: 20px;
+    height: 20px;
+    
+}
 html, body
 {
     overflow: hidden;
@@ -75,12 +81,12 @@ footer
 
 .slider
 {
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: auto; */
     
 }
 label

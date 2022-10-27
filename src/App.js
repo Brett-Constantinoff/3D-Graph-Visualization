@@ -54,7 +54,7 @@ export default class App
                 height: window.innerHeight/2,
             };
         }
-        if(window.innerHeight > 1500)
+        if(window.innerHeight > 1500 )
         {
             this.sizes = {
                 width: window.innerWidth/1.4,
@@ -174,17 +174,6 @@ export default class App
             this.maze.fill();
             depthFirstSearch(this.maze.start, this.maze);
             console.log("generate");
-            //disable and hide the button
-            document.getElementById("generateBtn").style.display = "none";
-            //show the solve button
-            document.getElementById("solveBtn").style.display = "block";
-            //disable range sliders
-            document.getElementsByClassName("slider")[0].style.visibility = "hidden";
-        });
-
-        //add solve button event
-        document.getElementById("solveBtn").addEventListener("click", () =>
-        {
             this.currentAlgorithm = document.getElementById("Algorithm").value;
             console.log(this.currentAlgorithm);
             switch (this.currentAlgorithm)
@@ -203,6 +192,25 @@ export default class App
                     this.backAStar();
                     break;
             }
+            console.log(this.currentAlgorithm + " algorithm loaded and ready to go!");
+            //disable and hide the button
+            document.getElementById("generateBtn").style.display = "none";
+            //show the reset button
+            document.getElementById("resetBtn").style.display = "block";
+            //show the playPause button
+            document.getElementById("playPauseBtn").style.display = "block";
+            //disable range sliders
+            document.getElementById("sliders").style.display = "none";
+            //hide the psuedocode
+            document.getElementById("codeCheckbox").style.display = "none";
+            //hide the algorithm select
+            document.getElementById("algoPicker").style.display = "none";
+        });
+
+        //add solve button event
+        document.getElementById("solveBtn").addEventListener("click", () =>
+        {
+            
             //disable and hide the button
             document.getElementById("solveBtn").style.display = "none";
             //show the reset button
@@ -278,13 +286,26 @@ export default class App
             //change the button text
             if (this.paused)
             {
-                document.getElementById("playPauseBtn").innerText = "Play";
+                document.getElementById("playPauseBtn").innerText = "Resume";
                 console.log("paused");
             }
             else
             {
                 document.getElementById("playPauseBtn").innerText = "Pause";
                 console.log("Playing");
+            }
+        });
+
+        //add event listener for psuedocode checkbox
+        document.getElementById("codeSwitch").addEventListener("change", () =>
+        {
+            if (document.getElementById("codeSwitch").checked)
+            {
+                document.getElementById("codeBlock").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("codeBlock").style.display = "none";
             }
         });
     }

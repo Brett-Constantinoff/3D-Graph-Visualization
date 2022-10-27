@@ -31,14 +31,14 @@
 
                 <div class="row">
                 
-                    <div class="col">
+                    <div class="col" id="sliders">
                         <!-- slider control -->
-                        <div class="slider">
+                        <div class="d-flex">
                             <label for="mazeSizeX"><span class="sliderText">X Size <span id="valueX">10</span></span>
                             <input type="range" id="mazeSizeX" name="mazeSizeX" min="1" max="10" value="10" ></label>
                             <label for="mazeSizeY"><span class="sliderText">Y Size <span id="valueY">10</span></span>
                             <input type="range" id="mazeSizeY" name="mazeSizeY" min="1" max="10" value="10" ></label>
-                            <label for="mazeSizeZ"> <span class="sliderText">Size  <span id="valueZ">10</span></span>
+                            <label for="mazeSizeZ"> <span class="sliderText">Z Size <span id="valueZ">10</span></span>
                             <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="1" max="10" value="10" ></label>
                         </div>
                         
@@ -52,6 +52,24 @@
                             <input type="range" id="speed" name="speed" min="0.01" max="1" value="0.1" step="0.01">  </label>
                         </div>
                     </div>
+                    <div class="col" id="codeCheckbox">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="align-self-center">
+                                <label for="codeSwitch">pseudocode</label>
+                                <input type="checkbox" id="codeSwitch" name="codeSwitch" checked="true">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" id="algoPicker">
+                        <label>Algorithm: 
+                            <select name="Algorithm" id="Algorithm">
+                                <option value="BFS">BFS</option>
+                                <option value="Dijkstra">Dijkstra</option>
+                                <option value="AStar" disabled>A*</option>
+                            </select>
+                            </label>
+                    </div>
                     <div class="col">
                         <div class="align-self-center">
                             <div class="d-flex justify-content-center">
@@ -61,7 +79,7 @@
                             
                             <div class="d-flex justify-content-center gap-5">
                                 <button id="resetBtn">Reset</button>
-                                <button id="playPauseBtn">Play</button>
+                                <button id="playPauseBtn">Solve</button>
                             </div>
                             
                         </div>
@@ -72,18 +90,7 @@
         </div>
         <div class="col-sm">
             
-            <div class="row ">
-                <label>Current Algorithm: 
-                <select name="Algorithm" id="Algorithm">
-                    <option value="BFS">BFS</option>
-                    <option value="Dijkstra">Dijkstra</option>
-                    <option value="AStar" disabled>A*</option>
-                </select>
-                </label>
-
-            </div>
-            
-            <div class="row mt-1 gx-0">
+            <div class="row gx-0" id="codeBlock">
                 <!-- element to hold psudocode-->
                 <div class="container card bg-secondary" style="min-width: 22rem">     
                     
@@ -147,7 +154,12 @@
     
     <footer>
         <!-- copywrite -->
-        <p>© 2022 Brett Constantinoff & Max Schafer</p>
+        <p class="text-center">Brett Constantinoff & Max Schafer &copy; 
+            <script>
+                var CurrentYear = new Date().getFullYear()
+                document.write(CurrentYear)
+            </script>
+        </p>
     </footer>
 </body>
 </html>
