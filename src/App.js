@@ -205,6 +205,8 @@ export default class App
             document.getElementById("codeCheckbox").style.display = "none";
             //hide the algorithm select
             document.getElementById("algoPicker").style.display = "none";
+            //show speed slider
+            document.getElementById("speedSlider").style.display = "block";
         });
 
         //add solve button event
@@ -234,7 +236,13 @@ export default class App
             //hide playPause button
             document.getElementById("playPauseBtn").style.display = "none";
             //enable range sliders
-            document.getElementsByClassName("slider")[0].style.visibility = "visible";
+            document.getElementById("sliders").style.display = "block";
+            //show algorithm select
+            document.getElementById("algoPicker").style.display = "block";
+            //hide speed slider
+            document.getElementById("speedSlider").style.display = "none";
+            //show the psuedocode checkbox
+            document.getElementById("codeCheckbox").style.display = "block";
         });
 
         //add slider events
