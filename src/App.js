@@ -24,6 +24,7 @@ export default class App
         this.currentLine = 0; // current line of code being highlighted
         this.numIterations = 0; // number of iterations of the algorithm
         this.numSteps = 0; // number of steps in the algorithm
+        this.paused = true; // is the algorithm paused? start paused if psudocode is on. (true = paused, false = running)
         
         //set up GUI elements
         this.stepsGui = document.getElementById("steps"); // gui element for steps
@@ -97,14 +98,17 @@ export default class App
         //needs to come at the beginning of onUpdate
         this.stats.begin();
 
-        switch (this.currentAlgorithm)
+        if(!this.paused)
         {
-            case "BFS":
-                this.visualizeBfs(dt);
-                break;
-            case "Dijkstra":
-                this.visualizeDijkstra(dt);
-                break;
+            switch (this.currentAlgorithm)
+            {
+                case "BFS":
+                    this.visualizeBfs(dt);
+                    break;
+                case "Dijkstra":
+                    this.visualizeDijkstra(dt);
+                    break;
+            }
         }
         // update controlls every frame
         this.controls.update();
@@ -203,6 +207,8 @@ export default class App
             document.getElementById("solveBtn").style.display = "none";
             //show the reset button
             document.getElementById("resetBtn").style.display = "block";
+            //show the playPause button
+            document.getElementById("playPauseBtn").style.display = "block";
         });
 
         //add reset button event
@@ -217,6 +223,8 @@ export default class App
             document.getElementById("resetBtn").style.display = "none";
             //hide the solve button
             document.getElementById("solveBtn").style.display = "none";
+            //hide playPause button
+            document.getElementById("playPauseBtn").style.display = "none";
             //enable range sliders
             document.getElementsByClassName("slider")[0].style.visibility = "visible";
         });
@@ -262,6 +270,23 @@ export default class App
             this.currentAlgorithm = item.target.value;
             this.setupPsuedocode(this.algorithms[item.target.value][1]);
         }); 
+
+        //add playPause button event
+        document.getElementById("playPauseBtn").addEventListener("click", () =>
+        {
+            this.paused = !this.paused; //toggle the paused variable
+            //change the button text
+            if (this.paused)
+            {
+                document.getElementById("playPauseBtn").innerText = "Play";
+                console.log("paused");
+            }
+            else
+            {
+                document.getElementById("playPauseBtn").innerText = "Pause";
+                console.log("Playing");
+            }
+        });
     }
 
     /**
