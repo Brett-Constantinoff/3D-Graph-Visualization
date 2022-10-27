@@ -5,6 +5,7 @@ body
     /* change text color to white */
     color: white;
 }
+
 /* increase checkbox size */
 input[type=checkbox]
 {

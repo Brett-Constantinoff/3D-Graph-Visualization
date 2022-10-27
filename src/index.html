@@ -45,11 +45,14 @@
                         
 
                     </div>
-                    <div class="col" id="speedSlider" style="display: none;">
+                    <div class="col-lg" id="speedSlider" style="display: none;">
                         <div class="d-flex justify-content-center">
-                            <label for="speed"><span class="sliderText">Speed <span id="valueSpeed">0.10</span></span> 
-                            <br>
-                            <input type="range" id="speed" name="speed" min="0.01" max="1" value="0.1" step="0.01">  </label>
+                            <label for="speed"><span class="sliderText">Speed <span id="valueSpeed">0.5</span></span> 
+                                <br>
+                                <span>slower</span>
+                                <input type="range" id="speed" name="speed" min="-1" max="-0.001" value="-0.5" step="0.001"> 
+                                <span>faster</span>
+                            </label>
                         </div>
                     </div>
                     <div class="col" id="codeCheckbox">

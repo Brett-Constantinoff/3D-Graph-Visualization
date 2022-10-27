@@ -269,7 +269,8 @@ export default class App
 
         document.getElementById("speed").addEventListener("input", () =>
         {
-            let value = document.getElementById("speed").value;
+            let value = Math.abs(document.getElementById("speed").value);
+            
             this.maze.algVis.speed = value;
             document.getElementById("valueSpeed").innerHTML = value;
         });
