@@ -302,10 +302,20 @@ export default class App
             if (document.getElementById("codeSwitch").checked)
             {
                 document.getElementById("codeBlock").style.display = "block";
+                document.getElementById("canvas").style.width = this.sizes.width;
+                this.camera.aspect = this.sizes.width / this.sizes.height;
+                this.camera.updateProjectionMatrix()
+                this.renderer.setSize(this.sizes.width, this.sizes.height);
             }
             else
             {
                 document.getElementById("codeBlock").style.display = "none";
+                //resize the canvas to width 100%
+                document.getElementById("canvas").style.width = "100%";
+                this.camera.aspect = window.innerWidth / this.sizes.height;
+                this.camera.updateProjectionMatrix()
+                this.renderer.setSize(window.innerWidth, this.sizes.height);
+
             }
         });
     }
