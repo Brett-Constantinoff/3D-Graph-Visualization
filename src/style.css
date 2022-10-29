@@ -204,7 +204,9 @@ label
 #BFS{
     font-size: x-large;
 }
-
+#Dijkstra{
+    font-size: x-large;
+}
 
 
 /* pre.code:before {
