@@ -243,6 +243,8 @@ export default class App
             document.getElementById("speedSlider").style.display = "none";
             //show the psuedocode checkbox
             document.getElementById("codeCheckbox").style.display = "block";
+            this.paused = true;
+            document.getElementById("playPauseBtn").innerText = "Solve";
         });
 
         //add slider events
