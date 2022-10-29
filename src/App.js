@@ -16,7 +16,7 @@ export default class App
     {
         this.algorithms = {
             BFS : ["Breadth First Search",6], // name of algorithm, number of lines in psuedocode
-            Dijkstra : ["Dijkstra", 5]
+            Dijkstra : ["Dijkstra", 9]
         };
         
         this.currentAlgorithm = "BFS";
@@ -445,6 +445,21 @@ export default class App
         this.updateStepsGUI();
     }
 
+    stepDyjkstra()
+    {
+        this.code[this.currentLine].style.backgroundColor = "transparent";
+        this.currentLine++;
+        if (this.currentLine >= this.algorithms[this.currentAlgorithm][1])
+        {
+            this.currentLine = 5;
+            this.numIterations++;
+        }
+            
+        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
+        this.numSteps++;
+        this.updateStepsGUI();
+    }
+
     /**
      * updates the number of steps & iterations taken in the GUI
      * */
@@ -528,26 +543,40 @@ export default class App
 
     visualizeDijkstra(dt)
     {
+        this.temp = 0;
         // visualize dijkstra
         if (this.maze.algVis.dijkstra.visualize)
         {
             // add to timer
             this.maze.algVis.timer += dt;
-
-            // visualize the path 
-            if (this.maze.algVis.timer >= this.maze.algVis.speed)
-            {
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
-                this.maze.algVis.dijkstra.index++;
-                this.maze.algVis.timer = 0.0;
-            }
+            this.maze.psudoVis.timer += dt;
 
             if (this.maze.algVis.dijkstra.index >= this.maze.algVis.dijkstra.order.length)
             {
                 this.maze.algVis.dijkstra.visualize = false;
                 this.maze.algVis.dijkstra.seeShortestPath = true;
             }
+
+
+            // visualize the path 
+            if (this.steps == 4)
+            {
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+                this.maze.algVis.dijkstra.index++;
+                this.maze.algVis.timer = 0.0;
+                this.steps = 0;
+            }
+
+            //visualize the psudocode
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
+            {
+                this.stepDyjkstra();
+                this.maze.psudoVis.timer = 0.0;
+                this.steps++;
+            }
+
+            
         }
 
         // visualize dijkstra shortest path
