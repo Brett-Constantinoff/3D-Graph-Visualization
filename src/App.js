@@ -501,7 +501,7 @@ export default class App
     {
 
     }
-
+    //TODO: FIX THIS SHIT
     visualizeBackBfsNoCode()
     {
         // visualize bfs
@@ -520,10 +520,23 @@ export default class App
                 return;
             }
 
-            // visualize the path 
-            this.maze.algVis.bfs.index--;
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 0.5;
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.pathColor);
+            if(this.executed === false)
+            {
+                
+                // visualize the path 
+                this.maze.algVis.bfs.index--;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 0.5;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.color);
+                    neighbor.material.opacity = 0.5;
+                }
+                this.maze.algVis.bfs.index++;
+                this.executed = true;
+            }
+            
         }
     }
 
@@ -540,10 +553,37 @@ export default class App
                 this.maze.algVis.bfs.seeShortestPath = true;
             }
 
-            // visualize the path 
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
-            this.maze.algVis.bfs.index++;
+            
+            if(this.executed === false)
+            {
+                //visualize neighbors
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    console.log(neighbor)
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 1.0;
+                }
+                this.executed = true;
+            }
+            else
+            {
+                // visualize the path
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.color);
+                    neighbor.material.opacity = 0.5;
+                }
+                this.maze.algVis.bfs.index++;
+                this.executed = false;
+            }
+            
+            
+            
+
+            
         }
     }
 
