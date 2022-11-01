@@ -30,6 +30,7 @@ export default class App
         this.stepsGui = document.getElementById("steps"); // gui element for steps
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
         this.steps = 0;
+        
 
         this.stats = new Stats();
         this.canvas = document.querySelector('.webgl');
@@ -137,7 +138,7 @@ export default class App
             switch (this.currentAlgorithm)
             {
                 case "BFS":
-                    this.stepBFS();
+                    this.visualizeStepBfs();
                     break;
                 case "Dijkstra":
                     this.stepDyjkstra();
@@ -207,6 +208,16 @@ export default class App
             document.getElementById("algoPicker").style.display = "none";
             //show speed slider
             document.getElementById("speedSlider").style.display = "block";
+            //if psudocode show only step button. else show all buttons
+            if(document.getElementById("codeSwitch").checked)
+            {
+                document.getElementById("stepBtn").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("stepBtn").style.display = "block";
+                document.getElementById("backBtn").style.display = "block";
+            }
         });
 
         //add solve button event
@@ -245,6 +256,9 @@ export default class App
             document.getElementById("codeCheckbox").style.display = "block";
             this.paused = true;
             document.getElementById("playPauseBtn").innerText = "Solve";
+            //hide all buttons
+            document.getElementById("stepBtn").style.display = "none";
+            document.getElementById("backBtn").style.display = "none";
         });
 
         //add slider events
@@ -477,6 +491,34 @@ export default class App
 
     }
 
+    visualizeStepBfs()
+    {
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
+            }
+
+             // visualize the path 
+             if (this.steps === 4)
+             {
+                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
+                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
+                 this.maze.algVis.bfs.index++;
+                 this.steps = 0;
+             }
+
+            //visualize the psudocode            
+            this.stepBFS();
+            this.maze.psudoVis.timer = 0.0;
+            this.steps++;
+        }
+
+    }
     visualizeBfs(dt)
     {
          // visualize bfs
