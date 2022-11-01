@@ -29,6 +29,7 @@ export default class Maze extends Cube{
             // maybe hook this up to the front end
             speed : 0.10,
             color : 0xFFFF00,
+            neighbourColor : 0x00FF00, // color of neighbours
             pathColor:0x48A14D,
             shortestPathColor: 0xFF007F,
             bfs : {

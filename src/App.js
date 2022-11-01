@@ -25,11 +25,14 @@ export default class App
         this.numIterations = 0; // number of iterations of the algorithm
         this.numSteps = 0; // number of steps in the algorithm
         this.paused = true; // is the algorithm paused? start paused if psudocode is on. (true = paused, false = running)
+        this.executed = false;
         
         //set up GUI elements
         this.stepsGui = document.getElementById("steps"); // gui element for steps
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
         this.steps = 0;
+    
+
         
 
         this.stats = new Stats();
@@ -512,15 +515,15 @@ export default class App
             if (this.maze.algVis.bfs.index-1 === 0)
             {
                 this.maze.algVis.bfs.index--;
-                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1;
-                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.pathColor);
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.pathColor);
                 return;
             }
 
             // visualize the path 
             this.maze.algVis.bfs.index--;
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 0.5;
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.pathColor);
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 0.5;
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.pathColor);
         }
     }
 
@@ -538,8 +541,8 @@ export default class App
             }
 
             // visualize the path 
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
-            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
             this.maze.algVis.bfs.index++;
         }
     }
@@ -557,14 +560,33 @@ export default class App
                 this.maze.algVis.bfs.seeShortestPath = true;
             }
 
+            if (this.currentLine === 4)
+            {
+                //visualize neighbors
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    console.log(neighbor)
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 1.0;
+                }
+                    
+            }
+
              // visualize the path 
-             if (this.steps === 4)
+             if (this.currentLine === 5)
              {
-                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
-                 this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
-                 this.maze.algVis.bfs.index++;
-                 this.steps = 0;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.color);
+                    neighbor.material.opacity = 0.5;
+                }
+                this.maze.algVis.bfs.index++;
+                
              }
+
 
             //visualize the psudocode            
             this.stepBFS();
@@ -577,32 +599,53 @@ export default class App
          // visualize bfs
          if (this.maze.algVis.bfs.visualize)
          {
-             // add to timer
-             this.maze.psudoVis.timer += dt;
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
+            }
+
+            // add to timer
+            this.maze.psudoVis.timer += dt;
+            
+            //visualize the psudocode
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
+            {
+                this.stepBFS();
+                this.maze.psudoVis.timer = 0.0;
+                this.steps++;
+                this.executed = false;
+            }
+
+            //visualize neighbors
+            if (this.currentLine === 4)
+            {
+                
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    console.log(neighbor)
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 1.0;
+                }
+                    
+            }
+            // visualize the path 
+            if (this.currentLine === 5 && this.executed == false)
+            {
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.color);
+                    neighbor.material.opacity = 0.5;
+                }
+                this.maze.algVis.bfs.index++;
+                this.executed = true;
+            }
+ 
              
-             // reach end of visualization
-             if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
-             {
-                 this.maze.algVis.bfs.visualize = false;
-                 this.maze.algVis.bfs.seeShortestPath = true;
-             }
- 
-              // visualize the path 
-              if (this.steps === 4)
-              {
-                  this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
-                  this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
-                  this.maze.algVis.bfs.index++;
-                  this.steps = 0;
-              }
- 
-             //visualize the psudocode
-             if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
-             {
-                 this.stepBFS();
-                 this.maze.psudoVis.timer = 0.0;
-                 this.steps++;
-             }
          }
  
          // visualize bfs shortest path
@@ -615,7 +658,7 @@ export default class App
              if (this.maze.algVis.bfs.pathCleared)
              {
                  this.maze.algVis.bfs.order.forEach((path) => {
-                     path.material.opacity = 0.15;
+                     path.mesh.material.opacity = 0.15;
                  });
                  this.maze.algVis.bfs.pathCleared = false;
              }
@@ -628,8 +671,8 @@ export default class App
              // visualize the path each 1/10 second
              else if (this.maze.algVis.timer >= this.maze.algVis.speed)
              {
-                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.opacity = 1.0;
-                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
+                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].mesh.material.opacity = 1.0;
+                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].mesh.material.color.set(this.maze.algVis.shortestPathColor);
                  this.maze.algVis.bfs.shortestPathIndex++;
                  this.maze.algVis.timer = 0.0;
              }

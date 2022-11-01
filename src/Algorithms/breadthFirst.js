@@ -12,7 +12,12 @@ export function breadthFirstSearch(maze)
         let currNode = maze.getNode(currPos);
         if (currNode)
         {
-            maze.algVis.bfs.order.push(currNode.getMesh());
+            let node = 
+            {
+                mesh: currNode.getMesh(),
+                neighbours: []
+            };
+            // maze.algVis.bfs.order.push(currNode.getMesh());
             if (currNode.type === "end")
             {
                 // once end is found, create the shortest path and quit
@@ -32,11 +37,13 @@ export function breadthFirstSearch(maze)
                             if (neighbourNode.type != "end")
                                 neighbourNode.type = "bfs";
                             neighbourNode.parent = currNode;
+                            node.neighbours.push(neighbourNode.getMesh());
                             q.enqueue(neighbourInfo[i].neighbour);
                         }
                     }
                 }
             });
+            maze.algVis.bfs.order.push(node);
         }
         }
 }
