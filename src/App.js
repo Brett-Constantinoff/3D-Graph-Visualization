@@ -138,7 +138,15 @@ export default class App
             switch (this.currentAlgorithm)
             {
                 case "BFS":
-                    this.visualizeStepBfs();
+                    if(document.getElementById("codeSwitch").checked)
+                    {
+                        this.visualizeStepBfs();
+                    }
+                    else
+                    {
+                        this.visualizeStepBfsNoCode();
+                    }
+                    
                     break;
                 case "Dijkstra":
                     this.stepDyjkstra();
@@ -156,7 +164,7 @@ export default class App
             switch (this.currentAlgorithm)
             {
                 case "BFS":
-                    this.backBFS();
+                    this.visualizeBackBfsNoCode();
                     break;
                 case "Dijkstra":
                     this.backDyjkstra();
@@ -491,6 +499,52 @@ export default class App
 
     }
 
+    visualizeBackBfsNoCode()
+    {
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {            
+            if(this.maze.algVis.bfs.index === 0)
+            {
+                return;
+            }
+            // reach beginning of visualization
+            if (this.maze.algVis.bfs.index-1 === 0)
+            {
+                this.maze.algVis.bfs.index--;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.pathColor);
+                return;
+            }
+
+            // visualize the path 
+            this.maze.algVis.bfs.index--;
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 0.5;
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.pathColor);
+        }
+    }
+
+    visualizeStepBfsNoCode()
+    {
+        console.log(this.maze.algVis.bfs.index)
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
+            }
+
+            // visualize the path 
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
+            this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
+            this.maze.algVis.bfs.index++;
+        }
+    }
+
+
     visualizeStepBfs()
     {
         // visualize bfs
@@ -514,7 +568,6 @@ export default class App
 
             //visualize the psudocode            
             this.stepBFS();
-            this.maze.psudoVis.timer = 0.0;
             this.steps++;
         }
 
