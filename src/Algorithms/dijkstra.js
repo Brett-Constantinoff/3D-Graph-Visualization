@@ -6,13 +6,26 @@ export function dijkstra(maze)
     maze.startNode.distance = 0;
     let q = new Queue();
     q.enqueue(maze.start);
+    //create start node
+    let startnode = 
+    {
+        mesh: maze.startNode.getMesh(),
+        neighbours: []
+    };
     // add start node to dijkstra order
-    maze.algVis.dijkstra.order.push(maze.startNode.getMesh());
+    maze.algVis.dijkstra.order.push(startnode);
 
     while (!q.isEmpty && !endFound)
     {
+        
         let currPos = q.dequeue();
         let currNode = maze.getNode(currPos);
+        let node = 
+        {
+            mesh: currNode.getMesh(),
+            neighbours: []
+        };
+        
         if (currNode.type === "end")
         {
             endFound = true;
@@ -46,12 +59,19 @@ export function dijkstra(maze)
                         neighbour.distance = currNode.distance + cost;
                         neighbour.parent = currNode;
                     }
+                    node.neighbours.push(neighbour.getMesh());
                     q.enqueue(n[i].neighbour);
+                    
                 }
 
             }
+            maze.algVis.dijkstra.order.push(node);
         }
     }
+    console.log(maze.algVis.dijkstra.order[0]);
+    console.log("SPACE");
+    console.log(maze.algVis.dijkstra.order[1]);
+
 }
 
 function dijkstraShortesPath(endNode, maze)

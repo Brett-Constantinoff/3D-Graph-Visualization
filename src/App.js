@@ -730,7 +730,6 @@ export default class App
 
     visualizeDijkstra(dt)
     {
-        this.temp = 0;
         // visualize dijkstra
         if (this.maze.algVis.dijkstra.visualize)
         {
@@ -748,8 +747,8 @@ export default class App
             // visualize the path 
             if (this.steps == 4)
             {
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
                 this.maze.algVis.dijkstra.index++;
                 this.maze.algVis.timer = 0.0;
                 this.steps = 0;
@@ -790,8 +789,8 @@ export default class App
             // visualize the path each 1/10 second
             else if (this.maze.algVis.timer >= this.maze.algVis.speed)
             {
-                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.opacity = 1.0;
-                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
+                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].mesh.material.opacity = 1.0;
+                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].mesh.material.color.set(this.maze.algVis.shortestPathColor);
                 this.maze.algVis.dijkstra.shortestPathIndex++;
                 this.maze.algVis.timer = 0.0;
             }
