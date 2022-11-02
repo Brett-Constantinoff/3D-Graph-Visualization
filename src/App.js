@@ -495,14 +495,7 @@ export default class App
         this.iterationsGui.innerText = this.numIterations;
     }
 
-    /**
-     * switches what algorithm is being visualized
-     * */
-    switchAlgorithm()
-    {
-
-    }
-    //TODO: FIX THIS SHIT
+    
     visualizeBackBfsNoCode()
     {
         // visualize bfs
@@ -747,11 +740,24 @@ export default class App
             // visualize the path 
             if (this.steps == 4)
             {
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
-                this.maze.algVis.dijkstra.index++;
-                this.maze.algVis.timer = 0.0;
-                this.steps = 0;
+                //
+                if(this.maze.algVis.dijkstra.index % 2 != 0)
+                {
+                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
+                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+                    this.maze.algVis.dijkstra.index++;
+                    this.maze.algVis.timer = 0.0;
+                    this.steps = 0;
+                }
+                else
+                {
+                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
+                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                    this.maze.algVis.dijkstra.index++;
+                    this.maze.algVis.timer = 0.0;
+                    this.steps = 0;
+                }
+                
             }
 
             //visualize the psudocode
