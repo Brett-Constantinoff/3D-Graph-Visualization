@@ -6,32 +6,13 @@ export function dijkstra(maze)
     maze.startNode.distance = 0;
     let q = new Queue();
     q.enqueue(maze.start);
-    console.log("maze start! "+maze.start )
-    //create start node
-    let startnode = 
-    {
-        mesh: maze.startNode.getMesh(),
-        neighbours: []
-    };
-    
-    // get all neighbours of start node ????
-    
     // add start node to dijkstra order
-    maze.algVis.dijkstra.order.push(startnode);
+    maze.algVis.dijkstra.order.push(maze.startNode.getMesh());
 
     while (!q.isEmpty && !endFound)
     {
-        
         let currPos = q.dequeue();
         let currNode = maze.getNode(currPos);
-
-        //create node we are going to add to dijkstra order
-        let node = 
-        {
-            mesh: currNode.getMesh(),
-            neighbours: []
-        };
-        
         if (currNode.type === "end")
         {
             endFound = true;
@@ -65,24 +46,12 @@ export function dijkstra(maze)
                         neighbour.distance = currNode.distance + cost;
                         neighbour.parent = currNode;
                     }
-                    node.neighbours.push(neighbour.getMesh()); // add neighbour to current node
-                    q.enqueue(n[i].neighbour);   
+                    q.enqueue(n[i].neighbour);
                 }
+
             }
-            // add node to dijkstra order
-            maze.algVis.dijkstra.order.push(node);
         }
     }
-    //for some reason every 2nd node is only showing mesh and not neighbours.
-    console.log("First 6 NODES in order array:")
-    console.log(maze.algVis.dijkstra.order[0]);
-    console.log(maze.algVis.dijkstra.order[1]);
-    console.log(maze.algVis.dijkstra.order[2]);
-    console.log(maze.algVis.dijkstra.order[3]);
-    console.log(maze.algVis.dijkstra.order[4]);
-    console.log(maze.algVis.dijkstra.order[5]);
-    console.log(maze.algVis.dijkstra.order[6]);
-
 }
 
 function dijkstraShortesPath(endNode, maze)

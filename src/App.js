@@ -152,7 +152,14 @@ export default class App
                     
                     break;
                 case "Dijkstra":
-                    this.stepDyjkstra();
+                    if(document.getElementById("codeSwitch").checked)
+                    {
+                        this.visualizeStepDijkstra();
+                    }
+                    else
+                    {
+                        this.visualizeStepDijkstraNoCode();
+                    }
                     break;
                 case "A*":
                     this.stepAStar();
@@ -170,7 +177,7 @@ export default class App
                     this.visualizeBackBfsNoCode();
                     break;
                 case "Dijkstra":
-                    this.backDyjkstra();
+                    this.visualizeBackDijkstraNoCode();
                     break;
                 case "A*":
                     this.backAStar();
@@ -721,54 +728,115 @@ export default class App
          } 
     }
 
+
+    visualizeBackDijkstraNoCode()
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.dijkstra.visualize)
+        {            
+            
+            //if we are at the start of the visualization
+            if (this.maze.algVis.dijkstra.index == 0)
+                return;
+
+            //if we reached the first node
+            if (this.maze.algVis.dijkstra.index == 1)
+            {
+                this.maze.algVis.dijkstra.index--;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.pathColor);
+            }
+            else
+            {
+                // visualize the path 
+                this.maze.algVis.dijkstra.index--;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 0.5;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.pathColor);
+            }
+        }
+    }
+
+    visualizeStepDijkstraNoCode()
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.dijkstra.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.dijkstra.index === this.maze.algVis.dijkstra.order.length - 1)
+            {
+                this.maze.algVis.dijkstra.visualize = false;
+                this.maze.algVis.dijkstra.seeShortestPath = true;
+            }
+    
+            // visualize the path             
+            console.log(this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index])
+            this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
+            this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+            this.maze.algVis.dijkstra.index++;
+        }
+
+    }
+    visualizeStepDijkstra()
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.dijkstra.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.dijkstra.index === this.maze.algVis.dijkstra.order.length - 1)
+            {
+                this.maze.algVis.dijkstra.visualize = false;
+                this.maze.algVis.dijkstra.seeShortestPath = true;
+            }
+    
+            // visualize the path 
+            if (this.currentLine === 6)
+            {
+                console.log(this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index])
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+                this.maze.algVis.dijkstra.index++;
+            }
+
+
+            //visualize the psudocode            
+            this.stepDyjkstra();
+            this.steps++;
+        }
+
+    }
+
     visualizeDijkstra(dt)
     {
         // visualize dijkstra
         if (this.maze.algVis.dijkstra.visualize)
         {
+            
             // add to timer
-            this.maze.algVis.timer += dt;
             this.maze.psudoVis.timer += dt;
-
-            if (this.maze.algVis.dijkstra.index >= this.maze.algVis.dijkstra.order.length)
-            {
-                this.maze.algVis.dijkstra.visualize = false;
-                this.maze.algVis.dijkstra.seeShortestPath = true;
-            }
-
-
-            // visualize the path 
-            if (this.steps == 4)
-            {
-                //
-                if(this.maze.algVis.dijkstra.index % 2 != 0)
-                {
-                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
-                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
-                    this.maze.algVis.dijkstra.index++;
-                    this.maze.algVis.timer = 0.0;
-                    this.steps = 0;
-                }
-                else
-                {
-                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                    this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
-                    this.maze.algVis.dijkstra.index++;
-                    this.maze.algVis.timer = 0.0;
-                    this.steps = 0;
-                }
-                
-            }
-
+            
             //visualize the psudocode
             if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
             {
                 this.stepDyjkstra();
                 this.maze.psudoVis.timer = 0.0;
                 this.steps++;
+                this.executed = false;
             }
 
-            
+            // visualize the path 
+            if (this.currentLine === 6 && this.executed == false)
+            {
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+                this.maze.algVis.dijkstra.index++;
+                this.executed = true;
+            }
+
+            if (this.maze.algVis.dijkstra.index >= this.maze.algVis.dijkstra.order.length)
+            {
+                this.maze.algVis.dijkstra.visualize = false;
+                this.maze.algVis.dijkstra.seeShortestPath = true;
+            }
         }
 
         // visualize dijkstra shortest path
@@ -795,8 +863,8 @@ export default class App
             // visualize the path each 1/10 second
             else if (this.maze.algVis.timer >= this.maze.algVis.speed)
             {
-                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].mesh.material.color.set(this.maze.algVis.shortestPathColor);
+                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.opacity = 1.0;
+                this.maze.algVis.dijkstra.shortestPath[this.maze.algVis.dijkstra.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
                 this.maze.algVis.dijkstra.shortestPathIndex++;
                 this.maze.algVis.timer = 0.0;
             }
