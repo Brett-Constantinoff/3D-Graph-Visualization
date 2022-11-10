@@ -45,7 +45,7 @@ export function breadthFirstSearch(maze)
             });
             maze.algVis.bfs.order.push(node);
         }
-        }
+    }
 }
 
 function bfsShortesPath(endNode, maze)

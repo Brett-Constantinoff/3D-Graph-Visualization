@@ -6,13 +6,18 @@ export function dijkstra(maze)
     maze.startNode.distance = 0;
     let q = new Queue();
     q.enqueue(maze.start);
-    // add start node to dijkstra order
-    maze.algVis.dijkstra.order.push(maze.startNode.getMesh());
 
     while (!q.isEmpty && !endFound)
     {
         let currPos = q.dequeue();
         let currNode = maze.getNode(currPos);
+
+        let node = 
+        {
+            mesh: currNode.getMesh(),
+            neighbours: []
+        };
+
         if (currNode.type === "end")
         {
             endFound = true;
@@ -34,22 +39,30 @@ export function dijkstra(maze)
             // update neighbour weights and add each to the dijkstra order
             for (let i = 0; i < n.length; i++)
             {
+                let neighbourObj = 
+                {
+                    mesh: null,
+                    weight: null
+                };
                 let neighbour = maze.getNode(n[i].neighbour);
                 if (neighbour.type === "path" || neighbour.type === "end")
                 {
                     if (neighbour.type != "end")
                         neighbour.type = "dijkstra";
-                    maze.algVis.dijkstra.order.push(neighbour.getMesh());
+                    //maze.algVis.dijkstra.order.push(neighbour.getMesh());
                     let cost = n[i].weight;
                     if (currNode.distance + cost < neighbour.distance)
                     {
                         neighbour.distance = currNode.distance + cost;
                         neighbour.parent = currNode;
                     }
+                    neighbourObj.mesh = neighbour;
+                    neighbourObj.weight = cost;
+                    node.neighbours.push(neighbourObj);
                     q.enqueue(n[i].neighbour);
                 }
-
             }
+            maze.algVis.dijkstra.order.push(node);
         }
     }
 }
