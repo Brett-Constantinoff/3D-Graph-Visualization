@@ -21,7 +21,23 @@
         <div class="col-sm">
                 <!-- webgl canvas -->
                 <canvas id="canvas" class="webgl"></canvas>
-            
+                <div id="nodeWeights" class="row bg-secondary card mx-auto" style="display: none;">
+                    <div class="row card-header">
+                        <h2>node weights</h2>
+                    </div>
+                    <div class="d-flex flex-row justify-content-evenly mb-1">
+                        <div class="weightCard" style="background-color: #42d4f4;">1</div>
+                        <div class="weightCard" style="background-color: #ffe119;">2</div>
+                        <div class="weightCard" style="background-color: #f58231;">3</div>
+                        <div class="weightCard" style="background-color: #e6194B;">4</div>
+                        <div class="weightCard" style="background-color: #000075;">5</div>
+                        <div class="weightCard" style="background-color: #469990;">6</div>
+                        <div class="weightCard" style="background-color: #808000;">7</div>
+                        <div class="weightCard" style="background-color: #9A6324;">8</div>
+                        <div class="weightCard" style="background-color: #800000;">9</div>
+                        <div class="weightCard" style="background-color: #000000;">10</div>
+                    </div>
+                </div>
             <!-- element to hold stats and maze controls -->
             <div class="card bg-secondary">
             
@@ -49,9 +65,12 @@
                         <div class="d-flex justify-content-center">
                             <label for="speed"><span class="sliderText">Speed <span id="valueSpeed">0.5</span></span> 
                                 <br>
-                                <span>slower</span>
-                                <input type="range" id="speed" name="speed" min="-1" max="-0.001" value="-0.5" step="0.001"> 
-                                <span>faster</span>
+                                <div class="d-flex ">
+                                    <span>slower</span>
+                                    <input type="range" id="speed" name="speed" min="-1" max="-0.001" value="-0.5" step="0.001"> 
+                                    <span>faster</span>
+                                </div>
+                                
                             </label>
                         </div>
                     </div>
@@ -166,23 +185,7 @@
                     </div> 
                     
                 </div>
-                <div id="nodeWeights" class="row container bg-secondary card mx-auto mb-5 mt-5" style="display: none;">
-                    <div class="row card-header">
-                        <h2 id="codeHeader">node weights</h2>
-                    </div>
-                    <div class="d-flex flex-row justify-content-evenly">
-                        <div class="weightCard" style="background-color: #42d4f4;">1</div>
-                        <div class="weightCard" style="background-color: #ffe119;">2</div>
-                        <div class="weightCard" style="background-color: #f58231;">3</div>
-                        <div class="weightCard" style="background-color: #e6194B;">4</div>
-                        <div class="weightCard" style="background-color: #000075;">5</div>
-                        <div class="weightCard" style="background-color: #469990;">6</div>
-                        <div class="weightCard" style="background-color: #808000;">7</div>
-                        <div class="weightCard" style="background-color: #9A6324;">8</div>
-                        <div class="weightCard" style="background-color: #800000;">9</div>
-                        <div class="weightCard" style="background-color: #000000;">10</div>
-                    </div>
-                </div>
+                
             
                 
             </div>   

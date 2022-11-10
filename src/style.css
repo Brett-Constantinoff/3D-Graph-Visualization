@@ -107,8 +107,7 @@ label
     font-family: 'Kanit', sans-serif;
     font-size: 20px;
     cursor: pointer;
-    width: 200px;
-    height: 80px;
+    
     
 }
 #generateBtn:hover
@@ -124,8 +123,7 @@ label
 #solveBtn
 {
     display: none;
-    width: 200px;
-    height: 80px;
+    
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);
@@ -147,8 +145,7 @@ label
 #resetBtn
 {
     display: none;
-    width: 200px;
-    height: 80px;
+    
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);
@@ -171,8 +168,7 @@ label
 #playPauseBtn
 {
     display: none;
-    width: 200px;
-    height: 80px;
+    
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
     background: rgb(32, 69, 110);

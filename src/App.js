@@ -574,7 +574,6 @@ export default class App
 
     visualizeStepBfsNoCode()
     {
-        console.log(this.maze.algVis.bfs.index)
         // visualize bfs
         if (this.maze.algVis.bfs.visualize)
         {            
@@ -591,7 +590,6 @@ export default class App
                 //visualize neighbors
                 for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
                     const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
-                    console.log(neighbor)
                     neighbor.material.color.set(this.maze.algVis.neighbourColor);
                     neighbor.material.opacity = 1.0;
                 }
@@ -637,7 +635,6 @@ export default class App
                 //visualize neighbors
                 for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
                     const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
-                    console.log(neighbor)
                     neighbor.material.color.set(this.maze.algVis.neighbourColor);
                     neighbor.material.opacity = 1.0;
                 }
@@ -696,7 +693,6 @@ export default class App
                 
                 for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
                     const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
-                    console.log(neighbor)
                     neighbor.material.color.set(this.maze.algVis.neighbourColor);
                     neighbor.material.opacity = 1.0;
                 }
