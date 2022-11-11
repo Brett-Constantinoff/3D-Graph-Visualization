@@ -20,8 +20,24 @@
         
         <div class="col-sm">
                 <!-- webgl canvas -->
-                <canvas class="webgl"></canvas>
-            
+                <canvas id="canvas" class="webgl"></canvas>
+                <div id="nodeWeights" class="row bg-secondary card mx-auto" style="display: none;">
+                    <div class="row card-header">
+                        <h2>node weights</h2>
+                    </div>
+                    <div class="d-flex flex-row justify-content-evenly mb-1">
+                        <div class="weightCard" style="background-color: #42d4f4;">1</div>
+                        <div class="weightCard" style="background-color: #ffe119;">2</div>
+                        <div class="weightCard" style="background-color: #f58231;">3</div>
+                        <div class="weightCard" style="background-color: #e6194B;">4</div>
+                        <div class="weightCard" style="background-color: #000075;">5</div>
+                        <div class="weightCard" style="background-color: #469990;">6</div>
+                        <div class="weightCard" style="background-color: #808000;">7</div>
+                        <div class="weightCard" style="background-color: #9A6324;">8</div>
+                        <div class="weightCard" style="background-color: #800000;">9</div>
+                        <div class="weightCard" style="background-color: #000000;">10</div>
+                    </div>
+                </div>
             <!-- element to hold stats and maze controls -->
             <div class="card bg-secondary">
             
@@ -31,52 +47,80 @@
 
                 <div class="row">
                 
-                    <div class="col">
+                    <div class="col" id="sliders">
                         <!-- slider control -->
-                        <div class="slider">
+                        <div class="d-flex">
                             <label for="mazeSizeX"><span class="sliderText">X Size <span id="valueX">10</span></span>
                             <input type="range" id="mazeSizeX" name="mazeSizeX" min="1" max="10" value="10" ></label>
                             <label for="mazeSizeY"><span class="sliderText">Y Size <span id="valueY">10</span></span>
                             <input type="range" id="mazeSizeY" name="mazeSizeY" min="1" max="10" value="10" ></label>
-                            <label for="mazeSizeZ"> <span class="sliderText">Size  <span id="valueZ">10</span></span>
+                            <label for="mazeSizeZ"> <span class="sliderText">Z Size <span id="valueZ">10</span></span>
                             <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="1" max="10" value="10" ></label>
                         </div>
                         
                         
 
                     </div>
-                    <div class="col">
+                    <div class="col-lg" id="speedSlider" style="display: none;">
                         <div class="d-flex justify-content-center">
-                            <label for="speed"><span class="sliderText">Speed <span id="valueSpeed">0.10</span></span> 
-                            <br>
-                            <input type="range" id="speed" name="speed" min="0.01" max="1" value="0.1" step="0.01">  </label>
+                            <label for="speed"><span class="sliderText">Speed <span id="valueSpeed">0.5</span></span> 
+                                <br>
+                                <div class="d-flex ">
+                                    <span>slower</span>
+                                    <input type="range" id="speed" name="speed" min="-1" max="-0.001" value="-0.5" step="0.001"> 
+                                    <span>faster</span>
+                                </div>
+                                
+                            </label>
                         </div>
+                    </div>
+                    <div class="col" id="codeCheckbox">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="align-self-center">
+                                <label for="codeSwitch">pseudocode</label>
+                                <input type="checkbox" id="codeSwitch" name="codeSwitch" checked="true">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" id="algoPicker">
+                        <label>Algorithm: 
+                            <select name="Algorithm" id="Algorithm">
+                                <option value="BFS">BFS</option>
+                                <option value="Dijkstra">Dijkstra</option>
+                                <option value="AStar" disabled>A*</option>
+                            </select>
+                            </label>
                     </div>
                     <div class="col">
                         <div class="align-self-center">
-                            <button id="generateBtn">Generate</button>
-                            <button id="solveBtn">Solve</button>
-                            <button id="resetBtn">Reset</button>
+                            <div class="d-flex justify-content-center">
+                                <button id="generateBtn">Generate</button>
+                                <button id="solveBtn">Solve</button>
+                            </div>
+                            
+                            <div class="d-flex justify-content-center gap-5">
+                                <button id="resetBtn">Reset</button>
+                                <button id="playPauseBtn">Solve</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col" id="stepControls">
+                        <div id="step">
+                            <button id="stepBtn" class="button--ujarak" style="display: none;">step</button>
+                        </div>
+                        <div id="backstep">
+                            <button id="backBtn" class="button--ujarak" style="display: none;">backstep</button>
                         </div>
                     </div>
                 </div>
             </div>
             
         </div>
-        <div class="col-sm">
+        <div class="col-sm" id="codeBlock">
             
-            <div class="row ">
-                <label>Current Algorithm: 
-                <select name="Algorithm" id="Algorithm">
-                    <option value="BFS">BFS</option>
-                    <option value="Dijkstra">Dijkstra</option>
-                    <option value="AStar" disabled>A*</option>
-                </select>
-                </label>
-
-            </div>
-            
-            <div class="row mt-1 gx-0">
+            <div class="row gx-0">
                 <!-- element to hold psudocode-->
                 <div class="container card bg-secondary" style="min-width: 22rem">     
                     
@@ -89,7 +133,7 @@
                         <p>Iterations: <span id="iterations">0</span></p>
                     </div>
 
-                    <div class="row card bg-dark mx-auto" style="width: 41rem; ">
+                    <div class="row card bg-dark mx-auto mb-5" style="width: 42rem; ">
                         <!--BFS psudocode here -->
                         <code id="BFS">
                             <span id="BFSLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
@@ -98,27 +142,40 @@
                             <br>
                             <span id="BFSLine3" class="lineNums">3       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
                             <br>
-                            <span id="BFSLine4" class="lineNums">4           <span id="code">let</span> <span id="variable">current node</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <span id="BFSLine4" class="lineNums">4           <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
                             <br>
-                            <span id="BFSLine5" class="lineNums">5           <span id="code">if</span> <span id="code">current node has any unvisited neighbors</span> <span id="variable">n</span></span>
+                            <span id="BFSLine5" class="lineNums">5           <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span></span>
                             <br>
-                            <span id="BFSLine6" class="lineNums">6               <span id="code">add <span id="variable">n</span> to <span id="variable">Q</span>  </span>
+                            <span id="BFSLine6" class="lineNums">6               <span id="code">&nbsp&nbspadd <span id="variable">n</span> to <span id="variable">Q</span>  </span>
 
                         </code>  
                         
                             
                         <!--Dyjkstra psudocode here -->
                         <code id="Dijkstra">
-                            <span id="DijkstraLine1" class="lineNums">1    <span id="if">lol</span> <span id="function">BFS</span>(<span id="variable">G, root</span>)</span> 
+                            <span id="DijkstraLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
                             <br>
-                            <span id="DijkstraLine2" class="lineNums">2       <span id="code">&nbsp&nbsp&nbsp&nbsplet</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
+                            <span id="DijkstraLine2" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code">be start node</span></span> 
                             <br>
-                            <span id="DijkstraLine3" class="lineNums">3           <span id="code">&nbsp&nbsp&nbsp&nbsplabel</span> <span id="variable">root</span> <span id="if">as</span> <span id="code">visited</span></span> 
+                            <span id="DijkstraLine3" class="lineNums">3       <span id="code">set distance from <span id="variable">S</span> -> <span id="variable">S</span> </span>  <span id="code">= 0</span></span>  
                             <br>
-                            <span id="DijkstraLine4" class="lineNums">4           <span id="if">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp while</span> <span id="variable">Q</span><span id="if"> is not</span> <span id="code">empty</span></span> 
+                            <span id="DijkstraLine4" class="lineNums">4       <span id="code">set distance from <span id="variable">S</span> -> any node </span>  <span id="code">= &#8734</span></span>
                             <br>
-                            <span id="DijkstraLine5" class="lineNums">5               <span id="function">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp DFS</span>(<span id="variable">neighbor</span>)</span> 
-                            
+                            <span id="DijkstraLine5" class="lineNums">5       <span id="code">add <span id="variable">S</span> to <span id="variable">Q</span></span></span>
+                            <br>
+                            <span id="DijkstraLine6" class="lineNums">6       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
+                            <br>
+                            <span id="DijkstraLine7" class="lineNums">7       <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <br>
+                            <span id="DijkstraLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span> 
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspget <span id="variable">n</span> cost</span></span>
+                            <br>
+                            <span id="DijkstraLine9" class="lineNums">9 <span id="code">&nbspif distance</span> <span id="code"><span id="variable">C</span> + cost &lt; distance  </span> <span id="variable">n</span> <span id="code">get <span id="variable">n</span> cost</span>
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspdistance</span> <span id="code"><span id="variable">n</span> = distance  </span> <span id="variable">C</span> <span id="code"> + cost</span>
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code"><span id="variable">n</span>.parent = </span><span id="variable">C</span></span>  
                         </code>
                         
                         <div class="invisible"style="display:none;">
@@ -126,7 +183,9 @@
                             <button id="stepBtn" class="button--ujarak">step</button>
                         </div>
                     </div> 
+                    
                 </div>
+                
             
                 
             </div>   
@@ -140,7 +199,12 @@
     
     <footer>
         <!-- copywrite -->
-        <p>© 2022 Brett Constantinoff & Max Schafer</p>
+        <p class="text-center">Brett Constantinoff & Max Schafer &copy; 
+            <script>
+                var CurrentYear = new Date().getFullYear()
+                document.write(CurrentYear)
+            </script>
+        </p>
     </footer>
 </body>
 </html>

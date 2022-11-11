@@ -16,7 +16,7 @@ export default class App
     {
         this.algorithms = {
             BFS : ["Breadth First Search",6], // name of algorithm, number of lines in psuedocode
-            Dijkstra : ["Dijkstra", 5]
+            Dijkstra : ["Dijkstra", 9]
         };
         
         this.currentAlgorithm = "BFS";
@@ -24,11 +24,30 @@ export default class App
         this.currentLine = 0; // current line of code being highlighted
         this.numIterations = 0; // number of iterations of the algorithm
         this.numSteps = 0; // number of steps in the algorithm
+        this.paused = true; // is the algorithm paused? start paused if psudocode is on. (true = paused, false = running)
+        this.executed = false;
         
         //set up GUI elements
         this.stepsGui = document.getElementById("steps"); // gui element for steps
         this.iterationsGui = document.getElementById("iterations"); // gui element for iterations
         this.steps = 0;
+        this.nodeWeights = document.getElementById("nodeWeights"); // gui element for node weights
+
+        this.weightColors = {
+            1 : 0x42d4f4, // cyan
+            2 : 0xffe119, // yellow 
+            3 : 0xf58231, // orange 
+            4 : 0xe6194B, // red
+            5 : 0x000075, // navy
+            6 : 0x469990, // teal
+            7 : 0x808000, // olive
+            8 : 0x9A6324, // brown
+            9 : 0x800000, // maroon  
+            10 : 0x000000, // black
+        };
+    
+
+        
 
         this.stats = new Stats();
         this.canvas = document.querySelector('.webgl');
@@ -53,7 +72,7 @@ export default class App
                 height: window.innerHeight/2,
             };
         }
-        if(window.innerHeight > 1500)
+        if(window.innerHeight > 1500 )
         {
             this.sizes = {
                 width: window.innerWidth/1.4,
@@ -97,14 +116,17 @@ export default class App
         //needs to come at the beginning of onUpdate
         this.stats.begin();
 
-        switch (this.currentAlgorithm)
+        if(!this.paused)
         {
-            case "BFS":
-                this.visualizeBfs(dt);
-                break;
-            case "Dijkstra":
-                this.visualizeDijkstra(dt);
-                break;
+            switch (this.currentAlgorithm)
+            {
+                case "BFS":
+                    this.visualizeBfs(dt);
+                    break;
+                case "Dijkstra":
+                    this.visualizeDijkstra(dt);
+                    break;
+            }
         }
         // update controlls every frame
         this.controls.update();
@@ -133,10 +155,25 @@ export default class App
             switch (this.currentAlgorithm)
             {
                 case "BFS":
-                    this.stepBFS();
+                    if(document.getElementById("codeSwitch").checked)
+                    {
+                        this.visualizeStepBfs();
+                    }
+                    else
+                    {
+                        this.visualizeStepBfsNoCode();
+                    }
+                    
                     break;
                 case "Dijkstra":
-                    this.stepDyjkstra();
+                    if(document.getElementById("codeSwitch").checked)
+                    {
+                        this.visualizeStepDijkstra();
+                    }
+                    else
+                    {
+                        this.visualizeStepDijkstraNoCode();
+                    }
                     break;
                 case "A*":
                     this.stepAStar();
@@ -151,10 +188,10 @@ export default class App
             switch (this.currentAlgorithm)
             {
                 case "BFS":
-                    this.backBFS();
+                    this.visualizeBackBfsNoCode();
                     break;
                 case "Dijkstra":
-                    this.backDyjkstra();
+                    this.visualizeBackDijkstraNoCode();
                     break;
                 case "A*":
                     this.backAStar();
@@ -170,17 +207,6 @@ export default class App
             this.maze.fill();
             depthFirstSearch(this.maze.start, this.maze);
             console.log("generate");
-            //disable and hide the button
-            document.getElementById("generateBtn").style.display = "none";
-            //show the solve button
-            document.getElementById("solveBtn").style.display = "block";
-            //disable range sliders
-            document.getElementsByClassName("slider")[0].style.visibility = "hidden";
-        });
-
-        //add solve button event
-        document.getElementById("solveBtn").addEventListener("click", () =>
-        {
             this.currentAlgorithm = document.getElementById("Algorithm").value;
             console.log(this.currentAlgorithm);
             switch (this.currentAlgorithm)
@@ -199,10 +225,43 @@ export default class App
                     this.backAStar();
                     break;
             }
+            console.log(this.currentAlgorithm + " algorithm loaded and ready to go!");
+            //disable and hide the button
+            document.getElementById("generateBtn").style.display = "none";
+            //show the reset button
+            document.getElementById("resetBtn").style.display = "block";
+            //show the playPause button
+            document.getElementById("playPauseBtn").style.display = "block";
+            //disable range sliders
+            document.getElementById("sliders").style.display = "none";
+            //hide the psuedocode
+            document.getElementById("codeCheckbox").style.display = "none";
+            //hide the algorithm select
+            document.getElementById("algoPicker").style.display = "none";
+            //show speed slider
+            document.getElementById("speedSlider").style.display = "block";
+            //if psudocode show only step button. else show all buttons
+            if(document.getElementById("codeSwitch").checked)
+            {
+                document.getElementById("stepBtn").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("stepBtn").style.display = "block";
+                document.getElementById("backBtn").style.display = "block";
+            }
+        });
+
+        //add solve button event
+        document.getElementById("solveBtn").addEventListener("click", () =>
+        {
+            
             //disable and hide the button
             document.getElementById("solveBtn").style.display = "none";
             //show the reset button
             document.getElementById("resetBtn").style.display = "block";
+            //show the playPause button
+            document.getElementById("playPauseBtn").style.display = "block";
         });
 
         //add reset button event
@@ -217,8 +276,22 @@ export default class App
             document.getElementById("resetBtn").style.display = "none";
             //hide the solve button
             document.getElementById("solveBtn").style.display = "none";
+            //hide playPause button
+            document.getElementById("playPauseBtn").style.display = "none";
             //enable range sliders
-            document.getElementsByClassName("slider")[0].style.visibility = "visible";
+            document.getElementById("sliders").style.display = "block";
+            //show algorithm select
+            document.getElementById("algoPicker").style.display = "block";
+            //hide speed slider
+            document.getElementById("speedSlider").style.display = "none";
+            //show the psuedocode checkbox
+            document.getElementById("codeCheckbox").style.display = "block";
+            this.paused = true;
+            document.getElementById("playPauseBtn").innerText = "Solve";
+            //hide all buttons
+            document.getElementById("stepBtn").style.display = "none";
+            document.getElementById("backBtn").style.display = "none";
+            this.executed = false;
         });
 
         //add slider events
@@ -245,7 +318,8 @@ export default class App
 
         document.getElementById("speed").addEventListener("input", () =>
         {
-            let value = document.getElementById("speed").value;
+            let value = Math.abs(document.getElementById("speed").value);
+            
             this.maze.algVis.speed = value;
             document.getElementById("valueSpeed").innerHTML = value;
         });
@@ -261,7 +335,56 @@ export default class App
             document.getElementById(item.target.value).style = "display: block";
             this.currentAlgorithm = item.target.value;
             this.setupPsuedocode(this.algorithms[item.target.value][1]);
+            //if the algorithm is anything but BFS then show the nodeWeights
+            if(item.target.value != "BFS")
+            {
+                document.getElementById("nodeWeights").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("nodeWeights").style.display = "none";
+            }
         }); 
+
+        //add playPause button event
+        document.getElementById("playPauseBtn").addEventListener("click", () =>
+        {
+            this.paused = !this.paused; //toggle the paused variable
+            //change the button text
+            if (this.paused)
+            {
+                document.getElementById("playPauseBtn").innerText = "Resume";
+                console.log("paused");
+            }
+            else
+            {
+                document.getElementById("playPauseBtn").innerText = "Pause";
+                console.log("Playing");
+            }
+        });
+
+        //add event listener for psuedocode checkbox
+        document.getElementById("codeSwitch").addEventListener("change", () =>
+        {
+            if (document.getElementById("codeSwitch").checked)
+            {
+                document.getElementById("codeBlock").style.display = "block";
+                document.getElementById("canvas").style.width = this.sizes.width;
+                this.camera.aspect = this.sizes.width / this.sizes.height;
+                this.camera.updateProjectionMatrix()
+                this.renderer.setSize(this.sizes.width, this.sizes.height);
+            }
+            else
+            {
+                document.getElementById("codeBlock").style.display = "none";
+                //resize the canvas to width 100%
+                document.getElementById("canvas").style.width = "100%";
+                this.camera.aspect = window.innerWidth / this.sizes.height;
+                this.camera.updateProjectionMatrix()
+                this.renderer.setSize(window.innerWidth, this.sizes.height);
+
+            }
+        });
     }
 
     /**
@@ -378,6 +501,21 @@ export default class App
         this.updateStepsGUI();
     }
 
+    stepDyjkstra()
+    {
+        this.code[this.currentLine].style.backgroundColor = "transparent";
+        this.currentLine++;
+        if (this.currentLine >= this.algorithms[this.currentAlgorithm][1])
+        {
+            this.currentLine = 5;
+            this.numIterations++;
+        }
+            
+        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
+        this.numSteps++;
+        this.updateStepsGUI();
+    }
+
     /**
      * updates the number of steps & iterations taken in the GUI
      * */
@@ -387,45 +525,195 @@ export default class App
         this.iterationsGui.innerText = this.numIterations;
     }
 
-    /**
-     * switches what algorithm is being visualized
-     * */
-    switchAlgorithm()
+    
+    visualizeBackBfsNoCode()
     {
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {            
+            if(this.maze.algVis.bfs.index === 0)
+            {
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 0.25;
+                }
+                return;
+            }
+            
 
+            if(this.executed === false)
+            {
+                
+                // visualize the path 
+                this.maze.algVis.bfs.index--;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 0.5;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                
+                this.maze.algVis.bfs.index++;
+                this.executed = true;
+            }
+            else
+            {
+                this.maze.algVis.bfs.index--;
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 0.25;
+                }
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                this.executed = false;
+
+            }
+            
+        }
     }
 
+    visualizeStepBfsNoCode()
+    {
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
+            }
+
+            
+            if(this.executed === false)
+            {
+                //visualize neighbors
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 1.0;
+                }
+                this.executed = true;
+            }
+            else
+            {
+                // visualize the path
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 0.25;
+                }
+                this.maze.algVis.bfs.index++;
+                this.executed = false;
+            }
+            
+            
+            
+
+            
+        }
+    }
+
+
+    visualizeStepBfs()
+    {
+        // visualize bfs
+        if (this.maze.algVis.bfs.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
+            }
+
+            if (this.currentLine === 4)
+            {
+                //visualize neighbors
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 1.0;
+                }
+                    
+            }
+
+             // visualize the path 
+             if (this.currentLine === 5)
+             {
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.color);
+                    neighbor.material.opacity = 0.5;
+                }
+                this.maze.algVis.bfs.index++;
+                
+             }
+
+
+            //visualize the psudocode            
+            this.stepBFS();
+            this.steps++;
+        }
+
+    }
     visualizeBfs(dt)
     {
          // visualize bfs
          if (this.maze.algVis.bfs.visualize)
          {
-             // add to timer
-             this.maze.psudoVis.timer += dt;
+            // reach end of visualization
+            if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
+            {
+                this.maze.algVis.bfs.visualize = false;
+                this.maze.algVis.bfs.seeShortestPath = true;
+            }
+
+            // add to timer
+            this.maze.psudoVis.timer += dt;
+            
+            //visualize the psudocode
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
+            {
+                this.stepBFS();
+                this.maze.psudoVis.timer = 0.0;
+                this.steps++;
+                this.executed = false;
+            }
+
+            //visualize neighbors
+            if (this.currentLine === 4)
+            {
+                
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.neighbourColor);
+                    neighbor.material.opacity = 1.0;
+                }
+                    
+            }
+            // visualize the path 
+            if (this.currentLine === 5 && this.executed == false)
+            {
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].mesh.material.color.set(this.maze.algVis.color);
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].neighbours[index];
+                    neighbor.material.color.set(this.maze.algVis.color);
+                    neighbor.material.opacity = 0.5;
+                }
+                this.maze.algVis.bfs.index++;
+                this.executed = true;
+            }
+ 
              
-             // reach end of visualization
-             if (this.maze.algVis.bfs.index === this.maze.algVis.bfs.order.length - 1)
-             {
-                 this.maze.algVis.bfs.visualize = false;
-                 this.maze.algVis.bfs.seeShortestPath = true;
-             }
- 
-              // visualize the path 
-              if (this.steps === 4)
-              {
-                  this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.opacity = 1.0;
-                  this.maze.algVis.bfs.order[this.maze.algVis.bfs.index].material.color.set(this.maze.algVis.color);
-                  this.maze.algVis.bfs.index++;
-                  this.steps = 0;
-              }
- 
-             //visualize the psudocode
-             if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
-             {
-                 this.stepBFS();
-                 this.maze.psudoVis.timer = 0.0;
-                 this.steps++;
-             }
          }
  
          // visualize bfs shortest path
@@ -438,7 +726,7 @@ export default class App
              if (this.maze.algVis.bfs.pathCleared)
              {
                  this.maze.algVis.bfs.order.forEach((path) => {
-                     path.material.opacity = 0.15;
+                     path.mesh.material.opacity = 0.15;
                  });
                  this.maze.algVis.bfs.pathCleared = false;
              }
@@ -451,12 +739,154 @@ export default class App
              // visualize the path each 1/10 second
              else if (this.maze.algVis.timer >= this.maze.algVis.speed)
              {
-                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.opacity = 1.0;
-                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].material.color.set(this.maze.algVis.shortestPathColor);
+                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].mesh.material.opacity = 1.0;
+                 this.maze.algVis.bfs.shortestPath[this.maze.algVis.bfs.shortestPathIndex].mesh.material.color.set(this.maze.algVis.shortestPathColor);
                  this.maze.algVis.bfs.shortestPathIndex++;
                  this.maze.algVis.timer = 0.0;
              }
          } 
+    }
+
+
+    visualizeBackDijkstraNoCode()
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.dijkstra.visualize)
+        {            
+            
+            //if we are at the start of the visualization
+            if (this.maze.algVis.dijkstra.index == 0)
+            {
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                this.executed = false;
+                return;
+            }
+            if(this.executed)
+            {
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 0.5;
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                //rehighlight neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index - 1].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index - 1].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1.0;
+                }
+                
+                //this.maze.algVis.dijkstra.index--;
+                this.executed = false;
+            }
+            else
+            {
+                this.maze.algVis.dijkstra.index--;
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.maze.algVis.pathColor);
+                    neighbor.mesh.material.opacity = 0.5;
+                }
+                
+                
+                this.executed = true;
+            }
+        }
+    }
+
+    visualizeStepDijkstraNoCode()
+    {
+         // visualize dijkstra
+         if (this.maze.algVis.dijkstra.visualize)
+         {            
+            // reach end of visualization
+            if (this.maze.algVis.dijkstra.index === this.maze.algVis.dijkstra.order.length - 1)
+            {
+                this.maze.algVis.dijkstra.visualize = false;
+                this.maze.algVis.dijkstra.seeShortestPath = true;
+            }
+    
+            // visualize the path 
+            if (this.executed == false)
+            {
+                //if we aren't at the beginning of the visualization
+                if (this.maze.algVis.dijkstra.index - 1 >= 0)
+                {
+                    //hide the neighbors from the previous step
+                    for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index - 1].neighbours.length; index++) {
+                        const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index - 1].neighbours[index];
+                        neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                        neighbor.mesh.material.opacity = 0.5;
+                    }
+                }
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+
+                this.executed = true;
+            
+            }
+            else
+            {
+                //show the neighbors
+                for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1;
+                }
+                this.maze.algVis.dijkstra.index++;
+                this.executed = false;
+            }
+         }
+
+    }
+    visualizeStepDijkstra()
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.dijkstra.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.dijkstra.index === this.maze.algVis.dijkstra.order.length - 1)
+            {
+                this.maze.algVis.dijkstra.visualize = false;
+                this.maze.algVis.dijkstra.seeShortestPath = true;
+            }
+    
+            // visualize the path 
+            if (this.currentLine == 5)
+            {
+                //if we aren't at the beginning of the visualization
+                if (this.maze.algVis.dijkstra.index - 1 >= 0)
+                {
+                    //hide the neighbors from the previous step
+                    for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index - 1].neighbours.length; index++) {
+                        const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index - 1].neighbours[index];
+                        neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                        neighbor.mesh.material.opacity = 0.5;
+                    }
+                }
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+               
+            }
+
+            // visualize the neighbors
+            if (this.currentLine == 6)
+            {
+                //show the neighbors
+                for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1;
+                }
+
+                this.maze.algVis.dijkstra.index++;
+
+            }
+
+
+            //visualize the psudocode            
+            this.stepDyjkstra();
+            this.steps++;
+        }
+
     }
 
     visualizeDijkstra(dt)
@@ -464,16 +894,51 @@ export default class App
         // visualize dijkstra
         if (this.maze.algVis.dijkstra.visualize)
         {
+            
             // add to timer
-            this.maze.algVis.timer += dt;
+            this.maze.psudoVis.timer += dt;
+            
+            //visualize the psudocode
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
+            {
+                this.stepDyjkstra();
+                this.maze.psudoVis.timer = 0.0;
+                this.steps++;
+                this.executed = false;
+            }
 
             // visualize the path 
-            if (this.maze.algVis.timer >= this.maze.algVis.speed)
+            if (this.currentLine == 5 && this.executed == false)
             {
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].material.color.set(this.maze.algVis.color);
+
+                //if we aren't at the beginning of the visualization
+                if(this.maze.algVis.dijkstra.index - 1 >= 0)
+                {
+                    //hide neighbors from previous step
+                    for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index -1].neighbours.length; index++) {
+                        const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index -1].neighbours[index];
+                        neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                        neighbor.mesh.material.opacity = 0.5;
+                    }
+                    
+                }
+
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                
+                
+            }
+
+            //visualize neighbors
+            if (this.currentLine == 6 && this.executed == false)
+            {
+                for (let index = 0; index < this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1.0;
+                }
+                this.executed = true;
                 this.maze.algVis.dijkstra.index++;
-                this.maze.algVis.timer = 0.0;
             }
 
             if (this.maze.algVis.dijkstra.index >= this.maze.algVis.dijkstra.order.length)
@@ -493,7 +958,7 @@ export default class App
             if (this.maze.algVis.dijkstra.pathCleared)
             {
                 this.maze.algVis.dijkstra.order.forEach((path) => {
-                    path.material.opacity = 0.15;
+                    path.mesh.material.opacity = 0.15;
                 });
                 this.maze.algVis.dijkstra.pathCleared = false;
             }
