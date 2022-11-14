@@ -49,6 +49,15 @@ export default class Maze extends Cube{
                 pathCleared: true,
                 index : 0,
                 shortestPathIndex: 0,
+            },
+            aStar: {
+                order: [],
+                shortestPath: [],
+                visualize: false,
+                seeShortestPath: false,
+                pathCleared: true,
+                index : 0,
+                shortestPathIndex: 0,
             }
        }
        this.psudoVis = {
@@ -123,8 +132,8 @@ export default class Maze extends Cube{
             // end node
             else if (position.equals(new Vector3(-this.adjustmentX, -this.adjustmentY, -this.adjustmentZ)))
             {
-                this.endNode = node;
                 node = new Node(0x781f19, false, this.nodeSize, 1.0, position, "end");
+                this.endNode = node;
             }
             // wall
             else 
@@ -268,6 +277,15 @@ export default class Maze extends Cube{
         this.algVis.dijkstra.visualize = false;
         this.algVis.dijkstra.seeShortestPath = false;
         this.algVis.dijkstra.pathCleared = true;
+
+        // reset astar
+        this.algVis.aStar.order = [];
+        this.algVis.aStar.shortestPath = [];
+        this.algVis.aStar.index = 0;
+        this.algVis.aStar.shortestPathIndex = 0;
+        this.algVis.aStar.visualize = false;
+        this.algVis.aStar.seeShortestPath = false;
+        this.algVis.aStar.pathCleared = true;
     }
 
     /**
