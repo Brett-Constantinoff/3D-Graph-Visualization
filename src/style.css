@@ -305,6 +305,9 @@ pre.code code:before {
 #Dijkstra{
 display: none;
 }
+#Astar{
+display: none;
+}
 
 
 .weightCard
