@@ -6,6 +6,7 @@ import Maze from './Objects/Maze';
 import { depthFirstSearch } from './Algorithms/depthFirst';
 import { breadthFirstSearch } from './Algorithms/breadthFirst';
 import { dijkstra } from './Algorithms/dijkstra';
+import { Astar } from './Algorithms/Astar';
 
 export default class App
 {
@@ -16,7 +17,8 @@ export default class App
     {
         this.algorithms = {
             BFS : ["Breadth First Search",6], // name of algorithm, number of lines in psuedocode
-            Dijkstra : ["Dijkstra", 9]
+            Dijkstra : ["Dijkstra", 9],
+            Astar: ["Astar", 6]
         };
         
         this.currentAlgorithm = "BFS";
@@ -45,9 +47,6 @@ export default class App
             9 : 0x800000, // maroon  
             10 : 0x000000, // black
         };
-    
-
-        
 
         this.stats = new Stats();
         this.canvas = document.querySelector('.webgl');
@@ -126,6 +125,9 @@ export default class App
                 case "Dijkstra":
                     this.visualizeDijkstra(dt);
                     break;
+                case "Astar":
+                    this.visualizeAstar(dt);
+                    break;
             }
         }
         // update controlls every frame
@@ -175,7 +177,7 @@ export default class App
                         this.visualizeStepDijkstraNoCode();
                     }
                     break;
-                case "A*":
+                case "Astar":
                     this.stepAStar();
                     break;
             }
@@ -193,7 +195,7 @@ export default class App
                 case "Dijkstra":
                     this.visualizeBackDijkstraNoCode();
                     break;
-                case "A*":
+                case "Astar":
                     this.backAStar();
                     break;
             }
@@ -221,8 +223,10 @@ export default class App
                     this.maze.algVis.dijkstra.visualize = true;
                     console.log("Dijkstra solve");
                     break;
-                case "A*":
-                    this.backAStar();
+                case "Astar":
+                    Astar(this.maze);
+                    this.maze.algVis.aStar.visualize = true;
+                    console.log("Astar solve");
                     break;
             }
             console.log(this.currentAlgorithm + " algorithm loaded and ready to go!");
@@ -617,7 +621,6 @@ export default class App
         }
     }
 
-
     visualizeStepBfs()
     {
         // visualize bfs
@@ -663,6 +666,7 @@ export default class App
         }
 
     }
+
     visualizeBfs(dt)
     {
          // visualize bfs
@@ -746,7 +750,6 @@ export default class App
              }
          } 
     }
-
 
     visualizeBackDijkstraNoCode()
     {
@@ -881,7 +884,6 @@ export default class App
 
             }
 
-
             //visualize the psudocode            
             this.stepDyjkstra();
             this.steps++;
@@ -925,8 +927,6 @@ export default class App
 
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
-                
-                
             }
 
             //visualize neighbors
@@ -979,4 +979,56 @@ export default class App
             }
         }
     }
+
+    visualizeAstar(dt)
+    {
+         // visualize aStar
+         if (this.maze.algVis.aStar.visualize)
+         {
+            // reach end of visualization
+            if (this.maze.algVis.aStar.index === this.maze.algVis.aStar.order.length - 1)
+            {
+                this.maze.algVis.aStar.visualize = false;
+                this.maze.algVis.aStar.seeShortestPath = true;
+            }
+
+            // add to timer
+            this.maze.psudoVis.timer += dt;
+            this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
+            this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);      
+            this.maze.algVis.aStar.index++;
+         }
+ 
+         // visualize aStar shortest path
+         if (this.maze.algVis.aStar.seeShortestPath)
+         {
+             // add to timer
+             this.maze.algVis.timer += dt;
+ 
+             // make yellow paths transparent
+             if (this.maze.algVis.aStar.pathCleared)
+             {
+                 this.maze.algVis.aStar.order.forEach((path) => {
+                     path.mesh.material.opacity = 0.15;
+                 });
+                 this.maze.algVis.aStar.pathCleared = false;
+             }
+ 
+             // reach end of visualization
+             if (this.maze.algVis.aStar.shortestPathIndex === this.maze.algVis.aStar.shortestPath.length)
+             {
+                 this.maze.algVis.aStar.seeShortestPath = false;
+             }
+             // visualize the path each 1/10 second
+             else if (this.maze.algVis.timer >= this.maze.algVis.speed)
+             {
+                 this.maze.algVis.aStar.shortestPath[this.maze.algVis.aStar.shortestPathIndex].mesh.material.opacity = 1.0;
+                 this.maze.algVis.aStar.shortestPath[this.maze.algVis.aStar.shortestPathIndex].mesh.material.color.set(this.maze.algVis.shortestPathColor);
+                 this.maze.algVis.aStar.shortestPathIndex++;
+                 this.maze.algVis.timer = 0.0;
+             }
+         } 
+    }
+
+    
 }

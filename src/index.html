@@ -58,8 +58,6 @@
                             <input type="range" id="mazeSizeZ" name="mazeSizeZ" min="1" max="10" value="10" ></label>
                         </div>
                         
-                        
-
                     </div>
                     <div class="col-lg" id="speedSlider" style="display: none;">
                         <div class="d-flex justify-content-center">
@@ -88,7 +86,7 @@
                             <select name="Algorithm" id="Algorithm">
                                 <option value="BFS">BFS</option>
                                 <option value="Dijkstra">Dijkstra</option>
-                                <option value="AStar" disabled>A*</option>
+                                <option value="Astar">Astar</option>
                             </select>
                             </label>
                     </div>
@@ -102,8 +100,7 @@
                             <div class="d-flex justify-content-center gap-5">
                                 <button id="resetBtn">Reset</button>
                                 <button id="playPauseBtn">Solve</button>
-                            </div>
-                            
+                            </div>  
                         </div>
                     </div>
                     <div class="col" id="stepControls">
@@ -150,7 +147,6 @@
 
                         </code>  
                         
-                            
                         <!--Dyjkstra psudocode here -->
                         <code id="Dijkstra">
                             <span id="DijkstraLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
@@ -176,6 +172,21 @@
                             <span id="code">&nbsp&nbsp&nbsp&nbspdistance</span> <span id="code"><span id="variable">n</span> = distance  </span> <span id="variable">C</span> <span id="code"> + cost</span>
                             <br>
                             <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code"><span id="variable">n</span>.parent = </span><span id="variable">C</span></span>  
+                        </code>
+
+                         <!--Astar psudocode here -->
+                         <code id="Astar">
+                            <span id="AstarLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
+                            <br>
+                            <span id="AstarLine2" class="lineNums">2       <span id="code">add <span id="variable">start node</span> to</span> <span id="variable">Q</span></span>
+                            <br>
+                            <span id="AstarLine3" class="lineNums">3       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
+                            <br>
+                            <span id="AstarLine4" class="lineNums">4           <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <br>
+                            <span id="AstarLine5" class="lineNums">5           <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span></span>
+                            <br>
+                            <span id="AstarLine6" class="lineNums">6               <span id="code">&nbsp&nbspadd <span id="variable">n</span> to <span id="variable">Q</span>  </span>
                         </code>
                         
                         <div class="invisible"style="display:none;">
