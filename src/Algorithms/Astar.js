@@ -68,6 +68,12 @@ export function Astar(maze)
             maze.algVis.aStar.order.push(node);
         }
     }
+
+    //print first 10 nodes in order
+    for (let i = 0; i < 10; i++)
+    {
+        console.log(maze.algVis.aStar.order[i]);
+    }
 }
 
 function aStarShortesPath(endNode, maze)
