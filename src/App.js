@@ -36,16 +36,16 @@ export default class App
         this.nodeWeights = document.getElementById("nodeWeights"); // gui element for node weights
 
         this.weightColors = {
-            1 : 0x42d4f4, // cyan
-            2 : 0xffe119, // yellow 
-            3 : 0xf58231, // orange 
-            4 : 0xe6194B, // red
-            5 : 0x000075, // navy
-            6 : 0x469990, // teal
-            7 : 0x808000, // olive
-            8 : 0x9A6324, // brown
-            9 : 0x800000, // maroon  
-            10 : 0x000000, // black
+            1 : 0xfcfda4,
+            2 : 0xf2f27d, 
+            3 : 0xf6d543,  
+            4 : 0xf8850f, 
+            5 : 0xe75d2d, 
+            6 : 0xcb4149, 
+            7 : 0x972666, 
+            8 : 0x68156e, 
+            9 : 0x380f63,  
+            10 : 0x00010d, 
         };
 
         this.stats = new Stats();
