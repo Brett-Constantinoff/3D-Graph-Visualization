@@ -20,6 +20,7 @@ export default class Maze extends Cube{
        this.nodeMeshes = new THREE.Group();
        // holds our actual node objects
        this.nodes = [];
+       this.walls = [];
        this.nodeSize = 0.5;
        this.wireFrame.scale.set(this.size.x, this.size.y, this.size.z);
        this.adjList = new Map();
@@ -259,6 +260,7 @@ export default class Maze extends Cube{
     {
         this.nodes = [];
         this.nodeMeshes.clear();
+        this.adjList.clear();
 
         // reset bfs
         this.algVis.bfs.order = [];
