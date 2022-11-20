@@ -4,8 +4,13 @@
  * @param {Vector3} nodePos position of a given node
  * @param {Maze} maze maze object
  */
+
+ const pseudoRandom = require('pseudo-random');
+
 export function depthFirstSearch(nodePos, maze)
 {
+    
+    let prng = pseudoRandom((Math.random() * 12021990) + 1); // set seed to random number between 1 and 12021990
     let stack = [];
     // get current node object
     let node = maze.getNode(nodePos);
@@ -39,7 +44,7 @@ export function depthFirstSearch(nodePos, maze)
             stack.push(currNode);
 
             //choose a random neighbor
-            let index = Math.floor(Math.random() * (n.length - 1));
+            let index = Math.floor(prng.random() * (n.length - 1));
             let neighbor = maze.getNode(n[index]);
             
             // quit once end is found

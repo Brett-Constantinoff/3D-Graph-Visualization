@@ -20,6 +20,7 @@
         "jquery": "^3.6.1",
         "mini-css-extract-plugin": "^2.6.0",
         "portfinder-sync": "0.0.2",
+        "pseudo-random": "^0.6.0",
         "raw-loader": "^4.0.2",
         "stats.js": "^0.17.0",
         "three": "^0.140.0",
