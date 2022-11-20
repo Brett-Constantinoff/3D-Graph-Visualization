@@ -259,6 +259,7 @@ export default class Maze extends Cube{
     {
         this.nodes = [];
         this.nodeMeshes.clear();
+        this.adjList.clear();
 
         // reset bfs
         this.algVis.bfs.order = [];
