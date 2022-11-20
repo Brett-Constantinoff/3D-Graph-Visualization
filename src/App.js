@@ -18,7 +18,7 @@ export default class App
         this.algorithms = {
             BFS : ["Breadth First Search",6], // name of algorithm, number of lines in psuedocode
             Dijkstra : ["Dijkstra", 9],
-            Astar: ["Astar", 6]
+            Astar: ["Astar", 9]
         };
         
         this.currentAlgorithm = "BFS";
@@ -178,7 +178,14 @@ export default class App
                     }
                     break;
                 case "Astar":
-                    this.stepAStar();
+                    if(document.getElementById("codeSwitch").checked)
+                    {
+                        this.visualizeStepAstar();
+                    }
+                    else
+                    {
+                        this.visualizeStepAstarNoCode();
+                    }
                     break;
             }
             console.log("step");
@@ -196,7 +203,7 @@ export default class App
                     this.visualizeBackDijkstraNoCode();
                     break;
                 case "Astar":
-                    this.backAStar();
+                    this.visualizeBackAstarNoCode();
                     break;
             }
             console.log("back");
@@ -506,6 +513,21 @@ export default class App
     }
 
     stepDyjkstra()
+    {
+        this.code[this.currentLine].style.backgroundColor = "transparent";
+        this.currentLine++;
+        if (this.currentLine >= this.algorithms[this.currentAlgorithm][1])
+        {
+            this.currentLine = 5;
+            this.numIterations++;
+        }
+            
+        this.code[this.currentLine].style.backgroundColor = "rgba(255, 255, 0, 0.2)";  
+        this.numSteps++;
+        this.updateStepsGUI();
+    }
+
+    stepAstar()
     {
         this.code[this.currentLine].style.backgroundColor = "transparent";
         this.currentLine++;
@@ -980,6 +1002,144 @@ export default class App
         }
     }
 
+    visualizeBackAstarNoCode()
+    {
+        // visualize dijkstra
+        if (this.maze.algVis.aStar.visualize)
+        {            
+            
+            //if we are at the start of the visualization
+            if (this.maze.algVis.aStar.index == 0)
+            {
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1;
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                this.executed = false;
+                return;
+            }
+            if(this.executed)
+            {
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 0.5;
+                //this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.pathColor);
+                //rehighlight neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1.0;
+                }
+                
+                //this.maze.algVis.aStar.index--;
+                this.executed = false;
+            }
+            else
+            {
+                this.maze.algVis.aStar.index--;
+                //hide neighbors from previous step
+                for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.maze.algVis.pathColor);
+                    neighbor.mesh.material.opacity = 0.5;
+                }
+                
+                
+                this.executed = true;
+            }
+        }
+    }
+    visualizeStepAstarNoCode()
+    {
+         // visualize aStar
+         if (this.maze.algVis.aStar.visualize)
+         {            
+            // reach end of visualization
+            if (this.maze.algVis.aStar.index === this.maze.algVis.aStar.order.length - 1)
+            {
+                this.maze.algVis.aStar.visualize = false;
+                this.maze.algVis.aStar.seeShortestPath = true;
+            }
+    
+            // visualize the path 
+            if (this.executed == false)
+            {
+                //if we aren't at the beginning of the visualization
+                if (this.maze.algVis.aStar.index - 1 >= 0)
+                {
+                    //hide the neighbors from the previous step
+                    for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours.length; index++) {
+                        const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours[index];
+                        neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                        neighbor.mesh.material.opacity = 0.5;
+                    }
+                }
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
+
+                this.executed = true;
+            
+            }
+            else
+            {
+                //show the neighbors
+                for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1;
+                }
+                this.maze.algVis.aStar.index++;
+                this.executed = false;
+            }
+         }
+
+    }
+    visualizeStepAstar()
+    {
+        // visualize astar
+        if (this.maze.algVis.aStar.visualize)
+        {            
+            // reach end of visualization
+            if (this.maze.algVis.aStar.index === this.maze.algVis.aStar.order.length - 1)
+            {
+                this.maze.algVis.aStar.visualize = false;
+                this.maze.algVis.aStar.seeShortestPath = true;
+            }
+    
+            // visualize the path 
+            if (this.currentLine == 5)
+            {
+                //if we aren't at the beginning of the visualization
+                if (this.maze.algVis.aStar.index - 1 >= 0)
+                {
+                    //hide the neighbors from the previous step
+                    for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours.length; index++) {
+                        const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours[index];
+                        neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                        neighbor.mesh.material.opacity = 0.5;
+                    }
+                }
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
+               
+            }
+
+            // visualize the neighbors
+            if (this.currentLine == 6)
+            {
+                //show the neighbors
+                for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1;
+                }
+
+                this.maze.algVis.aStar.index++;
+
+            }
+
+            //visualize the psudocode            
+            this.stepAstar();
+            this.steps++;
+        }
+
+    }
     visualizeAstar(dt)
     {
          // visualize aStar
