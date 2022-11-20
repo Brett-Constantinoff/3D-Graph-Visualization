@@ -197,12 +197,7 @@ label
     font-size: 20px;
 }
 
-#BFS{
-    font-size: x-large;
-}
-#Dijkstra{
-    font-size: x-large;
-}
+
 
 
 /* pre.code:before {
@@ -300,13 +295,16 @@ pre.code code:before {
 
 
 #BFS{
+    font-size: x-large;
 }
 
 #Dijkstra{
 display: none;
+font-size: x-large;
 }
 #Astar{
 display: none;
+font-size: x-large;
 }
 
 
