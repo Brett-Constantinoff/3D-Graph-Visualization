@@ -139,7 +139,7 @@
                         <p>Iterations: <span id="iterations">0</span></p>
                     </div>
 
-                    <div class="row card bg-dark mx-auto mb-5" style="width: 42rem; ">
+                    <div class="row card bg-dark mx-auto mb-5" style="width: 50rem; ">
                         <!--BFS psudocode here -->
                         <code id="BFS">
                             <span id="BFSLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
@@ -187,15 +187,34 @@
                          <code id="Astar">
                             <span id="AstarLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
                             <br>
-                            <span id="AstarLine2" class="lineNums">2       <span id="code">add <span id="variable">start node</span> to</span> <span id="variable">Q</span></span>
+                            <span id="AstarLine2" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code">be start node</span></span> 
                             <br>
-                            <span id="AstarLine3" class="lineNums">3       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
+                            <span id="AstarLine3" class="lineNums">3       <span id="code">set distance from <span id="variable">S</span> -> <span id="variable">S</span> </span>  <span id="code">= 0</span></span>  
                             <br>
-                            <span id="AstarLine4" class="lineNums">4           <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <span id="AstarLine4" class="lineNums">4       <span id="code">set distance from <span id="variable">S</span> -> any node </span>  <span id="code">= &#8734</span></span>
                             <br>
-                            <span id="AstarLine5" class="lineNums">5           <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span></span>
+                            <span id="AstarLine5" class="lineNums">5       <span id="code">add <span id="variable">S</span> to <span id="variable">Q</span></span></span>
                             <br>
-                            <span id="AstarLine6" class="lineNums">6               <span id="code">&nbsp&nbspadd <span id="variable">n</span> to <span id="variable">Q</span>  </span>
+                            <span id="AstarLine6" class="lineNums">6       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
+                            <br>
+                            <span id="AstarLine7" class="lineNums">7       <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <br>
+                            <span id="AstarLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span> 
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspget <span id="variable">n</span> cost</span>
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspcalculate <span id="variable">heuristic cost</span></span></span>
+                            </span>
+
+                            <br>
+                            <span id="AstarLine9" class="lineNums">9 <span id="code">&nbspif distance</span> <span id="code"><span id="variable">C</span> + cost 
+                            + <span id="variable">heuristic cost</span> &lt; distance  </span> <span id="variable">n</span> 
+                            <br>
+                            &nbsp&nbsp&nbsp&nbsp<span id="code">get <span id="variable">n</span> cost</span>
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspdistance</span> <span id="code"><span id="variable">n</span> = distance  </span> <span id="variable">C</span> <span id="code"> + cost + <span id="variable">heuristic cost</span></span>
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code"><span id="variable">n</span>.parent = </span><span id="variable">C</span></span> 
                         </code>
                         
                         <div class="invisible"style="display:none;">
