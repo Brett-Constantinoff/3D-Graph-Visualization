@@ -396,6 +396,24 @@ export default class App
 
             }
         });
+
+        //add event listener for helper checkbox
+        document.getElementById("helperSwitch").addEventListener("change", () =>
+        {
+            if (document.getElementById("helperSwitch").checked)
+            {
+                this.axisHelper = new THREE.AxesHelper(10);
+                this.scene.add(this.axisHelper);
+                console.log("helper on");
+            }
+            else
+            {
+
+                this.scene.remove(this.axisHelper);
+                console.log("helper off");
+
+            }
+        });
     }
 
     /**
@@ -446,6 +464,8 @@ export default class App
 
         // debug
         // z is blue,  y is green, x is red
+        this.axisHelper = new THREE.AxesHelper(10);
+        this.scene.add(this.axisHelper);
         //this.scene.add(new THREE.AxesHelper(10));
     }
 
