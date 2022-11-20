@@ -1145,18 +1145,54 @@ export default class App
          // visualize aStar
          if (this.maze.algVis.aStar.visualize)
          {
+            // add to timer
+            this.maze.psudoVis.timer += dt;
+
+            //visualize the psudocode
+            if (this.maze.psudoVis.timer >= this.maze.algVis.speed)
+            {
+                this.stepAstar();
+                this.maze.psudoVis.timer = 0.0;
+                this.steps++;
+                this.executed = false;
+            }
+
+            // visualize the path 
+            if (this.currentLine == 5 && this.executed == false)
+            {
+                //if we aren't at the beginning of the visualization
+                if (this.maze.algVis.aStar.index - 1 >= 0)
+                {
+                    //hide the neighbors from the previous step
+                    for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours.length; index++) {
+                        const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index - 1].neighbours[index];
+                        neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                        neighbor.mesh.material.opacity = 0.5;
+                    }
+                }
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
+                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
+            }
+
+            // visualize the neighbors
+            if (this.currentLine == 6 && this.executed == false)
+            {
+                //show the neighbors
+                for (let index = 0; index < this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours.length; index++) {
+                    const neighbor = this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].neighbours[index];
+                    neighbor.mesh.material.color.set(this.weightColors[neighbor.weight]);
+                    neighbor.mesh.material.opacity = 1;
+                }
+                this.executed = true;
+                this.maze.algVis.aStar.index++;
+            }
+
             // reach end of visualization
             if (this.maze.algVis.aStar.index === this.maze.algVis.aStar.order.length - 1)
             {
                 this.maze.algVis.aStar.visualize = false;
                 this.maze.algVis.aStar.seeShortestPath = true;
             }
-
-            // add to timer
-            this.maze.psudoVis.timer += dt;
-            this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
-            this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);      
-            this.maze.algVis.aStar.index++;
          }
  
          // visualize aStar shortest path
