@@ -68,7 +68,7 @@ export default class App
         {
             this.sizes = {
                 width: window.innerWidth/2,
-                height: window.innerHeight/2,
+                height: 907.5,
             };
         }
         if(window.innerHeight > 1500 )
