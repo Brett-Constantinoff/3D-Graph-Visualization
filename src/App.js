@@ -863,7 +863,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
 
                 this.executed = true;
             
@@ -908,7 +908,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
                
             }
 
@@ -968,7 +968,7 @@ export default class App
                 }
 
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
             }
 
             //visualize neighbors
