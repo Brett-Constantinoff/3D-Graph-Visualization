@@ -216,14 +216,12 @@ export default class Maze extends Cube{
      */
     cleanAdjList()
     {
-        let adjList = new Map();
         for (let [key, value] of this.adjList)
         {
             let node = this.getNode(key)
-            if(node.type != "wall")
-                adjList.set(key, value)
+            if(node.type === "wall")
+                this.adjList.delete(key)
         }
-        this.adjList = new Map(adjList);
     }
 
     /**

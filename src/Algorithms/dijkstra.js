@@ -2,75 +2,81 @@ import Queue from "./Queue";
 
 export function dijkstra(maze)
 {
-    let endFound = false;
+
     maze.startNode.distance = 0;
-    let q = new Queue();
-    q.enqueue(maze.start);
+    let seen = new Set();
 
-    while (!q.isEmpty && !endFound)
+    for (let [currNodePos, neighborInfo] of maze.adjList)
     {
-        let currPos = q.dequeue();
-        let currNode = maze.getNode(currPos);
+        // get minimum node
+        let minNode = getMin(maze, seen);
+        seen.add(minNode);
 
+        // for visualization
         let node = 
         {
-            mesh: currNode.getMesh(),
+            mesh: minNode.getMesh(),
             neighbours: []
         };
 
-        if (currNode.type === "end")
+        // for each neighbor of minimum node
+        for (let i = 0; i < neighborInfo.length; i++)
         {
-            endFound = true;
-            dijkstraShortesPath(currNode, maze);
-            console.log("found");
-            continue;
-        }
-        if (currNode)
-        {
-            // get neighbours
-            let n = null;
-            maze.adjList.forEach((neighbourInfo, key) => {
-                if ((key.x == currPos.x) && (key.y == currPos.y) && (key.z == currPos.z))
-                {
-                    n = neighbourInfo;
-                }
-            });
-            
-            // update neighbour weights and add each to the dijkstra order
-            for (let i = 0; i < n.length; i++)
+            // for visualization
+            let neighbourObj = 
             {
-                let neighbourObj = 
-                {
-                    mesh: null,
-                    weight: null
-                };
-                let neighbour = maze.getNode(n[i].neighbour);
-                if (neighbour.type === "path" || neighbour.type === "end")
-                {
-                    if (neighbour.type != "end")
-                        neighbour.type = "dijkstra";
-                    //maze.algVis.dijkstra.order.push(neighbour.getMesh());
-                    let cost = n[i].weight;
-                    if (currNode.distance + cost < neighbour.distance)
-                    {
-                        neighbour.distance = currNode.distance + cost;
-                        neighbour.parent = currNode;
-                    }
-                    neighbourObj.mesh = neighbour;
-                    neighbourObj.weight = cost;
-                    node.neighbours.push(neighbourObj);
-                    q.enqueue(n[i].neighbour);
-                }
+                mesh: null,
+                weight: null
+            };
+
+            // get neighbor node
+            let neighbor = maze.getNode(neighborInfo[i].neighbour);
+          
+            // set the parent of the neighbor to the current node
+            neighbor.parent = minNode;
+
+            // get the weight of the current neighbor
+            let weight = neighborInfo[i].weight;
+            
+            // for visualization
+            neighbourObj.mesh = neighbor.mesh;
+            neighbourObj.weight = weight;
+            node.neighbours.push(neighbourObj);
+            
+            // update neighbor distance
+            if (seen.has(neighbor) === false && neighbor.distance > minNode.distance + weight)
+            {
+                neighbor.distance = minNode.distance + weight;
             }
-            maze.algVis.dijkstra.order.push(node);
+        }
+        // for visualization
+        maze.algVis.dijkstra.order.push(node);
+    }
+}
+
+function getMin(maze, seen)
+{
+    let min = Infinity;
+    let minNode = null;
+
+    for (let [currNodePos, neighborInfo] of maze.adjList)
+    {
+        let currNode = maze.getNode(currNodePos);
+        if (seen.has(currNode) === false && currNode.distance < min)
+        {
+            min = currNode.distance;
+            minNode = currNode;
         }
     }
+    return minNode;
 }
 
 function dijkstraShortesPath(endNode, maze)
 {
+    console.log(endNode)
     // iterate through node parents from end
     let currNode = endNode;
+    /*
     while (currNode.parent.type != "start")
     {
         maze.algVis.dijkstra.shortestPath.push(currNode);
@@ -80,4 +86,6 @@ function dijkstraShortesPath(endNode, maze)
     maze.algVis.dijkstra.shortestPath.push(maze.startNode);
     // reverse array after
     maze.algVis.dijkstra.shortestPath.reverse();
+    console.log(maze.algVis.dijkstra.shortestPath)
+    */
 }

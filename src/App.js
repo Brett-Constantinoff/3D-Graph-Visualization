@@ -216,6 +216,7 @@ export default class App
             this.maze.fill();
             depthFirstSearch(this.maze.start, this.maze);
             this.maze.cleanAdjList();
+            console.log(this.maze.adjList)
             console.log("generate");
             this.currentAlgorithm = document.getElementById("Algorithm").value;
             console.log(this.currentAlgorithm);
@@ -228,6 +229,7 @@ export default class App
                     break;
                 case "Dijkstra":
                     dijkstra(this.maze);
+                    console.log(this.maze.algVis)
                     this.maze.algVis.dijkstra.visualize = true;
                     console.log("Dijkstra solve");
                     break;
