@@ -215,6 +215,7 @@ export default class App
         {
             this.maze.fill();
             depthFirstSearch(this.maze.start, this.maze);
+            this.maze.cleanAdjList();
             console.log("generate");
             this.currentAlgorithm = document.getElementById("Algorithm").value;
             console.log(this.currentAlgorithm);
