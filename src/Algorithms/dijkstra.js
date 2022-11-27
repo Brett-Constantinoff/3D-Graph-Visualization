@@ -2,7 +2,6 @@ import Queue from "./Queue";
 
 export function dijkstra(maze)
 {
-
     maze.startNode.distance = 0;
     let seen = new Set();
 
@@ -24,10 +23,12 @@ export function dijkstra(maze)
             if (seen.has(neighbor) === false && neighbor.distance > minNode.distance + weight)
             {
                 neighbor.distance = minNode.distance + weight;
+                neighborInfo[i].weight = minNode.distance + weight;
 
                 // set the parent of the neighbor to the current node
                 neighbor.parent = minNode;
             }
+            maze.adjList.set(currNodePos, neighborInfo)
         }
     }
 
