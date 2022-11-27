@@ -1,5 +1,3 @@
-import Queue from "./Queue";
-
 export function dijkstra(maze)
 {
     maze.startNode.distance = 0;
@@ -8,30 +6,53 @@ export function dijkstra(maze)
     for (let [currNodePos, neighborInfo] of maze.adjList)
     {
         // get minimum node
-        let minNode = getMin(maze, seen);
-        seen.add(minNode);
+        let minInfo = getMin(maze, seen);
 
-        // for each neighbor of minimum node
-        for (let i = 0; i < neighborInfo.length; i++)
+        if (minInfo.minNode != null && minInfo.neighbours != null)
         {
-            // get neighbor node
-            let neighbor = maze.getNode(neighborInfo[i].neighbour);
-            
-            // get the weight of the current neighbor
-            let weight = neighborInfo[i].weight;
-            // update neighbor distance
-            if (seen.has(neighbor) === false && neighbor.distance > minNode.distance + weight)
+            let minNode = minInfo.minNode;
+            let neighbours = minInfo.neighbours;
+
+            let node = 
             {
-                neighbor.distance = minNode.distance + weight;
-                neighborInfo[i].weight = minNode.distance + weight;
+                mesh: minNode.getMesh(),
+                neighbours: []
+            };
 
-                // set the parent of the neighbor to the current node
-                neighbor.parent = minNode;
+            seen.add(minNode);
+
+            // for each neighbor of minimum node
+            for (let i = 0; i < neighbours.length; i++)
+            {
+                // get neighbor node
+                let neighbor = maze.getNode(neighbours[i].neighbour);
+                if (neighbor.type != "wall")
+                {
+                     // get the weight of the current neighbor
+                    let weight = neighbours[i].weight;
+                    // update neighbor distance
+                    if (seen.has(neighbor) === false && neighbor.distance > minNode.distance + weight)
+                    {
+                        neighbor.distance = minNode.distance + weight;
+                        neighbours[i].weight = minNode.distance + weight;
+
+                        // set the parent of the neighbor to the current node
+                        neighbor.parent = minNode;
+
+                        let neighbourObj = 
+                        {
+                            mesh: neighbor.getMesh(),
+                            weight: weight,
+                        };
+                        node.neighbours.push(neighbourObj);
+                    }
+                }
             }
-            maze.adjList.set(currNodePos, neighborInfo)
+            maze.algVis.dijkstra.order.push(node);
+            maze.adjList.set(minNode.mesh.position, neighbours)
         }
+        
     }
-
     dijkstraShortesPath(maze.endNode, maze)
 }
 
@@ -39,6 +60,7 @@ function getMin(maze, seen)
 {
     let min = Infinity;
     let minNode = null;
+    let neighbours = null;
 
     for (let [currNodePos, neighborInfo] of maze.adjList)
     {
@@ -47,14 +69,14 @@ function getMin(maze, seen)
         {
             min = currNode.distance;
             minNode = currNode;
+            neighbours = neighborInfo;
         }
     }
-    return minNode;
+    return {minNode, neighbours};
 }
 
 function dijkstraShortesPath(endNode, maze)
 {
-    console.log(endNode)
     // iterate through node parents from end
     let currNode = endNode;
     
@@ -67,6 +89,4 @@ function dijkstraShortesPath(endNode, maze)
     maze.algVis.dijkstra.shortestPath.push(maze.startNode);
     // reverse array after
     maze.algVis.dijkstra.shortestPath.reverse();
-    console.log(maze.algVis.dijkstra.shortestPath)
-
 }
