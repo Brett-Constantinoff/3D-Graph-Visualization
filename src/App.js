@@ -68,7 +68,7 @@ export default class App
         {
             this.sizes = {
                 width: window.innerWidth/2,
-                height: window.innerHeight/2,
+                height: 907.5,
             };
         }
         if(window.innerHeight > 1500 )
@@ -470,6 +470,11 @@ export default class App
         this.axisHelper = new THREE.AxesHelper(10);
         this.scene.add(this.axisHelper);
         //this.scene.add(new THREE.AxesHelper(10));
+        
+        this.camera.aspect = this.sizes.width / this.sizes.height;
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(this.sizes.width, this.sizes.height);
+        
     }
 
     /**
