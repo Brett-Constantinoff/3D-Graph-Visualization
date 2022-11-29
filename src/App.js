@@ -215,6 +215,8 @@ export default class App
         {
             this.maze.fill();
             depthFirstSearch(this.maze.start, this.maze);
+            this.maze.cleanAdjList();
+            console.log(this.maze.adjList)
             console.log("generate");
             this.currentAlgorithm = document.getElementById("Algorithm").value;
             console.log(this.currentAlgorithm);
@@ -227,6 +229,7 @@ export default class App
                     break;
                 case "Dijkstra":
                     dijkstra(this.maze);
+                    console.log(this.maze.algVis)
                     this.maze.algVis.dijkstra.visualize = true;
                     console.log("Dijkstra solve");
                     break;
@@ -863,7 +866,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
 
                 this.executed = true;
             
@@ -908,7 +911,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
                
             }
 
@@ -968,7 +971,7 @@ export default class App
                 }
 
                 this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.dijkstra.order[this.maze.algVis.dijkstra.index].mesh.material.color.set(this.maze.algVis.color);
             }
 
             //visualize neighbors
@@ -1091,7 +1094,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
 
                 this.executed = true;
             
@@ -1136,7 +1139,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
                
             }
 
@@ -1191,7 +1194,7 @@ export default class App
                     }
                 }
                 this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.opacity = 1.0;
-                this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
+                //this.maze.algVis.aStar.order[this.maze.algVis.aStar.index].mesh.material.color.set(this.maze.algVis.color);
             }
 
             // visualize the neighbors

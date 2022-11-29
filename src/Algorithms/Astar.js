@@ -1,85 +1,91 @@
-import Queue from "./Queue";
-
 export function Astar(maze)
 {
-    let endFound = false;
     maze.startNode.distance = 0;
-    let q = new Queue();
-    q.enqueue(maze.start);
+    let seen = new Set();
 
-    while (!q.isEmpty && !endFound)
+    for (let [currNodePos, neighborInfo] of maze.adjList)
     {
-        let currPos = q.dequeue();
-        let currNode = maze.getNode(currPos);
+        // get minimum node
+        let minInfo = getMin(maze, seen);
 
-        let node = 
+        if (minInfo.minNode != null && minInfo.neighbours != null)
         {
-            mesh: currNode.getMesh(),
-            neighbours: []
-        };
+            let minNode = minInfo.minNode;
+            let neighbours = minInfo.neighbours;
 
-        if (currNode.type === "end")
-        {
-            endFound = true;
-            aStarShortesPath(currNode, maze);
-            console.log("found");
-            continue;
-        }
-        if (currNode)
-        {
-            // get neighbours
-            let n = null;
-            maze.adjList.forEach((neighbourInfo, key) => {
-                if ((key.x == currPos.x) && (key.y == currPos.y) && (key.z == currPos.z))
-                {
-                    n = neighbourInfo;
-                }
-            });
-            
-            // update neighbour weights and add each to the dijkstra order
-            for (let i = 0; i < n.length; i++)
+            let node = 
             {
-                let neighbourObj = 
+                mesh: minNode.getMesh(),
+                neighbours: []
+            };
+
+            seen.add(minNode);
+
+            // for each neighbor of minimum node
+            for (let i = 0; i < neighbours.length; i++)
+            {
+                // get neighbor node
+                let neighbor = maze.getNode(neighbours[i].neighbour);
+                if (neighbor.type != "wall")
                 {
-                    mesh: null,
-                    weight: null
-                };
-                let neighbour = maze.getNode(n[i].neighbour);
-                if (neighbour.type === "path" || neighbour.type === "end")
-                {
-                    if (neighbour.type != "end")
-                        neighbour.type = "aStar";
-                    let cost = n[i].weight;
-                    //let hn = neighbour.mesh.position.distanceTo(maze.endNode.mesh.position);
-                    let hn = Math.sqrt( Math.pow((maze.endNode.mesh.position.x - neighbour.mesh.position.x), 2) + 
-                                        Math.pow((maze.endNode.mesh.position.y - neighbour.mesh.position.y), 2) + 
-                                        Math.pow((maze.endNode.mesh.position.z - neighbour.mesh.position.z), 2));
-                    if (currNode.distance + cost + hn < neighbour.distance)
+                     // get the weight of the current neighbor
+                    let weight = neighbours[i].weight;
+                    // update neighbor distance
+                    let hn = Math.sqrt( Math.pow((maze.endNode.mesh.position.x - neighbor.mesh.position.x), 2) + 
+                                        Math.pow((maze.endNode.mesh.position.y - neighbor.mesh.position.y), 2) + 
+                                        Math.pow((maze.endNode.mesh.position.z - neighbor.mesh.position.z), 2));
+                    if (seen.has(neighbor) === false && neighbor.distance > minNode.distance + weight)
                     {
-                        neighbour.distance = currNode.distance + cost + hn;
-                        neighbour.parent = currNode;
+                        neighbor.distance = minNode.distance + weight + hn;
+                        neighbours[i].weight = minNode.distance + weight;
+
+                        // set the parent of the neighbor to the current node
+                        neighbor.parent = minNode;
+
+                        let neighbourObj = 
+                        {
+                            mesh: neighbor.getMesh(),
+                            weight: weight,
+                        };
+
+                        console.log(neighbourObj)
+                        node.neighbours.push(neighbourObj);
                     }
-                    neighbourObj.mesh = neighbour;
-                    neighbourObj.weight = cost;
-                    node.neighbours.push(neighbourObj);
-                    q.enqueue(n[i].neighbour);
                 }
             }
             maze.algVis.aStar.order.push(node);
+            maze.adjList.set(minNode.mesh.position, neighbours)
+        }
+        
+    }
+    aStarShortesPath(maze.endNode, maze)
+}
+
+function getMin(maze, seen)
+{
+    let min = Infinity;
+    let minNode = null;
+    let neighbours = null;
+
+    for (let [currNodePos, neighborInfo] of maze.adjList)
+    {
+        let currNode = maze.getNode(currNodePos);
+        if (seen.has(currNode) === false && currNode.distance < min)
+        {
+            min = currNode.distance;
+            minNode = currNode;
+            neighbours = neighborInfo;
         }
     }
-
-    //print first 10 nodes in order
-    for (let i = 0; i < 10; i++)
-    {
-        console.log(maze.algVis.aStar.order[i]);
-    }
+    return {minNode, neighbours};
 }
 
 function aStarShortesPath(endNode, maze)
 {
+    console.log(endNode)
     // iterate through node parents from end
     let currNode = endNode;
+    
     while (currNode.parent.type != "start")
     {
         maze.algVis.aStar.shortestPath.push(currNode);
@@ -89,4 +95,6 @@ function aStarShortesPath(endNode, maze)
     maze.algVis.aStar.shortestPath.push(maze.startNode);
     // reverse array after
     maze.algVis.aStar.shortestPath.reverse();
+    console.log(maze.algVis.aStar.shortestPath)
+
 }

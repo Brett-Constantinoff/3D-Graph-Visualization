@@ -209,6 +209,21 @@ export default class Maze extends Cube{
         this.adjList.set(new Vector3(pos.x, pos.y, pos.z), neighbours);
     }
 
+    
+    /**
+     * This function will 'clean' the adj
+     * list so that it only containes paths
+     */
+    cleanAdjList()
+    {
+        for (let [key, value] of this.adjList)
+        {
+            let node = this.getNode(key)
+            if(node.type === "wall")
+                this.adjList.delete(key)
+        }
+    }
+
     /**
      * Debug adj list function, 
      * if a nodes neighbor is not found it will
