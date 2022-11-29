@@ -470,6 +470,11 @@ export default class App
         this.axisHelper = new THREE.AxesHelper(10);
         this.scene.add(this.axisHelper);
         //this.scene.add(new THREE.AxesHelper(10));
+        
+        this.camera.aspect = this.sizes.width / this.sizes.height;
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(this.sizes.width, this.sizes.height);
+        
     }
 
     /**
