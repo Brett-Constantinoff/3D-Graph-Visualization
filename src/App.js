@@ -60,8 +60,8 @@ export default class App
         if(window.innerHeight > 900 && window.innerHeight <= 1200)
         {
             this.sizes = {
-                width: window.innerWidth/2.3,
-                height: window.innerHeight/2.3,
+                width: window.innerWidth/2.3 + 150,
+                height: window.innerHeight/2.3 + 200,
             };
         }
         if(window.innerHeight > 1200)
@@ -283,6 +283,7 @@ export default class App
         {
             this.setupPsuedocode(this.algorithms[this.currentAlgorithm][1]);
             this.maze.clear();
+            //this.maze.resetNodes();
             console.log("reset");
             //show the generate button
             document.getElementById("generateBtn").style.display = "block";
