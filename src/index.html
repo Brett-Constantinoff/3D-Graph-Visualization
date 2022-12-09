@@ -184,9 +184,9 @@
                             <br>
                             <span id="code">&nbsp&nbsp&nbsp&nbspget current distance <span id="variable">d</span> from <span id="variable">c</span></span></span>
                             <br>
-                            <span id="DijkstraLine9" class="lineNums">9 <span id="code">&nbsp  if <span id="variable">n</span> is not in <span id="variable">S</span> && </span> <span id="code"><span id="variable">d</span> + edge(<span id="variable">d</span> , <span id="variable">c</span>) &lt; distance to </span> <span id="variable">n</span></span>
+                            <span id="DijkstraLine9" class="lineNums">9 <span id="code">&nbsp  if <span id="variable">n</span> is not in <span id="variable">S</span> && </span> <span id="code"><span id="variable">d</span> + edge(<span id="variable">n</span> , <span id="variable">c</span>) &lt; distance to </span> <span id="variable">n</span></span>
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbsp   distance to</span> <span id="code"><span id="variable">n</span> = </span> <span id="variable">d</span> <span id="code"> + edge(<span id="variable">d</span> , <span id="variable">c</span>)</span>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp   distance to</span> <span id="code"><span id="variable">n</span> = </span> <span id="variable">d</span> <span id="code"> + edge(<span id="variable">n</span> , <span id="variable">c</span>)</span>
                             <br>
                             <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code">  parent of <span id="variable">  n</span> = </span><span id="variable">c</span></span>  
                         </code>
@@ -205,7 +205,7 @@
                             <br>
                             <span id="AstarLine6" class="lineNums">6       <span id="code">while there are nodes from</span> <span id="variable">G</span> <span id="code">not in </span> <span id="variable">S</span> </span>
                             <br>
-                            <span id="AstarLine7" class="lineNums">7       <span id="code">&nbsplet the current node</span> <span id="variable">c</span> <span id="code">have the smallest distance in</span> <span id="variable">S</span></span>
+                            <span id="AstarLine7" class="lineNums">7       <span id="code">&nbsplet the current node</span> <span id="variable">c</span> <span id="code">have the smallest heuristic in</span> <span id="variable">S</span></span>
                             <br>
                             <span id="AstarLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">c</span> has any unvisited neighbors</span> <span id="variable">n</span> 
                             <br>
@@ -213,9 +213,11 @@
                             <br>
                             <span id="code">&nbsp&nbsp&nbsp&nbspcalculate euclidean hueristic <span id="variable">h</span></span></span>
                             <br>
-                            <span id="AstarLine9" class="lineNums">9 <span id="code">&nbsp  if <span id="variable">n</span> is not in <span id="variable">S</span> && </span> <span id="code"><span id="variable">d</span> + <span id="variable">h</span> + edge(<span id="variable">d</span> , <span id="variable">c</span>) &lt; distance to </span> <span id="variable">n</span></span>
+                            <span id="AstarLine9" class="lineNums">9 <span id="code">&nbsp  if <span id="variable">n</span> is not in <span id="variable">S</span> && </span> <span id="code"><span id="variable">d</span> + edge(<span id="variable">n</span> , <span id="variable">c</span>) &lt; distance to </span> <span id="variable">n</span></span>
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbsp   distance to</span> <span id="code"><span id="variable">n</span> = </span> <span id="variable">d</span> <span id="code"> + edge(<span id="variable">d</span> , <span id="variable">c</span>)</span>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp   distance to</span> <span id="code"><span id="variable">n</span> = </span> <span id="variable">d</span> <span id="code"> + edge(<span id="variable">n</span> , <span id="variable">c</span>)</span>
+                            <br>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp   heuristic of</span> <span id="code"><span id="variable">n</span> = </span>  <span id="code">distance to </span><span id="variable">n</span> <span id="code"> + <span id="variable">h</span></span>
                             <br>
                             <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code">  parent of <span id="variable">  n</span> = </span><span id="variable">c</span></span>  
                         </code>
