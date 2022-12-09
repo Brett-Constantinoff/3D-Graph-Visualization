@@ -291,6 +291,7 @@ export default class App
                     break;
             }
             console.log(this.currentAlgorithm + " algorithm loaded and ready to go!");
+            this.paused = false;
         });
 
         //add reset button event
@@ -315,7 +316,7 @@ export default class App
             //show the psuedocode checkbox
             document.getElementById("codeCheckbox").style.display = "block";
             this.paused = true;
-            document.getElementById("playPauseBtn").innerText = "Start";
+            document.getElementById("playPauseBtn").innerText = "Pause";
             //hide all buttons
             document.getElementById("stepBtn").style.display = "none";
             document.getElementById("backBtn").style.display = "none";
