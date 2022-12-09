@@ -37,6 +37,7 @@ export function breadthFirstSearch(maze)
                             if (neighbourNode.type != "end")
                                 neighbourNode.type = "bfs";
                             neighbourNode.parent = currNode;
+                            neighbourNode.distance = neighbourInfo[i].weight;
                             node.neighbours.push(neighbourNode.getMesh());
                             q.enqueue(neighbourInfo[i].neighbour);
                         }

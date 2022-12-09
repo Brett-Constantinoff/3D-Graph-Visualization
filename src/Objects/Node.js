@@ -19,11 +19,13 @@ export default class Node extends Cube
         this.visitied = false;
         this.parent = null;
         this.distance = Infinity;
+        this.heuristic = Infinity;
         this.initialState = {
             type : type, 
             visited : false,
             parent : null, 
             distance : Infinity, 
+            heuristic: Infinity,
             color : color, 
             transparency : transparency
         };
@@ -36,5 +38,6 @@ export default class Node extends Cube
         this.visitied = this.initialState.visited;
         this.parent = this.initialState.parent;
         this.distance = this.initialState.distance;
+        this.heuristic = this.initialState.heuristic;
     }
 }
