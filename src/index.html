@@ -139,7 +139,7 @@
                         <p>Iterations: <span id="iterations">0</span></p>
                     </div>
 
-                    <div class="row card bg-dark mx-auto mb-5" style="width: 50rem; ">
+                    <div class="row card bg-dark mx-auto mb-5" style="width: 55rem; ">
                         <!--BFS psudocode here -->
                         <code id="BFS">
                             <span id="BFSLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
@@ -158,63 +158,58 @@
                         
                         <!--Dyjkstra psudocode here -->
                         <code id="Dijkstra">
-                            <span id="DijkstraLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
+                            <span id="DijkstraLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">G</span> <span id="code"> be a graph</span></span> 
                             <br>
-                            <span id="DijkstraLine2" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code">be start node</span></span> 
+                            <span id="DijkstraLine1" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code"> be a set of seen nodes</span></span> 
                             <br>
-                            <span id="DijkstraLine3" class="lineNums">3       <span id="code">set distance from <span id="variable">S</span> -> <span id="variable">S</span> </span>  <span id="code">= 0</span></span>  
+                            <span id="DijkstraLine2" class="lineNums">3       <span id="code">let</span> <span id="variable">s</span> <span id="code">be the start node</span></span> 
                             <br>
-                            <span id="DijkstraLine4" class="lineNums">4       <span id="code">set distance from <span id="variable">S</span> -> any node </span>  <span id="code">= &#8734</span></span>
+                            <span id="DijkstraLine3" class="lineNums">4       <span id="code">set distance from <span id="variable">s</span> -> <span id="variable">s</span> </span>  <span id="code"> = 0</span></span>  
                             <br>
-                            <span id="DijkstraLine5" class="lineNums">5       <span id="code">add <span id="variable">S</span> to <span id="variable">Q</span></span></span>
+                            <span id="DijkstraLine4" class="lineNums">5       <span id="code">set distance from <span id="variable">s</span> -> any node </span>  <span id="code">= &#8734</span></span>
                             <br>
-                            <span id="DijkstraLine6" class="lineNums">6       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
+                            <span id="DijkstraLine6" class="lineNums">6       <span id="code">while there are nodes from</span> <span id="variable">G</span> <span id="code">not in </span> <span id="variable">S</span> </span>
                             <br>
-                            <span id="DijkstraLine7" class="lineNums">7       <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <span id="DijkstraLine7" class="lineNums">7       <span id="code">&nbsplet the current node</span> <span id="variable">c</span> <span id="code">have the smallest distance in</span> <span id="variable">S</span></span>
                             <br>
-                            <span id="DijkstraLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span> 
+                            <span id="DijkstraLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">c</span> has any unvisited neighbors</span> <span id="variable">n</span> 
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbspget <span id="variable">n</span> cost</span></span>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspget current distance <span id="variable">d</span> from <span id="variable">c</span></span></span>
                             <br>
-                            <span id="DijkstraLine9" class="lineNums">9 <span id="code">&nbspif distance</span> <span id="code"><span id="variable">C</span> + cost &lt; distance  </span> <span id="variable">n</span> <span id="code">get <span id="variable">n</span> cost</span>
+                            <span id="DijkstraLine9" class="lineNums">9 <span id="code">&nbsp  if <span id="variable">n</span> is not in <span id="variable">S</span> && </span> <span id="code"><span id="variable">d</span> + edge(<span id="variable">d</span> , <span id="variable">c</span>) &lt; distance to </span> <span id="variable">n</span></span>
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbspdistance</span> <span id="code"><span id="variable">n</span> = distance  </span> <span id="variable">C</span> <span id="code"> + cost</span>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp   distance to</span> <span id="code"><span id="variable">n</span> = </span> <span id="variable">d</span> <span id="code"> + edge(<span id="variable">d</span> , <span id="variable">c</span>)</span>
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code"><span id="variable">n</span>.parent = </span><span id="variable">C</span></span>  
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code">  parent of <span id="variable">  n</span> = </span><span id="variable">c</span></span>  
                         </code>
 
                          <!--Astar psudocode here -->
                          <code id="Astar">
-                            <span id="AstarLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">Q</span> <span id="code">be a queue</span></span> 
+                            <span id="AstarLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">G</span> <span id="code"> be a graph</span></span> 
                             <br>
-                            <span id="AstarLine2" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code">be start node</span></span> 
+                            <span id="AstarLine2" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code"> be a set of seen nodes</span></span> 
                             <br>
-                            <span id="AstarLine3" class="lineNums">3       <span id="code">set distance from <span id="variable">S</span> -> <span id="variable">S</span> </span>  <span id="code">= 0</span></span>  
+                            <span id="AstarLine3" class="lineNums">3       <span id="code">let</span> <span id="variable">s</span> <span id="code">be the start node</span></span> 
                             <br>
-                            <span id="AstarLine4" class="lineNums">4       <span id="code">set distance from <span id="variable">S</span> -> any node </span>  <span id="code">= &#8734</span></span>
+                            <span id="AstarLine4" class="lineNums">4       <span id="code">set distance from <span id="variable">s</span> -> <span id="variable">s</span> </span>  <span id="code"> = 0</span></span>  
                             <br>
-                            <span id="AstarLine5" class="lineNums">5       <span id="code">add <span id="variable">S</span> to <span id="variable">Q</span></span></span>
+                            <span id="AstarLine5" class="lineNums">5       <span id="code">set distance from <span id="variable">s</span> -> any node </span>  <span id="code">= &#8734</span></span>
                             <br>
-                            <span id="AstarLine6" class="lineNums">6       <span id="code">while</span> <span id="variable">Q</span> <span id="code">is not empty</span></span>
+                            <span id="AstarLine6" class="lineNums">6       <span id="code">while there are nodes from</span> <span id="variable">G</span> <span id="code">not in </span> <span id="variable">S</span> </span>
                             <br>
-                            <span id="AstarLine7" class="lineNums">7       <span id="code">&nbsplet current node</span> <span id="variable">C</span> <span id="code">be the first element of</span> <span id="variable">Q</span></span>
+                            <span id="AstarLine7" class="lineNums">7       <span id="code">&nbsplet the current node</span> <span id="variable">c</span> <span id="code">have the smallest distance in</span> <span id="variable">S</span></span>
                             <br>
-                            <span id="AstarLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">C</span> has any unvisited neighbors</span> <span id="variable">n</span> 
+                            <span id="AstarLine8" class="lineNums">8       <span id="code">&nbspif</span> <span id="code"><span id="variable">c</span> has any unvisited neighbors</span> <span id="variable">n</span> 
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbspget <span id="variable">n</span> cost</span>
+                            <span id="code">&nbsp&nbsp&nbsp&nbspget current distance <span id="variable">d</span> from <span id="variable">c</span></span></span>
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbspcalculate <span id="variable">heuristic cost</span></span></span>
-                            </span>
-
+                            <span id="code">&nbsp&nbsp&nbsp&nbspcalculate euclidean hueristic <span id="variable">h</span></span></span>
                             <br>
-                            <span id="AstarLine9" class="lineNums">9 <span id="code">&nbspif distance</span> <span id="code"><span id="variable">C</span> + cost 
-                            + <span id="variable">heuristic cost</span> &lt; distance  </span> <span id="variable">n</span> 
+                            <span id="AstarLine9" class="lineNums">9 <span id="code">&nbsp  if <span id="variable">n</span> is not in <span id="variable">S</span> && </span> <span id="code"><span id="variable">d</span> + <span id="variable">h</span> + edge(<span id="variable">d</span> , <span id="variable">c</span>) &lt; distance to </span> <span id="variable">n</span></span>
                             <br>
-                            &nbsp&nbsp&nbsp&nbsp<span id="code">get <span id="variable">n</span> cost</span>
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp   distance to</span> <span id="code"><span id="variable">n</span> = </span> <span id="variable">d</span> <span id="code"> + edge(<span id="variable">d</span> , <span id="variable">c</span>)</span>
                             <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbspdistance</span> <span id="code"><span id="variable">n</span> = distance  </span> <span id="variable">C</span> <span id="code"> + cost + <span id="variable">heuristic cost</span></span>
-                            <br>
-                            <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code"><span id="variable">n</span>.parent = </span><span id="variable">C</span></span> 
+                            <span id="code">&nbsp&nbsp&nbsp&nbsp</span><span id="code">  parent of <span id="variable">  n</span> = </span><span id="variable">c</span></span>  
                         </code>
                         
                         <div class="invisible"style="display:none;">
