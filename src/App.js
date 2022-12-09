@@ -315,7 +315,7 @@ export default class App
             //show the psuedocode checkbox
             document.getElementById("codeCheckbox").style.display = "block";
             this.paused = true;
-            document.getElementById("playPauseBtn").innerText = "Solve";
+            document.getElementById("playPauseBtn").innerText = "Start";
             //hide all buttons
             document.getElementById("stepBtn").style.display = "none";
             document.getElementById("backBtn").style.display = "none";
