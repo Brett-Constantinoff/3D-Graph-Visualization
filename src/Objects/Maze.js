@@ -334,4 +334,18 @@ export default class Maze extends Cube{
     {
         return this.nodeMeshes;
     }
+
+    /**
+     * Resets the entire god damn maze
+     */
+    reset()
+    {
+        // creates a fresh maze
+        this.nodes = [];
+        this.nodeMeshes.clear();
+        this.adjList.clear();
+    
+        // resets the algorithm shit
+        this.clear();
+    };
 }

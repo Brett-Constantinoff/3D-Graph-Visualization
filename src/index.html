@@ -81,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col" id="algoPicker">
+                    <div class="col" id="algoPicker" style="display: none;">
                         <label>Algorithm: 
                             <select name="Algorithm" id="Algorithm">
                                 <option value="BFS">BFS</option>
@@ -94,13 +94,20 @@
                         <div class="align-self-center">
                             <div class="d-flex justify-content-center">
                                 <button id="generateBtn">Generate</button>
-                                <button id="solveBtn">Solve</button>
+                                <button id="resetBtn">Reset</button>
+                                <button id="clearBtn" style="display: none;">Clear</button>
                             </div>
                             
-                            <div class="d-flex justify-content-center gap-5">
-                                <button id="resetBtn">Reset</button>
-                                <button id="playPauseBtn">Solve</button>
-                            </div>  
+                            
+                            
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex justify-content-center gap-5">
+                            
+                            <button id="solveBtn" style="display: none;">Solve</button>
+                            <button id="playPauseBtn" style="display: none;">Start</button>
                         </div>
                     </div>
                     <div class="col">
@@ -124,7 +131,7 @@
             </div>
             
         </div>
-        <div class="col-sm" id="codeBlock">
+        <div class="col-sm" id="codeBlock" style="display: none;">
             
             <div class="row gx-0">
                 <!-- element to hold psudocode-->
@@ -160,13 +167,13 @@
                         <code id="Dijkstra">
                             <span id="DijkstraLine1" class="lineNums">1       <span id="code">let</span> <span id="variable">G</span> <span id="code"> be a graph</span></span> 
                             <br>
-                            <span id="DijkstraLine1" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code"> be a set of seen nodes</span></span> 
+                            <span id="DijkstraLine2" class="lineNums">2       <span id="code">let</span> <span id="variable">S</span> <span id="code"> be a set of seen nodes</span></span> 
                             <br>
-                            <span id="DijkstraLine2" class="lineNums">3       <span id="code">let</span> <span id="variable">s</span> <span id="code">be the start node</span></span> 
+                            <span id="DijkstraLine3" class="lineNums">3       <span id="code">let</span> <span id="variable">s</span> <span id="code">be the start node</span></span> 
                             <br>
-                            <span id="DijkstraLine3" class="lineNums">4       <span id="code">set distance from <span id="variable">s</span> -> <span id="variable">s</span> </span>  <span id="code"> = 0</span></span>  
+                            <span id="DijkstraLine4" class="lineNums">4       <span id="code">set distance from <span id="variable">s</span> -> <span id="variable">s</span> </span>  <span id="code"> = 0</span></span>  
                             <br>
-                            <span id="DijkstraLine4" class="lineNums">5       <span id="code">set distance from <span id="variable">s</span> -> any node </span>  <span id="code">= &#8734</span></span>
+                            <span id="DijkstraLine5" class="lineNums">5       <span id="code">set distance from <span id="variable">s</span> -> any node </span>  <span id="code">= &#8734</span></span>
                             <br>
                             <span id="DijkstraLine6" class="lineNums">6       <span id="code">while there are nodes from</span> <span id="variable">G</span> <span id="code">not in </span> <span id="variable">S</span> </span>
                             <br>
