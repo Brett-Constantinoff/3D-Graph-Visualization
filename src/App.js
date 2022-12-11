@@ -346,6 +346,7 @@ export default class App
             this.maze.clear();
             //hide playPause button
             document.getElementById("playPauseBtn").style.display = "none";
+            document.getElementById("playPauseBtn").innerText = "Pause";
             document.getElementById("clearBtn").style.display = "none";
              //disable range sliders
              document.getElementById("sliders").style.display = "none";
@@ -357,7 +358,9 @@ export default class App
              document.getElementById("speedSlider").style.display = "block";
              //show the solve button
              document.getElementById("solveBtn").style.display = "block";
+             
              let item = document.getElementById("Algorithm").value;
+             this.setupPsuedocode(this.algorithms[item][1]);
              if(item != "BFS")
              {
                  document.getElementById("nodeWeights").style.display = "block";
