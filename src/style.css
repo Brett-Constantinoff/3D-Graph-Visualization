@@ -122,7 +122,7 @@ label
 }
 #solveBtn
 {
-    display: none;
+    
     
     border-radius: 10px;
     border: 2px solid rgb(32, 69, 110);
@@ -153,6 +153,26 @@ label
     font-family: 'Kanit', sans-serif;
     font-size: 20px;
     cursor: pointer;
+}
+#clearBtn
+{
+    border-radius: 10px;
+    border: 2px solid rgb(32, 69, 110);
+    background: rgb(32, 69, 110);
+    color: rgb(255, 255, 255);
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+#clearBtn:hover
+{
+    background: rgb(0, 0, 0);
+    color: rgb(32, 69, 110);
+}
+#clearBtn:active
+{
+    background: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
 }
 #resetBtn:hover
 {

@@ -272,9 +272,9 @@ export default class Maze extends Cube{
      */
     clear()
     {
-        this.nodes = [];
-        this.nodeMeshes.clear();
-        this.adjList.clear();
+        //this.nodes = [];
+        //this.nodeMeshes.clear();
+        //his.adjList.clear();
 
         // reset bfs
         this.algVis.bfs.order = [];
@@ -302,6 +302,27 @@ export default class Maze extends Cube{
         this.algVis.aStar.visualize = false;
         this.algVis.aStar.seeShortestPath = false;
         this.algVis.aStar.pathCleared = true;
+
+        this.resetNodes();
+    }
+
+    resetNodes()
+    {
+       for (let [nodePos, neighbors] of this.adjList)
+       {
+            let node = this.getNode(nodePos);
+            node.reset();
+            node.type = "path";
+            node.mesh.material.color.set(0x00FF00);
+            node.mesh.material.opacity = 0.25;
+       }
+        this.startNode.type = "start";
+        this.startNode.mesh.material.color.set(0x48A14D);
+        this.startNode.mesh.material.opacity = 1.0;
+
+        this.endNode.type = "end";
+        this.endNode.mesh.material.color.set(0x781f19);
+        this.endNode.mesh.material.opacity = 1.0;
     }
 
     /**
@@ -313,4 +334,18 @@ export default class Maze extends Cube{
     {
         return this.nodeMeshes;
     }
+
+    /**
+     * Resets the entire god damn maze
+     */
+    reset()
+    {
+        // creates a fresh maze
+        this.nodes = [];
+        this.nodeMeshes.clear();
+        this.adjList.clear();
+    
+        // resets the algorithm shit
+        this.clear();
+    };
 }

@@ -19,7 +19,25 @@ export default class Node extends Cube
         this.visitied = false;
         this.parent = null;
         this.distance = Infinity;
+        this.heuristic = Infinity;
+        this.initialState = {
+            type : type, 
+            visited : false,
+            parent : null, 
+            distance : Infinity, 
+            heuristic: Infinity,
+            color : color, 
+            transparency : transparency
+        };
         // allow some separation between nodes
         this.mesh.scale.set(this.size.x * 0.95, this.size.y * 0.95, this.size.z * 0.95);
+    }
+
+    reset()
+    {
+        this.visitied = this.initialState.visited;
+        this.parent = this.initialState.parent;
+        this.distance = this.initialState.distance;
+        this.heuristic = this.initialState.heuristic;
     }
 }

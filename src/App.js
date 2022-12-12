@@ -60,8 +60,8 @@ export default class App
         if(window.innerHeight > 900 && window.innerHeight <= 1200)
         {
             this.sizes = {
-                width: window.innerWidth/2.3,
-                height: window.innerHeight/2.3,
+                width: window.innerWidth/2.3 + 150,
+                height: window.innerHeight/2.3 + 200,
             };
         }
         if(window.innerHeight > 1200)
@@ -90,6 +90,7 @@ export default class App
         this.controls = new OrbitControls(this.camera, this.canvas);
 
         this.scene = new THREE.Scene();
+        
     }
 
     /**
@@ -216,8 +217,57 @@ export default class App
             this.maze.fill();
             depthFirstSearch(this.maze.start, this.maze);
             this.maze.cleanAdjList();
-            console.log(this.maze.adjList)
             console.log("generate");
+           
+            //disable and hide the button
+            document.getElementById("generateBtn").style.display = "none";
+            //hide the reset button
+            document.getElementById("resetBtn").style.display = "block";
+            
+            //disable range sliders
+            document.getElementById("sliders").style.display = "none";
+            //hide the psuedocode checkbox
+            document.getElementById("codeCheckbox").style.display = "block";
+            //show the algorithm select
+            document.getElementById("algoPicker").style.display = "block";
+            //show speed slider
+            document.getElementById("speedSlider").style.display = "block";
+            //show the solve button
+            document.getElementById("solveBtn").style.display = "block";
+            let item = document.getElementById("Algorithm").value;
+            if(item != "BFS")
+            {
+                document.getElementById("nodeWeights").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("nodeWeights").style.display = "none";
+            }
+            
+        });
+
+        document.getElementById("solveBtn").addEventListener("click", () =>
+        {
+           
+            document.getElementById("algoPicker").style.display = "none";
+            //hide the reset button
+            document.getElementById("resetBtn").style.display = "none";
+            //hide psuedocode checkbox
+            document.getElementById("codeCheckbox").style.display = "none";
+            //hide the solve button
+            document.getElementById("solveBtn").style.display = "none";
+            //show the playPause button
+            document.getElementById("playPauseBtn").style.display = "block";
+            //if psudocode show only step button. else show all buttons
+            if(document.getElementById("codeSwitch").checked)
+            {
+                document.getElementById("stepBtn").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("stepBtn").style.display = "block";
+                document.getElementById("backBtn").style.display = "block";
+            }
             this.currentAlgorithm = document.getElementById("Algorithm").value;
             console.log(this.currentAlgorithm);
             switch (this.currentAlgorithm)
@@ -229,7 +279,6 @@ export default class App
                     break;
                 case "Dijkstra":
                     dijkstra(this.maze);
-                    console.log(this.maze.algVis)
                     this.maze.algVis.dijkstra.visualize = true;
                     console.log("Dijkstra solve");
                     break;
@@ -240,74 +289,88 @@ export default class App
                     break;
             }
             console.log(this.currentAlgorithm + " algorithm loaded and ready to go!");
-            //disable and hide the button
-            document.getElementById("generateBtn").style.display = "none";
-            //show the reset button
-            document.getElementById("resetBtn").style.display = "block";
-            //show the playPause button
-            document.getElementById("playPauseBtn").style.display = "block";
-            //disable range sliders
-            document.getElementById("sliders").style.display = "none";
-            //hide the psuedocode
-            document.getElementById("codeCheckbox").style.display = "none";
-            //hide the algorithm select
-            document.getElementById("algoPicker").style.display = "none";
-            //show speed slider
-            document.getElementById("speedSlider").style.display = "block";
-            //if psudocode show only step button. else show all buttons
-            if(document.getElementById("codeSwitch").checked)
-            {
-                document.getElementById("stepBtn").style.display = "block";
-            }
-            else
-            {
-                document.getElementById("stepBtn").style.display = "block";
-                document.getElementById("backBtn").style.display = "block";
-            }
-        });
-
-        //add solve button event
-        document.getElementById("solveBtn").addEventListener("click", () =>
-        {
-            
-            //disable and hide the button
-            document.getElementById("solveBtn").style.display = "none";
-            //show the reset button
-            document.getElementById("resetBtn").style.display = "block";
-            //show the playPause button
-            document.getElementById("playPauseBtn").style.display = "block";
+            this.paused = false;
         });
 
         //add reset button event
         document.getElementById("resetBtn").addEventListener("click", () =>
         {
-            this.setupPsuedocode(this.algorithms[this.currentAlgorithm][1]);
-            this.maze.clear();
+            //this.setupPsuedocode(this.algorithms[this.currentAlgorithm][1]);
+            this.maze.reset();
+            //this.maze.resetNodes();
             console.log("reset");
             //show the generate button
             document.getElementById("generateBtn").style.display = "block";
-            //hide the reset button
+            //show the reset button
             document.getElementById("resetBtn").style.display = "none";
-            //hide the solve button
-            document.getElementById("solveBtn").style.display = "none";
             //hide playPause button
             document.getElementById("playPauseBtn").style.display = "none";
             //enable range sliders
             document.getElementById("sliders").style.display = "block";
             //show algorithm select
-            document.getElementById("algoPicker").style.display = "block";
+            document.getElementById("algoPicker").style.display = "none";
             //hide speed slider
             document.getElementById("speedSlider").style.display = "none";
             //show the psuedocode checkbox
             document.getElementById("codeCheckbox").style.display = "block";
             this.paused = true;
-            document.getElementById("playPauseBtn").innerText = "Solve";
+            document.getElementById("playPauseBtn").innerText = "Pause";
             //hide all buttons
             document.getElementById("stepBtn").style.display = "none";
             document.getElementById("backBtn").style.display = "none";
-            this.executed = false;
-        });
+            //set algopicker to BFS
+            document.getElementById("Algorithm").value = "BFS";
+            //hide node weights
+            document.getElementById("nodeWeights").style.display = "none";
+            //hide psuedocode checkbox
+            document.getElementById("codeCheckbox").style.display = "none";
 
+            //resize the canvas to width 100%
+            document.getElementById("canvas").style.width = "100%";
+            this.camera.aspect = window.innerWidth / this.sizes.height;
+            this.camera.updateProjectionMatrix()
+            this.renderer.setSize(window.innerWidth, this.sizes.height);
+            //uncheck the code checkbox
+            document.getElementById("codeSwitch").checked = false;
+            document.getElementById("codeCheckbox").style.display = "none";
+            document.getElementById("codeBlock").style.display = "none";
+            //hide solve button
+            document.getElementById("solveBtn").style.display = "none";
+            //hide clear button
+            document.getElementById("clearBtn").style.display = "none";
+            this.executed = false;
+
+        });
+        document.getElementById("clearBtn").addEventListener("click", () =>
+        {
+            this.maze.clear();
+            //hide playPause button
+            document.getElementById("playPauseBtn").style.display = "none";
+            document.getElementById("playPauseBtn").innerText = "Pause";
+            document.getElementById("clearBtn").style.display = "none";
+             //disable range sliders
+             document.getElementById("sliders").style.display = "none";
+             //hide the psuedocode checkbox
+             document.getElementById("codeCheckbox").style.display = "block";
+             //show the algorithm select
+             document.getElementById("algoPicker").style.display = "block";
+             //show speed slider
+             document.getElementById("speedSlider").style.display = "block";
+             //show the solve button
+             document.getElementById("solveBtn").style.display = "block";
+             
+             let item = document.getElementById("Algorithm").value;
+             this.setupPsuedocode(this.algorithms[item][1]);
+             if(item != "BFS")
+             {
+                 document.getElementById("nodeWeights").style.display = "block";
+             }
+             else
+             {
+                 document.getElementById("nodeWeights").style.display = "none";
+             }
+
+        });
         //add slider events
         document.getElementById("mazeSizeX").addEventListener("input", () =>
         {
@@ -474,7 +537,15 @@ export default class App
         this.camera.aspect = this.sizes.width / this.sizes.height;
         this.camera.updateProjectionMatrix()
         this.renderer.setSize(this.sizes.width, this.sizes.height);
-        
+        document.getElementById("codeBlock").style.display = "none";
+        //resize the canvas to width 100%
+        document.getElementById("canvas").style.width = "100%";
+        this.camera.aspect = window.innerWidth / this.sizes.height;
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(window.innerWidth, this.sizes.height);
+        //uncheck the code checkbox
+        document.getElementById("codeSwitch").checked = false;
+        document.getElementById("codeCheckbox").style.display = "none";
     }
 
     /**
@@ -789,6 +860,17 @@ export default class App
              if (this.maze.algVis.bfs.shortestPathIndex === this.maze.algVis.bfs.shortestPath.length)
              {
                  this.maze.algVis.bfs.seeShortestPath = false;
+                 //show the clear and reset buttons
+                document.getElementById("clearBtn").style.display = "block";
+                document.getElementById("resetBtn").style.display = "block";
+                //hide playpause button
+                document.getElementById("playPauseBtn").style.display = "none";
+                document.getElementById("playPauseBtn").innerHTML = "Start";
+                //hide the step and backstep buttons
+                document.getElementById("stepBtn").style.display = "none";
+                document.getElementById("backBtn").style.display = "none";
+                this.paused = true;
+
              }
              // visualize the path each 1/10 second
              else if (this.maze.algVis.timer >= this.maze.algVis.speed)
@@ -1017,6 +1099,17 @@ export default class App
             if (this.maze.algVis.dijkstra.shortestPathIndex === this.maze.algVis.dijkstra.shortestPath.length)
             {
                 this.maze.algVis.dijkstra.seeShortestPath = false;
+                //show the clear and reset buttons
+                document.getElementById("clearBtn").style.display = "block";
+                document.getElementById("resetBtn").style.display = "block";
+                //hide playpause button
+                document.getElementById("playPauseBtn").style.display = "none";
+                document.getElementById("playPauseBtn").innerHTML = "Start";
+                //hide the step and backstep buttons
+                document.getElementById("stepBtn").style.display = "none";
+                document.getElementById("backBtn").style.display = "none";
+                this.paused = true;
+
                 
             }
             // visualize the path each 1/10 second
@@ -1220,6 +1313,7 @@ export default class App
             {
                 this.maze.algVis.aStar.visualize = false;
                 this.maze.algVis.aStar.seeShortestPath = true;
+                
             }
          }
  
@@ -1242,6 +1336,17 @@ export default class App
              if (this.maze.algVis.aStar.shortestPathIndex === this.maze.algVis.aStar.shortestPath.length)
              {
                  this.maze.algVis.aStar.seeShortestPath = false;
+                 //show the clear and reset buttons
+                document.getElementById("clearBtn").style.display = "block";
+                document.getElementById("resetBtn").style.display = "block";
+                //hide playpause button
+                document.getElementById("playPauseBtn").style.display = "none";
+                document.getElementById("playPauseBtn").innerHTML = "Start";
+                //hide the step and backstep buttons
+                document.getElementById("stepBtn").style.display = "none";
+                document.getElementById("backBtn").style.display = "none";
+                this.paused = true;
+
              }
              // visualize the path each 1/10 second
              else if (this.maze.algVis.timer >= this.maze.algVis.speed)

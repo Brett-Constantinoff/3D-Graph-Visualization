@@ -1,12 +1,13 @@
 export function dijkstra(maze)
 {
-    maze.startNode.distance = 0;
+    let mazeCpy = Object.assign(Object.getPrototypeOf(maze), maze);
+    mazeCpy.startNode.distance = 0;
     let seen = new Set();
 
-    for (let [currNodePos, neighborInfo] of maze.adjList)
+    for (let [currNodePos, neighborInfo] of mazeCpy.adjList)
     {
         // get minimum node
-        let minInfo = getMin(maze, seen);
+        let minInfo = getMin(mazeCpy, seen);
 
         if (minInfo.minNode != null && minInfo.neighbours != null)
         {
@@ -25,7 +26,7 @@ export function dijkstra(maze)
             for (let i = 0; i < neighbours.length; i++)
             {
                 // get neighbor node
-                let neighbor = maze.getNode(neighbours[i].neighbour);
+                let neighbor = mazeCpy.getNode(neighbours[i].neighbour);
                 if (neighbor.type != "wall")
                 {
                      // get the weight of the current neighbor
@@ -34,7 +35,8 @@ export function dijkstra(maze)
                     if (seen.has(neighbor) === false && neighbor.distance > minNode.distance + weight)
                     {
                         neighbor.distance = minNode.distance + weight;
-                        neighbours[i].weight = minNode.distance + weight;
+                        // this line was fucking us 
+                        //neighbours[i].weight = minNode.distance + weight;
 
                         // set the parent of the neighbor to the current node
                         neighbor.parent = minNode;
@@ -48,12 +50,17 @@ export function dijkstra(maze)
                     }
                 }
             }
-            maze.algVis.dijkstra.order.push(node);
-            maze.adjList.set(minNode.mesh.position, neighbours)
+            mazeCpy.algVis.dijkstra.order.push(node);
+            for (let [key, value] of mazeCpy.adjList)
+            {
+                if (key.x === minNode.mesh.position.x && key.y === minNode.mesh.position.y && key.z === minNode.mesh.position.z)
+                    mazeCpy.adjList.delete(key);
+            }
+            mazeCpy.adjList.set(minNode.mesh.position, neighbours)
         }
         
     }
-    dijkstraShortesPath(maze.endNode, maze)
+    dijkstraShortesPath(mazeCpy.endNode, mazeCpy)
 }
 
 function getMin(maze, seen)
@@ -79,7 +86,7 @@ function dijkstraShortesPath(endNode, maze)
 {
     // iterate through node parents from end
     let currNode = endNode;
-    
+
     while (currNode.parent.type != "start")
     {
         maze.algVis.dijkstra.shortestPath.push(currNode);
