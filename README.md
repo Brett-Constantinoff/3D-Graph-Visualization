@@ -38,7 +38,7 @@ The shortest path calculated from bfs may not be the true shortest path, but ind
 
 Djikstra's algorithm is the second traversal algorithm which uses known edge weights to calculate distances from any node to the start node. Node weights are visua!
 lized as a heat map from light (low weight) to dark (heavy weight)
-[Capture](https://user-images.githubusercontent.com/77081808/215591092-b70fa0d6-3406-433f-a9de-1abb380e9620.PNG)
+![Capture](https://user-images.githubusercontent.com/77081808/215591092-b70fa0d6-3406-433f-a9de-1abb380e9620.PNG)
 
 Unlike BFS, the shortest path is indeed the shortest path from start node to end node
 ![Capture](https://user-images.githubusercontent.com/77081808/215591244-b92febcf-3bab-4a37-a8f5-5aeebc39d212.PNG)
@@ -46,7 +46,7 @@ Unlike BFS, the shortest path is indeed the shortest path from start node to end
 ### A-Star Algorithm
 
 A-star is the third and final algorithm to be implemented, it operates much the same as djikstra's algorithm but uses an extra heurstic in its node distance calculation. This heurstic is determined to be the Euclidean distance from the start node to any other node.
-[Capture](https://user-images.githubusercontent.com/77081808/215591650-abcf9785-1f94-4f5c-876b-250f16d224fb.PNG)
+![Capture](https://user-images.githubusercontent.com/77081808/215591650-abcf9785-1f94-4f5c-876b-250f16d224fb.PNG)
 
 The shortest path calculation is the same as djikstra's algorithm and results in the same shortest path.
 ![Capture](https://user-images.githubusercontent.com/77081808/215591871-839b32b9-0199-4ef8-9797-04c96d652bfb.PNG)
