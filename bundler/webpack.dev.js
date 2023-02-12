@@ -25,7 +25,7 @@ module.exports = merge(
         devServer:
         {
             //use IPv4 address
-            host: 'local-ip',
+            host: '0.0.0.0',
             //find an open port starting at 8080
             port: portFinderSync.getPort(8080),
             //will automatically open the browser
