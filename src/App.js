@@ -1,7 +1,7 @@
 import './style.css'
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Stats from 'stats.js';
+import { OrbitControls } from 'OrbitControls';
+//import Stats from 'stats.js';
 import Maze from './Objects/Maze';
 import { depthFirstSearch } from './Algorithms/depthFirst';
 import { breadthFirstSearch } from './Algorithms/breadthFirst';
@@ -48,7 +48,7 @@ export default class App
             10 : 0x00010d, 
         };
 
-        this.stats = new Stats();
+        //this.stats = new Stats();
         this.canvas = document.querySelector('.webgl');
         if(window.innerHeight <= 900)
         {
@@ -114,7 +114,7 @@ export default class App
     onUpdate(dt)
     {   
         //needs to come at the beginning of onUpdate
-        this.stats.begin();
+        //this.stats.begin();
 
         if(!this.paused)
         {
@@ -144,7 +144,7 @@ export default class App
         this.renderer.render(this.scene, this.camera);
 
         //needs to come at the end of onRender
-        this.stats.end();
+        //this.stats.end();
     }
 
     /**
@@ -489,8 +489,8 @@ export default class App
     setupScene()
     {
         // setup stats
-        this.stats.showPanel(0);
-        document.body.appendChild(this.stats.dom);
+        //this.stats.showPanel(0);
+        //document.body.appendChild(this.stats.dom);
         
         // initial camera position
         this.camera.position.set(19.64, 11.55, 18.97);
