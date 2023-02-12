@@ -402,7 +402,7 @@ export default class App
         });
 
         //set up on change listener for the drop down menu.
-        $("#Algorithm").on("change", (item) => {
+        document.getElementById("Algorithm").addEventListener("change", (item) =>{
             let oldAlgo = this.currentAlgorithm;
             //change the algorithm
             //change psudocode header
