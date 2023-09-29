@@ -66,9 +66,5 @@ For each traversal algorithm, the pseudo code is available for visualization. Th
 
 ## Project Usage
 
-To use this application first clone the repository using ```git clone git@github.com:Brett-Constantinoff/3D-Graph-Visualization.git```
-
-Once cloned, navigate to the root directory and run only once ```npm install```
-
-After the required packages are installed, use the command ```npm run dev``` to run the application.
+https://algovis.net/
 
